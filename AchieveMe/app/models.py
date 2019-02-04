@@ -1,10 +1,11 @@
 from django.db import models
 
 class Aims(models.Model):
+    User_name = models.CharField(max_length=120)
 	#Aim_id, # models.IntegerField()
 	#List_id,# = models.IntegerField()
 	#цParrentAim_id,# = models.IntegerField()
-	Name = models.CharField(max_length=120, default='')
+    Name = models.CharField(max_length=120, default='')
 	#Deadline = models.DateTimeField(auto_now_add=True)
 	#IsImportant = models.BooleanField(default=0)
 	#Remind = models.BooleanField(default=0)

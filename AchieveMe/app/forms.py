@@ -22,10 +22,11 @@ class SignupForm(UserCreationForm):
 			
 			
 class AimForm(forms.ModelForm):
-    Name = models.CharField(max_length=120)
+    Name = models.CharField(max_length=120),
+    #User_name = models.CharField(max_length=120)
     class Meta:
         model = Aims
-        fields = ('Name', )
+        fields = ('Name',)
 	
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

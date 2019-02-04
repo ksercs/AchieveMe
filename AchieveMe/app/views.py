@@ -21,8 +21,8 @@ from django.core import serializers
 
 from django.http import JsonResponse
 
-def aims_list(request):
-    return JsonResponse(serializers.serialize('json', Aims.objects.all()), safe=False)
+def aims_list(request, username):
+    return JsonResponse(serializers.serialize('json', Aims.objects.filter(User_name = username)), safe=False)
 
 def index(request):
     return render(request, 'index.html')
@@ -77,7 +77,7 @@ def add_aim(request):
         form = AimForm(request.POST)
         if form.is_valid():
             profile = form.save(commit=False)
-            profile.user = request.user
+            profile.User_name = request.user.username
             profile.save()
             return HttpResponse('Цель добавлена')
     else:
