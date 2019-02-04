@@ -22,12 +22,16 @@ from django.core import serializers
 from django.http import JsonResponse
 import json
 
+from django.forms.models import model_to_dict
+
 def aims_list(request, username):
  #   return HttpResponse(request, json.dumps(A), content_type='applocation/json')
-    json_serializer = serializers.get_serializer("json")()
-    response =  json_serializer.serialize(Aims.objects.filter(User_name=username), ensure_ascii=False, indent=2)
-    return HttpResponse(response)
-#    return JsonResponse(serializers.serialize('json',  Aims.objects.filter(User_name = username), ensure_ascii=False), safe=False)
+    #json_serializer = serializers.get_serializer("json")()
+    #response =  json_serializer.serialize(Aims.objects.filter(User_name=username), ensure_ascii=False, indent=2)
+    #return HttpResponse(response)
+#    fields = Aims._meta.local_fields
+#   res = [f.name for f in fields]
+    return HttpResponse(Aims.objects.values())
 
 def index(request):
     return render(request, 'index.html')
