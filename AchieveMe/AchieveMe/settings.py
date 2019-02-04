@@ -88,10 +88,8 @@ WSGI_APPLICATION = 'AchieveMe.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'my_db',
-		'USER': 'root',
-		'PASSWORD': '1asdcxz8'
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase',
     }
 }
 
