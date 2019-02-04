@@ -14,7 +14,7 @@ body,html{
   }
 
   .header a, a:hover {
-    color: black;
+    color: #FFFFFF;
     text-decoration: none;
   }
 
@@ -24,16 +24,16 @@ body,html{
   }
 
   .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
-    color: black;
-    background-color: #ED8A3F;
+    color: white;
+    background-color: #F54EA2;
   }
 
   .navbar-inverse .navbar-nav>li>a {
-    color: black;
+    color: white;
   }
 
   .navbar-inverse .navbar-nav>li>a:hover {
-    background-color: #ED8A3F ;
+    background-color: #F54EA2 ;
   }
 
   .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
@@ -54,8 +54,8 @@ body,html{
 
 
   .navbar-inverse {
-    background-color: #ffc300;
-    border-color: #ffc300;
+    background-color: #42218E;
+    border-color: #42218E;
   }
 
 
