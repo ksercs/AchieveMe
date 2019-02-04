@@ -13,6 +13,52 @@ body,html{
     padding: 10px 10px 0 10px;
   }
 
+  .header a, a:hover {
+    color: black;
+    text-decoration: none;
+  }
+
+  .header h1 {
+    letter-spacing: 3px;
+    font-size: 300%;
+  }
+
+  .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    color: black;
+    background-color: #ED8A3F;
+  }
+
+  .navbar-inverse .navbar-nav>li>a {
+    color: black;
+  }
+
+  .navbar-inverse .navbar-nav>li>a:hover {
+    background-color: #ED8A3F ;
+  }
+
+  .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    padding: 1%;
+  }
+
+  .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    padding: 1%;
+    text-align: center;
+  }
+
+  .container {
+    padding-right: 200px;
+    padding-left: 120px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+
+  .navbar-inverse {
+    background-color: #ffc300;
+    border-color: #ffc300;
+  }
+
+
  @media (min-width: 765px) {
 
     #id_img{

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	{% block title %}<title>Сервис постановки и достижения целей</title>{% endblock %}
+	{% block title %}<title>GotoGoal</title>{% endblock %}
 	<meta charset="utf-8">
  	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,28 +20,45 @@
 	{% load staticfiles %}
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 	<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
-	
 
   {% block placeinhead %}{% endblock %}
 </head>
 <body>
-	<nav style="font-size: 15pt;" class="navbar navbar-default sidebar" role="navigation">
     <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>      
-    </div>
-    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
-      <ul class="nav navbar-nav">
+      <div class="row">
+       <nav role="navigation" class="navbar navbar-inverse">
+          <div class="container"> 
+
+            <div class="navbar-header header">
+              
+              <div class="container"> 
+
+                <div class="row"> 
+                  <div class="col-lg-8">
+                    <h1><a href="#">AchieveMe</a></h1>
+                  </div>
+                </div>
+
+              </div>
+
+
+              <button = type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+
+            </div>
+
+            <div id="navbarCollapse" class="collapse navbar-collapse navbar-right">
+              
+              <ul class="nav navbar-nav">
         <li class="active"><a href="{% url 'index' %}">Главная<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% if user.is_authenticated %}{{user.username}}{% else %}Гость{% endif %}<span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
           <ul class="dropdown-menu forAnimate" role="menu">
-          	{% if user.is_authenticated %}
+            {% if user.is_authenticated %}
             <li><a href="{% url 'profile' %}">Кабинет</a></li>
             <li class="divider"></li>
             <li><a href="{% url 'logout' %}">Выйти</a></li>
@@ -55,14 +72,13 @@
         <li ><a href="{% url 'add_aim' %}">Цели<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a></li>
         {% endif %}
       </ul>
-    </div>
-  	</div>
-      <div style="padding: 5px;">
-        {% block left %}
-        {% endblock %}
-      </div>
-	</nav>
+            </div>
 
+          </div>
+        </nav>
+
+      </div>
+    </div>    
 
 	<div class="container-fluid">
 		<div class="row">
@@ -77,5 +93,7 @@
 		 </div>
 
 	</div>
+
+
 </body>
 </html>
