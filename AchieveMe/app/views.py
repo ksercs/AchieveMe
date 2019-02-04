@@ -16,7 +16,18 @@ from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import render_to_response
 
 from .forms import AimForm
+from .models import Aims
+from django.core import serializers	
 
+from django.http import JsonResponse
+import json
+
+def aims_list(request, username):
+ #   return HttpResponse(request, json.dumps(A), content_type='applocation/json')
+    json_serializer = serializers.get_serializer("json")()
+    response =  json_serializer.serialize(Aims.objects.filter(User_name=username), ensure_ascii=False, indent=2)
+    return HttpResponse(response)
+#    return JsonResponse(serializers.serialize('json',  Aims.objects.filter(User_name = username), ensure_ascii=False), safe=False)
 
 def index(request):
     return render(request, 'index.html')
@@ -70,6 +81,9 @@ def add_aim(request):
     if request.method == 'POST':
         form = AimForm(request.POST)
         if form.is_valid():
+            profile = form.save(commit=False)
+            profile.User_name = request.user.username
+            profile.save()
             return HttpResponse('Цель добавлена')
     else:
         form = AimForm()
