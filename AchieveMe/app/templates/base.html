@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% block title %}<title>Сервис постановки и достижения целей</title>{% endblock %}
+	<meta charset="utf-8">
+ 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/solid.css" integrity="sha384-S2gVFTIn1tJ/Plf+40+RRAxBCiBU5oAMFUJxTXT3vOlxtXm7MGjVj62mDpbujs4C" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/fontawesome.css" integrity="sha384-0b7ERybvrT5RZyD80ojw6KNKz6nIAlgOKXIcJ0CV7A6Iia8yt2y1bBfLBOwoc9fQ" crossorigin="anonymous">
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+	
+
+  {% block placeinhead %}{% endblock %}
+</head>
+<body>
+	<nav style="font-size: 15pt;" class="navbar navbar-default sidebar" role="navigation">
+    <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>      
+    </div>
+    <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="{% url 'index' %}">Главная<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% if user.is_authenticated %}{{user.username}}{% else %}Гость{% endif %}<span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
+          <ul class="dropdown-menu forAnimate" role="menu">
+          	{% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}">Кабинет</a></li>
+            <li class="divider"></li>
+            <li><a href="{% url 'logout' %}">Выйти</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Войти</a></li>
+            <li><a href="{% url 'signup' %}">Зарегистрироваться</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        {% if user.is_authenticated %}     
+        <li ><a href="{% url 'add_aim' %}">Цели<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a></li>
+        {% endif %}
+      </ul>
+    </div>
+  	</div>
+      <div style="padding: 5px;">
+        {% block left %}
+        {% endblock %}
+      </div>
+	</nav>
+
+
+	<div class="container-fluid">
+		<div class="row">
+
+			<!-- main part -->
+			
+            <div style="font-size: 14pt;" class="col-xl-10 col-lg-9 col-md-7 col-sm-6" name="main">
+            
+			{% block content %}{% endblock %}
+			</div> 
+
+		 </div>
+
+	</div>
+</body>
+</html>

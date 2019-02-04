@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+	<h1>Вход</h1>
+</div>
+{% if user.is_authenticated %}
+	<div class="alert alert-danger text-center" role="alert">
+  		<h2>Вы уже вошли!</h2>
+	</div>
+{% else %}
+<div class="col-sm-5">
+	<div style="padding: 1.5rem; border-width: .2rem;">
+		<form method="post" action="{% url 'login' %}">
+		{% csrf_token %}
+		<div class="form-row">
+			<div class="form-group col">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-user"></span>
+					</span>
+					<input class="form-control" type="text" required id="{{form.username.id_for_label}}" name="{{ form.username.html_name }}" placeholder="Логин">
+				</div>
+			</div>
+		</div>
+		<div class="form-row">
+			<div class="form-group col">
+				<input class="form-control" type="password" required id="{{form.password.id_for_label}}" name="{{ form.password.html_name }}" placeholder="Пароль">
+			</div>
+		</div>
+		{% if form.errors %}
+			<div class="form-row">
+				<div class="form-group col-md-12">
+					<div class="alert alert-danger" role="alert">
+						{{ form.non_field_errors }}
+					</div>
+				</div>
+			</div>
+		{% endif %}
+		<div class="form-row">
+			<button type="submit" class="btn btn-primary">Войти</button>
+			<a href="{% url 'password_reset' %}">Забыли пароль?</a>
+		</div>
+		</form>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

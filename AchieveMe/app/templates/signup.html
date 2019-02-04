@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+	<h2>Регистрация пользователя</h2>
+</div>
+{% if not user.is_authenticated %}
+
+<div class="col-sm-6" style="padding: 1.5rem; border-width: .2rem;">
+<form action="" method="post">
+    {% csrf_token %}
+	<div class="form-row">
+		<div class="form-group col-md-12">
+			<div class="input-group">
+				<span class="input-group-addon">
+					<span class="glyphicon glyphicon-user"></span>
+				</span>
+  				{{ form.username }}
+			</div>
+			{% if form.username.errors %}
+				<div class="alert alert-danger" role="alert">
+	  				{{ form.username.errors }}
+	  			</div>
+  			{% endif %}
+		</div>
+	</div>
+    <div class="form-row">
+		<div class="form-group col-md-12">
+			<div class="input-group">
+				<span class="input-group-addon">
+					<span class="glyphicon glyphicon-user"></span>
+				</span>
+  				{{ form.email }}
+			</div>
+			{% if form.email.errors %}
+				<div class="alert alert-danger" role="alert">
+	  				{{ form.email.errors }}
+	  			</div>
+  			{% endif %}
+		</div>
+	</div>
+	<div class="form-row">
+		<div class="form-group col-md-6">
+      		{{ form.password1 }}
+  		</div>
+
+		<div class="form-group col-md-6">
+      		{{ form.password2 }}
+      	</div>
+	</div>
+	{% if form.password2.errors %}
+		<div class="form-row">
+			<div class="form-group col-md-12">
+				<div class="alert alert-danger" role="alert">
+	  				{{ form.password2.errors }}
+	  			</div>
+  			</div>
+		</div>
+  	{% endif %}
+	
+	<div class="text-center">
+		<button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+	</div>
+    </form>
+</div>
+{% else %}
+	<div class="container text-center">
+		<div class="alert alert-danger" style="padding: 20px;" role="alert">
+			<h2>Вы уже зарегестрированы</h2>
+		</div>
+	</div>
+{% endif %}
+{% endblock %}

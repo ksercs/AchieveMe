@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="page-header"><h2>Добавление цели</h2></div>
+	<div style="position: relative;">
+	{% if saved %}
+	<div class="container alert alert-success" role="alert">
+		<h2>Цель добавлена</h2>
+	</div>
+	{% endif %}
+	<div class="col-sm-5">
+		<form method="POST">
+			{% csrf_token %}
+			{{ form }}
+			<button type="submit" class="btn btn-primary">Добавить новую цель</button>
+		</form>
+	</div>
+{% endblock %}
