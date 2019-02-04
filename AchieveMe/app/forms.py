@@ -30,4 +30,4 @@ class AimForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['Name'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Название цели', 'maxlength': '15'})
+            {'class': 'form-control', 'placeholder': 'Название цели', 'maxlength': '120'})
