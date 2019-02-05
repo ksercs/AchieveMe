@@ -2,9 +2,9 @@ package com.example.achieveme.model;
 
 public class ResObj {
 
-    private boolean valid;
+    private String valid;
 
-    public boolean isValid() {
+    public String isValid() {
         return valid;
     }
 }
