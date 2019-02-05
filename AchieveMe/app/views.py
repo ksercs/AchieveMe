@@ -81,7 +81,7 @@ def profile(request):
 	
 def add_aim(request):
     if request.method == 'POST':
-        form = AimForm(request.POST)
+        form = AimForm(request.POST, request.FILES)
         if form.is_valid():
             profile = form.save(commit = False)
             profile.User_name = request.user.username

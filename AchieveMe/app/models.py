@@ -6,6 +6,7 @@ class Aims(models.Model):
 	#List_id,# = models.IntegerField()
 	#цParrentAim_id,# = models.IntegerField()
     Name = models.CharField(max_length=120, default='')
+    image = models.ImageField(upload_to='images/', default='images/cat.jpg')
 	#Deadline = models.DateTimeField(auto_now_add=True)
 	#IsImportant = models.BooleanField(default=0)
 	#Remind = models.BooleanField(default=0)

@@ -27,13 +27,15 @@ class AimForm(forms.ModelForm):
     #User_name = models.CharField(max_length=120)
     class Meta:
         model = Aims
-        fields = ('Name',)
+        fields = ('Name', 'image')
 
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['Name'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Название цели', 'maxlength': '120'})
+        self.fields['image'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Загрузите изображение', 'maxlength': '120'})
 
 class SettingForm(forms.ModelForm):
     class Meta:

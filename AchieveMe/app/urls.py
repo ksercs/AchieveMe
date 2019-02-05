@@ -1,6 +1,9 @@
 from django.urls import include, path
 from django.conf.urls import url
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 from . import views
 
 from django.http import HttpResponsePermanentRedirect
@@ -18,4 +21,4 @@ urlpatterns = [
 	url(r'^add_aim/$', views.add_aim, name='add_aim'),
 	url(r'^settings/$', views.settings, name='settings'),	
 	url(r'^api/(?P<username>\w+)/aims_list/$', views.aims_list)
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
