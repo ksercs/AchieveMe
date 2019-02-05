@@ -15,5 +15,6 @@ urlpatterns = [
         views.activate, name='activate'),
 		
 	url(r'^accounts/profile/$', views.profile_redirect, name='url_redirect'),
-	url(r'^add_aim/$', views.add_aim, name='add_aim')
+	url(r'^add_aim/$', views.add_aim, name='add_aim'),
+	url(r'^settings/$', views.settings, name='settings')
 ]

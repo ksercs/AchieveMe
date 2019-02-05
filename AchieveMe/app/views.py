@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login, authenticate
 from .forms import SignupForm
+from .forms import SettingForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -17,6 +18,8 @@ from django.shortcuts import render_to_response
 
 from .forms import AimForm
 
+from .models import Setting
+
 
 def index(request):
     return render(request, 'index.html')
@@ -28,6 +31,9 @@ def signup(request):
             user = form.save(commit=False)
             user.is_active = False
             user.save()
+            setting = Settings(UserLogin=request.user.username)
+            setting.is_active = False
+            setting.save()
             current_site = get_current_site(request)
             mail_subject = 'Активация аккаунта - AchieveMe'
             message = render_to_string('acc_active_email.html', {
@@ -58,6 +64,9 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
+        setting = Settings.object.get(UserLogin=request.user.username)
+        setting.is_active = True
+        setting.save()
         login(request, user)
         return render(request, 'activation_complete.html')
     else:
@@ -75,4 +84,16 @@ def add_aim(request):
         form = AimForm()
 
     return render(request, 'add_aim.html', {'form': form})
+
+
+def settings(request):
+    if request.method == 'POST':
+        form = SettingsForm(request.POST)
+        if form.is_valid():
+            setting = form.save(commit=False)
+            setting.save()
+    else:
+        form = SettingsForm()
+    return render(request, 'settings.html', {'form': form})
+
 	

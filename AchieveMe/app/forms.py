@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Aims
+from .models import Setting
 from django.db import models
 
 class SignupForm(UserCreationForm):
@@ -22,12 +23,19 @@ class SignupForm(UserCreationForm):
 			
 			
 class AimForm(forms.ModelForm):
-    Name = models.CharField(max_length=120)
+    Name = models.CharField(max_length=120),
+    #User_name = models.CharField(max_length=120)
     class Meta:
         model = Aims
-        fields = ('Name', )
-	
+        fields = ('Name',)
+
+class SettingForm(forms.ModelForm):
+    class Meta:
+        model = Setting
+        fields = ('Gmt', 'is_notification_to_email')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['Name'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Название цели', 'maxlength': '15'})
+        self.fields['Gmt'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Часовой пояс'})
+        self.fields['is_notification_to_email'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Высылать уведомления'})
