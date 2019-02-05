@@ -15,7 +15,11 @@ urlpatterns = [
         views.activate, name='activate'),
 		
 	url(r'^accounts/profile/$', views.profile_redirect, name='url_redirect'),
-	url(r'^add_aim/$', views.add_aim, name='add_aim'),
+	url(r'^add_list/$', views.add_list, name='add_list'),
+    url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/(?P<aimid>\d+)$', views.AimDeepView, name='deep_aim'),
+    url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/add_aim$',           views.add_aim, name='add_aim'),
+    url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/$',                        views.AimView, name='aim_lists'),
+    url(r'^(?P<username>\w+)/lists/$',                                              views.AimListView, name='lists'),
 	url(r'^settings/$', views.settings, name='settings'),	
 	url(r'^api/(?P<username>\w+)/aims_list/$', views.aims_list)
 ]
