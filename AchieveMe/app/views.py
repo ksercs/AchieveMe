@@ -39,7 +39,7 @@ def signup(request):
             user = form.save(commit=False)
             user.is_active = False
             user.save()
-            setting = Setting(UserLogin=request.user.username)
+            setting = Setting(user_name=request.user.username)
             setting.is_active = False
             setting.save()
             current_site = get_current_site(request)
