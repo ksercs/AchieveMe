@@ -45,6 +45,24 @@ body, html{
     text-align: center;
   }
 
+  .btn-primary {
+    color: #fff;
+    background-color: #e94c6f;
+    border-color: #e94c6f; 
+  }
+
+
+  button.btn.btn-primary a, a:hover{
+    color: #e94c6f;
+  }
+
+  .btn-primary>a {
+    background-color: #e94c6f;
+    color: #e94c6f;
+  }
+
+
+
   .container {
     padding-right: 200px;
     padding-left: 120px;
