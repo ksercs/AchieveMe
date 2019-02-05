@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
+#from django.contrib.auth.base_user.AbstractBaseUser import check_password
+from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login, authenticate
 from .forms import SignupForm
@@ -25,6 +27,12 @@ from .models import Setting
 from django.http import JsonResponse
 import json
 
+def validate_login_passw(request):
+    Username = request.META['HTTP_USERNAME']
+    Password = request.META['HTTP_PASSWORD']
+    user = User.objects.get(username=Username);
+    return JsonResponse({'valid' : user.check_password(Password)})
+    
 def aims_list(request, username):
     response = serializers.serialize('json', Aims.objects.filter(User_name=username), fields=('Name'), ensure_ascii=False, indent=2)
     return HttpResponse(response, content_type='application/json')
