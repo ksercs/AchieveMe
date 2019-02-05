@@ -1,6 +1,6 @@
 package com.example.achieveme.remote;
 
-import com.example.achieveme.Model;
+import com.example.achieveme.model.Model;
 
 import java.util.List;
 

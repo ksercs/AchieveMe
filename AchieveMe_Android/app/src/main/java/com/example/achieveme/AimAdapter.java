@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.example.achieveme.model.Model;
+
 import java.util.List;
 
 public class AimAdapter extends ArrayAdapter {

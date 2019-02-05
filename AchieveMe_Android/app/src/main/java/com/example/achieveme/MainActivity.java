@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.achieveme.model.Model;
 import com.example.achieveme.remote.AimsListService;
 import com.example.achieveme.remote.ApiUtils;
 
