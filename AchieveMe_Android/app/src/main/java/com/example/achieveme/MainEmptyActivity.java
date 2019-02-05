@@ -15,7 +15,7 @@ public class MainEmptyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent activityIntent;
-        if (getPreferences(MODE_PRIVATE).getString("username", null) != null) {
+        if (getPreferences(MODE_PRIVATE).contains(LoginActivity.EXTRA_USERNAME)) {
             activityIntent = new Intent(MainEmptyActivity.this, MainActivity.class);
         } else {
             activityIntent = new Intent(MainEmptyActivity.this, LoginActivity.class);

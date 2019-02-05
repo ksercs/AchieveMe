@@ -27,7 +27,7 @@ public class DisplayMessageActivity extends AppCompatActivity {
         final ListView listView = findViewById(R.id.listView);
 
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://10.23.74.11:8000/api/")
+                .baseUrl("http://10.23.74.12:8000/")
                 .addConverterFactory(GsonConverterFactory.create());
 
         Retrofit retrofit = builder.build();
