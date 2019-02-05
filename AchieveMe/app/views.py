@@ -99,7 +99,7 @@ def add_aim(request):
 
 def settings(request):
     if request.method == 'POST':
-        form = SettingsForm(request.POST)
+        form = SettingForm(request.POST)
         if form.is_valid():
             setting = form.save(commit=False)
             setting.save()
