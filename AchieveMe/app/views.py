@@ -104,7 +104,7 @@ def settings(request):
             setting = form.save(commit=False)
             setting.save()
     else:
-        form = SettingsForm()
+        form = SettingForm()
     return render(request, 'settings.html', {'form': form})
 
 	
