@@ -26,9 +26,8 @@ from django.http import JsonResponse
 import json
 
 def aims_list(request, username):
-    json_serializer = serializers.get_serializer("json")()
-    response =  json_serializer.serialize(Aims.objects.filter(User_name=username), ensure_ascii=False, indent=2)
-    return HttpResponse(response)
+    response = serializers.serialize('json', Aims.objects.filter(User_name=username), fields=('Name'), ensure_ascii=False, indent=2)
+    return HttpResponse(response, content_type='application/json')
 
 def index(request):
     return render(request, 'index.html')
