@@ -4,4 +4,8 @@
 /AchieveMe/db.sqlite3
 /AchieveMe/app/migrations
 *.pyc
-*.sqlite3
+db.sqlite3
+/static
+.DS_Store
+*~
+__pycache__
