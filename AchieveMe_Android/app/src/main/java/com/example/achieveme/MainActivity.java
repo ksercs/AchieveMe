@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String username = getIntent().getStringExtra(LoginActivity.EXTRA_USERNAME);
     }
 
     /** Called when the user taps the Send button */
