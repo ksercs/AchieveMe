@@ -1,4 +1,4 @@
-body,html{
+body, html{
     height: 100%;
   }
 
@@ -33,7 +33,7 @@ body,html{
   }
 
   .navbar-inverse .navbar-nav>li>a:hover {
-    background-color: #e94c6f ;
+    background-color: #e94c6f;
   }
 
   .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
@@ -58,6 +58,26 @@ body,html{
     border-color: #42218E;
   }
 
+  .clear {
+    clear: both;
+    height: 63px;
+  }
+
+  .wrapper {
+    min-height: 100%;
+  }
+
+  footer {
+    color : black;
+  }
+
+  footer a {
+    color : black;
+  }
+
+  footer a:hover {
+    color : #e94c6f;
+  }
 
  @media (min-width: 765px) {
 
