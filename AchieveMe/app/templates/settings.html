@@ -3,7 +3,7 @@
 {% load static %}
 {% block content %}
 <div class="col-sm-4"></div>
-<div class="col-sm-4" style="padding: 1.5rem; border-width: .2rem; text-align: center;">
+<div class="col-sm-4" style="padding: 2.5rem; border-width: .2rem; text-align: center;">
 <form action="" method="post">
     {% csrf_token %}
 	<div class="form-group">
@@ -11,7 +11,7 @@
       		{{ form.Gmt }}
   		</div>
 	</div>
-	<div class="text-left">
+	<div class="text-left" style="text-align: center;">
 		<label>Уведомление</label>
 		<div class="form-group col-md-1">
       		{{ form.is_notification_to_email }}

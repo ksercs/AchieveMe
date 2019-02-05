@@ -44,4 +44,4 @@ class SettingForm(forms.ModelForm):
         self.fields['Gmt'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Часовой пояс'})
         self.fields['is_notification_to_email'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Высылать уведомления'})
+            {'class': 'form-control', 'placeholder': 'Высылать уведомления', 'style' : 'width:20px;height:20px;'})

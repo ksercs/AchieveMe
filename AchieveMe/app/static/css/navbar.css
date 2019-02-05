@@ -2,11 +2,18 @@ body, html{
     height: 100%;
   }
 
+
+
   nav.sidebar, .main{
     -webkit-transition: margin 200ms ease-out;
       -moz-transition: margin 200ms ease-out;
       -o-transition: margin 200ms ease-out;
       transition: margin 200ms ease-out;
+  }
+
+  .glyphicon {
+    padding-left: 5px;
+    font-family: 'Glyphicons Halflings';
   }
 
   .main{
@@ -19,6 +26,7 @@ body, html{
   }
 
   .header h1 {
+    font-family: Telugu MN;
     letter-spacing: 3px;
     font-size: 300%;
   }
@@ -26,14 +34,19 @@ body, html{
   .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
     color: white;
     background-color: #e94c6f;
+    font-family: Tahoma;
+    border-radius: 3px;
   }
 
   .navbar-inverse .navbar-nav>li>a {
+    font-family: Tahoma;
     color: white;
   }
 
   .navbar-inverse .navbar-nav>li>a:hover {
+    border-radius: 3px;
     background-color: #e94c6f;
+    font-family: Tahoma;
   }
 
   .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
