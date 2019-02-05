@@ -2,9 +2,9 @@ package com.example.achieveme;
 
 public class Aim {
 
-    private String Name;
+    private String name;
 
     public String getName() {
-        return Name;
+        return name;
     }
 }
