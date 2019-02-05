@@ -40,7 +40,6 @@ def signup(request):
             user.is_active = False
             user.save()
             setting = Setting(user_name=request.user.username)
-            setting.is_active = False
             setting.save()
             current_site = get_current_site(request)
             mail_subject = 'Активация аккаунта - AchieveMe'
@@ -66,15 +65,12 @@ def profile_redirect(request):
 def activate(request, uidb64, token):
     try:
         uid = force_text(urlsafe_base64_decode(uidb64))
-        user = User.objects.get(pk=uid)
+        user = User.objects.get(pk = uid)
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        setting = Setting.object.get(UserLogin=request.user.username)
-        setting.is_active = True
-        setting.save()
         login(request, user)
         return render(request, 'activation_complete.html')
     else:
@@ -87,7 +83,7 @@ def add_aim(request):
     if request.method == 'POST':
         form = AimForm(request.POST)
         if form.is_valid():
-            profile = form.save(commit=False)
+            profile = form.save(commit = False)
             profile.User_name = request.user.username
             profile.save()
             return HttpResponse('Цель добавлена')
@@ -101,7 +97,7 @@ def settings(request):
     if request.method == 'POST':
         form = SettingForm(request.POST)
         if form.is_valid():
-            setting = form.save(commit=False)
+            setting = form.save(commit = False)
             setting.save()
     else:
         form = SettingForm()
