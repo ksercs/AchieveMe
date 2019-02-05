@@ -33,7 +33,7 @@ def validate_login_passw(request):
     Username = request.META['HTTP_USERNAME']
     Password = request.META['HTTP_PASSWORD']
     user = User.objects.get(username=Username);
-    return JsonResponse({'valid' : str(user.check_password(Password)}))
+    return JsonResponse({'valid' : str(user.check_password(Password))})
     
 def aims_list(request, username):
     response = serializers.serialize('json', Aims.objects.filter(User_name=username), fields=('Name'), ensure_ascii=False, indent=2)
