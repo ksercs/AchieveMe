@@ -25,12 +25,9 @@ import json
 from django.forms.models import model_to_dict
 
 def aims_list(request, username):
- #   return HttpResponse(request, json.dumps(A), content_type='applocation/json')
     json_serializer = serializers.get_serializer("json")()
     response =  json_serializer.serialize(Aims.objects.filter(User_name=username), ensure_ascii=False, indent=2)
     return HttpResponse(response)
-    #fields = map(lambda field:field.name, Aims._model._meta.get_fields())
-    #return HttpResponse(fields)
 
 def index(request):
     return render(request, 'index.html')
