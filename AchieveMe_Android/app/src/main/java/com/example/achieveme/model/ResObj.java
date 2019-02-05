@@ -4,7 +4,7 @@ public class ResObj {
 
     private String valid;
 
-    public String isValid() {
+    public String getValid() {
         return valid;
     }
 }
