@@ -63,11 +63,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<ResObj> call, Response<ResObj> response) {
                 if (response.isSuccessful()) {
                     ResObj resObj = response.body();
-                    if (resObj.getValid().equals("True")) {
+                    if (resObj.isValid()) {
                         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("username", username);
-                        editor.commit();
+                        editor.putString(EXTRA_USERNAME, username);
+                        editor.apply();
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.putExtra(EXTRA_USERNAME, username);
