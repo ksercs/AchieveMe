@@ -9,6 +9,7 @@ urlpatterns = [
     path('', views.index, name='index'),
 	path('', include('django.contrib.auth.urls')),
 	path('profile/', views.profile, name='profile'),
+	path('api/login/', views.validate_login_passw, name='validate'),
 	
 	url(r'^signup/$', views.signup, name='signup'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',

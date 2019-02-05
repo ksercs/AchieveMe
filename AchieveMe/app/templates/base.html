@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  {% block title %}<title>GotoGoal</title>{% endblock %}
+  {% block title %}<title>AchieveMe</title>{% endblock %}
   <meta charset="utf-8">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -84,7 +84,7 @@
 
       <!-- main part -->
       
-            <div style="font-size: 14pt;" class="col-xl-10 col-lg-9 col-md-7 col-sm-6" name="main">
+            <div style="font-size: 14pt;" class="container-fluid" name="main">
             
       {% block content %}{% endblock %}
       </div> 
@@ -93,6 +93,20 @@
 
   </div>
 
+  <div class="wrapper">
+
+    <div class="clear"></div>
+
+  </div>
+
+  <footer>
+      
+    <div class="container">
+      <p class="text-center"> <a href="http://127.0.0.1:8000">AchieveMe.com</a></p>
+
+    </div>
+
+  </footer>
 
 </body>
 </html>
