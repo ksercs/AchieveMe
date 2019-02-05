@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(LoginActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Ошибка соединения", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
                 }
             }
 

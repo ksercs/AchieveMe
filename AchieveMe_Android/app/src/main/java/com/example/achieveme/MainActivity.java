@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.achieveme.model.Model;
 import com.example.achieveme.remote.AimsListService;
 import com.example.achieveme.remote.ApiUtils;
 
@@ -15,7 +16,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +33,17 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<List<Model>>() {
             @Override
             public void onResponse(Call<List<Model>> call, Response<List<Model>> response) {
-                List<Model> aims = response.body();
-                listView.setAdapter(new AimAdapter(MainActivity.this, aims));
+                if (response.isSuccessful()) {
+                    List<Model> aims = response.body();
+                    listView.setAdapter(new AimAdapter(MainActivity.this, aims));
+                } else {
+                    Toast.makeText(MainActivity.this, "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<List<Model>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Ошибка :(", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
