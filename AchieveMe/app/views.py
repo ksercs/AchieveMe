@@ -113,4 +113,5 @@ def settings(request):
         form = SettingForm()
     return render(request, 'settings.html', {'form': form})
 
+
 	

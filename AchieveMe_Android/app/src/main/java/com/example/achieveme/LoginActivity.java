@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editPassw.getText().toString();
 
                 if (validateLogin(username, password)) {
-
+                    doLogin(username, password);
                 }
             }
         });
@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<ResObj> call, Response<ResObj> response) {
                 if (response.isSuccessful()) {
                     ResObj resObj = response.body();
-                    if (resObj.getMessage().equals("True")) {
+                    if (resObj.isValid()) {
                         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString("username", username);
