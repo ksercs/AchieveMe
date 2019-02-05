@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+LANGUAGE_CODE = 'ru-RU'
+USE_I18N = True
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -26,7 +29,6 @@ SECRET_KEY = '-lmtg#pk#2ngm$4_9a5mv0w$j&_5kh@-8qh$hg-5v(@6tv_ils'
 DEBUG = True
 
 ALLOWED_HOSTS = ['10.23.74.11', '127.0.0.1']
-
 
 ACCOUNT_ACTIVATION_DAYS = 7
 AUTH_USER_EMAIL_UNIQUE = True
@@ -89,7 +91,7 @@ WSGI_APPLICATION = 'AchieveMe.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 

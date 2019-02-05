@@ -13,6 +13,52 @@ body,html{
     padding: 10px 10px 0 10px;
   }
 
+  .header a, a:hover {
+    color: #FFFFFF;
+    text-decoration: none;
+  }
+
+  .header h1 {
+    letter-spacing: 3px;
+    font-size: 300%;
+  }
+
+  .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+    color: white;
+    background-color: #e94c6f;
+  }
+
+  .navbar-inverse .navbar-nav>li>a {
+    color: white;
+  }
+
+  .navbar-inverse .navbar-nav>li>a:hover {
+    background-color: #e94c6f ;
+  }
+
+  .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    padding: 1%;
+  }
+
+  .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+    padding: 2%;
+    text-align: center;
+  }
+
+  .container {
+    padding-right: 200px;
+    padding-left: 120px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+
+  .navbar-inverse {
+    background-color: #42218E;
+    border-color: #42218E;
+  }
+
+
  @media (min-width: 765px) {
 
     #id_img{

@@ -16,5 +16,6 @@ urlpatterns = [
 		
 	url(r'^accounts/profile/$', views.profile_redirect, name='url_redirect'),
 	url(r'^add_aim/$', views.add_aim, name='add_aim'),
-	url(r'^settings/$', views.settings, name='settings')
+	url(r'^settings/$', views.settings, name='settings'),	
+	url(r'^api/(?P<username>\w+)/aims_list/$', views.aims_list)
 ]

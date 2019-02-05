@@ -29,6 +29,12 @@ class AimForm(forms.ModelForm):
         model = Aims
         fields = ('Name',)
 
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['Name'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Название цели', 'maxlength': '120'})
+
 class SettingForm(forms.ModelForm):
     class Meta:
         model = Setting
