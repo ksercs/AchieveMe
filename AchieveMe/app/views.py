@@ -39,7 +39,7 @@ def signup(request):
             user = form.save(commit=False)
             user.is_active = False
             user.save()
-            setting = Settings(UserLogin=request.user.username)
+            setting = Setting(UserLogin=request.user.username)
             setting.is_active = False
             setting.save()
             current_site = get_current_site(request)
@@ -72,7 +72,7 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        setting = Settings.object.get(UserLogin=request.user.username)
+        setting = Setting.object.get(UserLogin=request.user.username)
         setting.is_active = True
         setting.save()
         login(request, user)
