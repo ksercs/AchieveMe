@@ -28,6 +28,8 @@ from django.http import JsonResponse
 import json
 
 def validate_login_passw(request):
+    if 'HTTP_USERNAME' not in request.META or 'HTTP_PASSWORD' not in request.META:
+        return HttpResponse('This is API page for validating username-password pairs')
     Username = request.META['HTTP_USERNAME']
     Password = request.META['HTTP_PASSWORD']
     user = User.objects.get(username=Username);
