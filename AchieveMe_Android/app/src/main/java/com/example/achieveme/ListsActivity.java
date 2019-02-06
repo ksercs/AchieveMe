@@ -24,6 +24,8 @@ import retrofit2.Response;
 public class ListsActivity extends AppCompatActivity {
 
     public static final String LISTID = "com.example.achieveme.LISTID";
+    public static final String LISTNAME = "com.example.achieveme.LISTNAME";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +69,7 @@ public class ListsActivity extends AppCompatActivity {
                                     long id) {
                 Intent intent = new Intent(ListsActivity.this, AimsActivity.class);
                 intent.putExtra(LISTID, (Integer) itemClicked.getTag());
+                intent.putExtra(LISTNAME, ((TextView) itemClicked).getText());
                 startActivity(intent);
             }
         });
