@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
+from django.contrib.auth.models import User
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth import login, authenticate
 from .forms import SignupForm
@@ -16,17 +17,32 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import render_to_response
 
-from .forms import AimForm
-from .models import Aims
+from .forms import AimForm, ListForm
 from django.core import serializers	
 
-from .models import Setting
+from .models import Setting, Aim, List as ListModel
 
 from django.http import JsonResponse
 import json
 
+from django.views.generic.list import ListView
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.shortcuts import render_to_response
+from django.template import RequestContext
+
+def validate_login_passw(request):
+    if 'HTTP_USERNAME' not in request.META or 'HTTP_PASSWORD' not in request.META:
+        return HttpResponse('This is API page for validating username-password pairs')
+    Username = request.META['HTTP_USERNAME']
+    Password = request.META['HTTP_PASSWORD']
+    try:
+        user = User.objects.get(username=Username)
+    except User.DoesNotExist:
+        return JsonResponse({'valid' : False, 'token' : ""})
+    return JsonResponse({'valid' : user.check_password(Password), 'token': user.password})
+    
 def aims_list(request, username):
-    response = serializers.serialize('json', Aims.objects.filter(User_name=username), fields=('Name'), ensure_ascii=False, indent=2)
+    response = serializers.serialize('json', Aim.objects.filter(user_name=username), fields=('name'), ensure_ascii=False, indent=2)
     return HttpResponse(response, content_type='application/json')
 
 def index(request):
@@ -78,20 +94,61 @@ def activate(request, uidb64, token):
 		
 def profile(request):
     return render(request, 'profile.html')
-	
-def add_aim(request):
+
+def add_aim(request, username, listid):
+    attachment = {'form': AimForm()}
     if request.method == 'POST':
         form = AimForm(request.POST)
         if form.is_valid():
-            profile = form.save(commit = False)
-            profile.User_name = request.user.username
-            profile.save()
-            return HttpResponse('Цель добавлена')
+            aim = form.save(commit = False)
+            aim.user_name = username
+            list = ListModel.objects.get(id = listid)
+            aim.list_id= list.id
+            aim.save()
+            attachment['saved'] = True
+            render(request, 'add_aim.html', attachment)
     else:
         form = AimForm()
 
-    return render(request, 'add_aim.html', {'form': form})
+    return render(request, 'add_aim.html', attachment)
+    
+def add_list(request):
+    attachment = {'form': ListForm()}
+    if request.method == 'POST':
+        form = ListForm(request.POST)
+        if form.is_valid():
+            list = form.save(commit = False)
+            list.user_name = request.user.username
+            list.save()
+            attachment['saved'] = True
+            render(request, 'add_list.html', attachment)
+    else:
+        form = ListForm()
 
+    return render(request, 'add_list.html', attachment)
+
+def AimListView(request, username):
+    lists = ListModel.objects.filter(user_name = username)
+    vars = dict(
+        lists = lists,
+        )
+    return render(request, 'lists.html', vars)
+    
+def AimView(request, username, listid):
+    aims = Aim.objects.filter(user_name = username, list_id = listid)
+    list = ListModel.objects.get(id = listid)
+    vars = dict(
+        aims = aims,
+        listname = list.name
+        )
+    return render(request, 'aims.html', vars)
+    
+def AimDeepView(request, username, listid, aimid):
+    list = ListModel.objects.get(id = listid)
+    aims = Aim.objects.all()
+    aim = Aim.objects.get(user_name = username, list_id = listid, id = aimid)
+    var = dict(aim = aim, listname = list.name, name = aim.name)
+    return render(request, 'deep_aim.html', var)
 
 def settings(request):
     if request.method == 'POST':
@@ -102,5 +159,6 @@ def settings(request):
     else:
         form = SettingForm()
     return render(request, 'settings.html', {'form': form})
+
 
 	

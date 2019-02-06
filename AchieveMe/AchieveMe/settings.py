@@ -28,7 +28,7 @@ SECRET_KEY = '-lmtg#pk#2ngm$4_9a5mv0w$j&_5kh@-8qh$hg-5v(@6tv_ils'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.23.74.11', '127.0.0.1']
+ALLOWED_HOSTS = ['10.23.74.11', '127.0.0.1', '192.168.43.208']
 
 ACCOUNT_ACTIVATION_DAYS = 7
 AUTH_USER_EMAIL_UNIQUE = True
@@ -118,9 +118,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -133,3 +133,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')

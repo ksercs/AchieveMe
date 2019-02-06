@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.example.achieveme.model.ResObj;
 import com.example.achieveme.remote.ApiUtils;
-import com.example.achieveme.remote.UserService;
+import com.example.achieveme.remote.LoginService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = editPassw.getText().toString();
 
                 if (validateLogin(username, password)) {
-
+                    doLogin(username, password);
                 }
             }
         });
@@ -56,27 +56,26 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void doLogin(final String username, final String password) {
-        UserService userService = ApiUtils.getUserService();
-        Call<ResObj> call = userService.login(username, password);
+        LoginService loginService = ApiUtils.getLoginService();
+        Call<ResObj> call = loginService.login(username, password);
         call.enqueue(new Callback<ResObj>() {
             @Override
             public void onResponse(Call<ResObj> call, Response<ResObj> response) {
                 if (response.isSuccessful()) {
                     ResObj resObj = response.body();
-                    if (resObj.getMessage().equals("true")) {
-                        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+                    if (resObj.isValid()) {
+                        SharedPreferences sharedPreferences = getSharedPreferences("creds", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString("username", username);
-                        editor.commit();
+                        editor.putString(EXTRA_USERNAME, username);
+                        editor.apply();
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.putExtra(EXTRA_USERNAME, username);
                         startActivity(intent);
                     } else {
                         Toast.makeText(LoginActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(LoginActivity.this, "Ошибка соединения", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Ошибка соединения с сервером", Toast.LENGTH_SHORT).show();
                 }
             }
 

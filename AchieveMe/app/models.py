@@ -1,47 +1,22 @@
 from django.db import models
+from django.utils.timezone import now
 
-class Aims(models.Model):
-    User_name = models.CharField(max_length=120)
-	#Aim_id, # models.IntegerField()
-	#List_id,# = models.IntegerField()
-	#цParrentAim_id,# = models.IntegerField()
-    Name = models.CharField(max_length=120, default='')
-	#Deadline = models.DateTimeField(auto_now_add=True)
-	#IsImportant = models.BooleanField(default=0)
-	#Remind = models.BooleanField(default=0)
-	#TimeToDo = models.IntegerField(default=0)
+class Aim(models.Model):
+    user_name  = models.CharField       (max_length = 120)
+    list_id         = models.IntegerField         (default = -1)
+    parrent_id    = models.IntegerField    (default = -1)
+    name 		  = models.CharField        (max_length = 120, default ='')
+    deadline       = models.DateTimeField(default = now)
+    is_important = models.BooleanField  (default = 0)
+    is_remind     = models.BooleanField  (default = 0)
+    is_made 	   = models.BooleanField  (default = 0)
+    time_to_do   = models.IntegerField    ()
+	
+class List(models.Model):
+	name 	     = models.CharField(max_length = 120)
+	user_name = models.CharField(max_length = 120)
 	
 class Setting(models.Model):
-	user_name = models.CharField(max_length = 20)
+	user_name 				   = models.CharField     (max_length = 20)
 	is_notification_to_email = models.BooleanField(default = True)
-	Gmt = models.IntegerField(default = '+3')
-
-	
-"""
-class User(models.Model):
-	UserLogin = models.CharField(max_length=20)
-	Password = models.CharField(max_length=20)
-
-class Lists(models.Model):
-	ListId = models.IntegerField()
-	UserLogin = models.CharField(max_length=20)
-    
-class Description(models.Model):
-	DescriptionId = models.IntegerField()
-	AimId = models.IntegerField()
-	DescriptionText = models.CharField(max_length=300)
-
-class Comments(models.Model):
-	CommentId = models.IntegerField()
-	AimId = models.IntegerField()
-	CommentText = models.CharField(max_length=300)
-
-class Files(models.Model):
-	FileId = models.IntegerField()
-	DescriptionId = models.IntegerField()
-	CommentId = models.IntegerField()
-
-class Settings(models.Model):
-	UserLogin = models.CharField(max_length=20)
-	IsNotification = models.BooleanField()
-"""
+	Gmt						       = models.IntegerField  (default = '+3')

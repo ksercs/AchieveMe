@@ -1,5 +1,6 @@
 from django.contrib import admin
 
-from .models import Aims
+from .models import Aim, List
 
-admin.site.register(Aims)
+admin.site.register(Aim)
+admin.site.register(List)
