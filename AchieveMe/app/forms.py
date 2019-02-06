@@ -47,7 +47,7 @@ class ListForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Название листа', 'maxlength': '120'})
+            {'class': 'form-control', 'placeholder': 'Название списка', 'maxlength': '120'})
 	
 class SettingForm(forms.ModelForm):
     class Meta:

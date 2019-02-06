@@ -29,7 +29,7 @@
 
      {% for aim in aims %} 
          <div class="row">
-            <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a>
+            <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a> {{aim.deadline}}
          </div>
      {% endfor %}
 
