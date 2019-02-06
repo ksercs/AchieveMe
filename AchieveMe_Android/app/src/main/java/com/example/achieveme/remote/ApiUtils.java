@@ -12,7 +12,11 @@ public class ApiUtils {
         return RetrofitClient.getClient(BASE_URL).create(ListsService.class);
     }
 
-    public static AimsService getAimsService () {
-        return RetrofitClient.getClient(BASE_URL).create(AimsService.class);
+    public static AimsListService getAimsService () {
+        return RetrofitClient.getClient(BASE_URL).create(AimsListService.class);
+    }
+
+    public static AimService getAimService () {
+        return RetrofitClient.getClient(BASE_URL).create(AimService.class);
     }
 }
