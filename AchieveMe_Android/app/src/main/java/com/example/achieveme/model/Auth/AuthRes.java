@@ -1,6 +1,6 @@
-package com.example.achieveme.model;
+package com.example.achieveme.model.Auth;
 
-public class ResObj {
+public class AuthRes {
 
     private boolean correct;
 

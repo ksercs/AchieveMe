@@ -1,6 +1,6 @@
-package com.example.achieveme.model;
+package com.example.achieveme.model.Lists;
 
-public class Aim {
+public class ListFields {
 
     private String name;
 

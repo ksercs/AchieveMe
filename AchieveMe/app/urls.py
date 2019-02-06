@@ -23,9 +23,8 @@ urlpatterns = [
     url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/$',                        views.AimView,        name = 'aims'),
     url(r'^(?P<username>\w+)/lists/$',                                              views.AimListView,   name = 'lists'),
 	url(r'^settings/$', views.settings, name='settings'),	
-
-	url(r'^api/(?P<username>\w+)/aims_list/$', views.api_lists),
-	url(r'^api/(?P<username>\w+)/check_password/$', views.check_password)
+	url(r'^api/(?P<username>\w+)/lists/$', views.api_lists),
+	url(r'^api/(?P<username>\w+)/check_password/$', views.api_check_password)
 ]
 
 if settings.DEBUG:
