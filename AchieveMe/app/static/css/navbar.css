@@ -16,6 +16,10 @@ body, html{
     font-family: 'Glyphicons Halflings';
   }
 
+  .fa-book{
+	padding-left: 7px;
+  }
+
   .main{
     padding: 10px 10px 0 10px;
   }
@@ -73,7 +77,6 @@ body, html{
     background-color: #e94c6f;
     color: #e94c6f;
   }
-
 
 
   .container {

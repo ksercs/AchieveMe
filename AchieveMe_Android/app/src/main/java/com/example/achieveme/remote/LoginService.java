@@ -5,9 +5,10 @@ import com.example.achieveme.model.ResObj;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Path;
 
 public interface LoginService {
 
-    @GET("/api/login/")
-    Call<ResObj> login (@Header("USERNAME") String username, @Header("PASSWORD") String password);
+    @GET("/api/{username}/check_password/")
+    Call<ResObj> login (@Path("USERNAME") String username, @Header("PASSWORD") String password);
 }

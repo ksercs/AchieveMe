@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         AimsListService aimsListService = ApiUtils.getAimsListService();
         String username = getSharedPreferences("creds", MODE_PRIVATE)
-                .getString(LoginActivity.EXTRA_USERNAME, null);
+                .getString(LoginActivity.USERNAME, null);
         Call<List<Model>> call = aimsListService.userAims(username);
 
         call.enqueue(new Callback<List<Model>>() {

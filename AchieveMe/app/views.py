@@ -30,18 +30,23 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-def validate_login_passw(request):
-    if 'HTTP_USERNAME' not in request.META or 'HTTP_PASSWORD' not in request.META:
-        return HttpResponse('This is API page for validating username-password pairs')
-    Username = request.META['HTTP_USERNAME']
-    Password = request.META['HTTP_PASSWORD']
+
+def validate(username, password):
     try:
-        user = User.objects.get(username=Username)
+        user = User.objects.get(username=username)
     except User.DoesNotExist:
-        return JsonResponse({'valid' : False, 'token' : ""})
-    return JsonResponse({'valid' : user.check_password(Password), 'token': user.password})
+        return false
+    return user.check_password(password)
+        
+def check_password(request, username):
+    if 'HTTP_PASSWORD' not in request.META:
+        return HttpResponse('Password is required')
+    password = request.META['HTTP_PASSWORD']
+    return JsonResponse({'correct' : validate(username, password)})
     
-def aims_list(request, username):
+def api_lists(request, username):
+    if 'HTTP_PASSWORD' not in request.META:
+        return HttpResponse('Password is required')
     response = serializers.serialize('json', Aim.objects.filter(user_name=username), fields=('name'), ensure_ascii=False, indent=2)
     return HttpResponse(response, content_type='application/json')
 
@@ -95,43 +100,23 @@ def activate(request, uidb64, token):
 def profile(request):
     return render(request, 'profile.html')
 
-def add_aim(request, username, listid):
-    attachment = {'form': AimForm()}
-    if request.method == 'POST':
-        form = AimForm(request.POST, request.FILES)
-        if form.is_valid():
-            aim = form.save(commit = False)
-            aim.user_name = username
-            list = ListModel.objects.get(id = listid)
-            aim.list_id= list.id
-            aim.save()
-            attachment['saved'] = True
-            render(request, 'add_aim.html', attachment)
-    else:
-        form = AimForm()
-
-    return render(request, 'add_aim.html', attachment)
-    
-def add_list(request):
-    attachment = {'form': ListForm()}
+def AimListView(request, username):
+    lists = ListModel.objects.filter(user_name = username)
+    vars = dict(
+        lists = lists,
+        form = ListForm()
+        )
     if request.method == 'POST':
         form = ListForm(request.POST)
         if form.is_valid():
             list = form.save(commit = False)
             list.user_name = request.user.username
             list.save()
-            attachment['saved'] = True
-            render(request, 'add_list.html', attachment)
+            vars['saved'] = True
+            render(request, 'lists.html', vars)
     else:
         form = ListForm()
-
-    return render(request, 'add_list.html', attachment)
-
-def AimListView(request, username):
-    lists = ListModel.objects.filter(user_name = username)
-    vars = dict(
-        lists = lists,
-        )
+ 
     return render(request, 'lists.html', vars)
     
 def AimView(request, username, listid):
@@ -139,8 +124,23 @@ def AimView(request, username, listid):
     list = ListModel.objects.get(id = listid)
     vars = dict(
         aims = aims,
-        listname = list.name
+        listname = list.name,
+        form = AimForm()
         )
+        
+    if request.method == 'POST':
+        form = AimForm(request.POST)
+        if form.is_valid():
+            aim = form.save(commit = False)
+            aim.user_name = username
+            list = ListModel.objects.get(id = listid)
+            aim.list_id= list.id
+            aim.save()
+            vars['saved'] = True
+            render(request, 'aims.html', vars)
+    else:
+        form = AimForm()
+
     return render(request, 'aims.html', vars)
     
 def AimDeepView(request, username, listid, aimid):

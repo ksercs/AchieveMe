@@ -19,7 +19,8 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static final String EXTRA_USERNAME = "com.example.achieveme.USERNAME";
+    public static final String USERNAME = "com.example.achieveme.USERNAME";
+    public static final String PASSWORD = "com.example.achieveme.PASSWORD";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (resObj.isValid()) {
                         SharedPreferences sharedPreferences = getSharedPreferences("creds", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(EXTRA_USERNAME, username);
+                        editor.putString(USERNAME, username);
                         editor.apply();
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
