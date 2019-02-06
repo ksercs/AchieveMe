@@ -33,9 +33,9 @@ class AimForm(forms.ModelForm):
         self.fields['deadline'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Дата и время', 'maxlength': '120'})
         self.fields['is_important'].widget.attrs.update(
-            {'class': 'special', 'placeholder': 'Важное ли?', 'maxlength': '1'})
+            {'class':'.mark', 'placeholder': 'Важное ли?', 'maxlength': '1'})
         self.fields['is_remind'].widget.attrs.update(
-            {'class': 'special', 'placeholder': 'Нужно напоминание?', 'maxlength': '1'})
+            {'class': 'custom-control-label', 'placeholder': 'Нужно напоминание?', 'maxlength': '1'})
         self.fields['time_to_do'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Сколько времени нужно на выполнение? (в минутах)', 'maxlength': '120'})
         self.fields['image'].widget.attrs.update(

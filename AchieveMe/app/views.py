@@ -129,7 +129,7 @@ def AimView(request, username, listid):
         )
         
     if request.method == 'POST':
-        form = AimForm(request.POST)
+        form = AimForm(request.POST, request.FILES)
         if form.is_valid():
             aim = form.save(commit = False)
             aim.user_name = username
