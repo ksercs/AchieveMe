@@ -1,12 +1,13 @@
 package com.example.achieveme.model.Aims;
 
 import android.content.Context;
-import android.content.Intent;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.achieveme.R;
@@ -34,7 +35,7 @@ public class AimsAdapter extends ArrayAdapter {
                     (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             row = inflater.inflate(R.layout.aim_list_item, parent, false);
         }
-        CheckBox completed = row.findViewById(R.id.isCompleted);
+        final CheckBox completed = row.findViewById(R.id.isCompleted);
         final TextView textView = row.findViewById(R.id.aimNameView);
 
         AimRes item = values.get(position);
@@ -43,6 +44,16 @@ public class AimsAdapter extends ArrayAdapter {
         textView.setText(item.getFields().getName());
         textView.setTag(item.getId());
 
+        completed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                }
+            }
+        });
         return row;
     }
 }
