@@ -30,18 +30,23 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 
-def validate_login_passw(request):
-    if 'HTTP_USERNAME' not in request.META or 'HTTP_PASSWORD' not in request.META:
-        return HttpResponse('This is API page for validating username-password pairs')
-    Username = request.META['HTTP_USERNAME']
-    Password = request.META['HTTP_PASSWORD']
+
+def validate(username, password):
     try:
-        user = User.objects.get(username=Username)
+        user = User.objects.get(username=username)
     except User.DoesNotExist:
-        return JsonResponse({'valid' : False})
-    return JsonResponse({'valid' : user.check_password(Password)})
+        return false
+    return user.check_password(password)
+        
+def check_password(request, username):
+    if 'HTTP_PASSWORD' not in request.META:
+        return HttpResponse('Password is required')
+    password = request.META['HTTP_PASSWORD']
+    return JsonResponse({'correct' : validate(username, password)})
     
-def aims_list(request, username):
+def api_lists(request, username):
+    if 'HTTP_PASSWORD' not in request.META:
+        return HttpResponse('Password is required')
     response = serializers.serialize('json', Aim.objects.filter(user_name=username), fields=('name'), ensure_ascii=False, indent=2)
     return HttpResponse(response, content_type='application/json')
 
