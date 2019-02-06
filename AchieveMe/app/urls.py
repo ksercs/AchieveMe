@@ -9,7 +9,6 @@ urlpatterns = [
     path('', views.index, name='index'),
 	path('', include('django.contrib.auth.urls')),
 	path('profile/', views.profile, name='profile'),
-	path('api/login/', views.validate_login_passw, name='validate'),
 	
 	url(r'^signup/$', views.signup, name='signup'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
@@ -22,5 +21,6 @@ urlpatterns = [
     url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/$',                        views.AimView, name='aim_lists'),
     url(r'^(?P<username>\w+)/lists/$',                                              views.AimListView, name='lists'),
 	url(r'^settings/$', views.settings, name='settings'),	
-	url(r'^api/(?P<username>\w+)/aims_list/$', views.aims_list)
+	url(r'^api/(?P<username>\w+)/aims_list/$', views.api_lists)
+	url(r'^api/(?P<username>\w+)/check_password/$', views.check_password)
 ]
