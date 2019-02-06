@@ -49,7 +49,7 @@ def api_lists(request, username):
         return HttpResponse(status=404)
     
     data = serializers.serialize('json', ListModel.objects.filter(user_name=username),
-                                     fields=('name'), ensure_ascii=False, indent=2)
+                                ensure_ascii=False, indent=2)
     return HttpResponse(data, content_type='application/json')
 
 def api_aims(request, username, listid):
@@ -57,7 +57,7 @@ def api_aims(request, username, listid):
         return HttpResponse(status=404)
     
     data = serializers.serialize('json', Aim.objects.filter(user_name=username, list_id=int(listid)),
-                                     fields=('name'), ensure_ascii=False, indent=2)
+                                 ensure_ascii=False, indent=2)
     return HttpResponse(data, content_type='application/json')
 
 def index(request):

@@ -26,6 +26,7 @@ public class AimsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_aims);
 
         Intent intent = getIntent();
+        setTitle(intent.getStringExtra(ListsActivity.LISTNAME));
         int list_id = intent.getIntExtra(ListsActivity.LISTID, 1);
 
         final ListView listView = findViewById(R.id.aimsListView);
