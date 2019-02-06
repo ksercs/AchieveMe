@@ -2,16 +2,23 @@
 {% load staticfiles %}
 
 {% block content %}
-	<div class="col-sm-5">
+
+	<div class="col-sm-5" style = "text-align:left; float:right;">
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form }}
-                <button type="submit" class="btn btn-primary">Добавить новую цель</button>
+                {% for field in form%}
+                    {{ field.label }}
+                    {{ field }}
+                    {% if field.name == 'is_remind' %}
+                        <br/>
+                    {% endif %}
+                {% endfor%}
+                <br>
+                <button type="submit" class="btn btn-primary">Создать</button>
             </form>
     </div>
     
-    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-    
+    <div class="col-sm-5" style = "text-align:left; float:left;">
     <h1>Цели списка "{{listname}}"</h1>
 
     {% if aims %}
@@ -19,7 +26,7 @@
 
      {% for aim in aims %} 
          <div class="row">
-            <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "7%" height = "7%">
+            <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "12%" height = "12%">
             <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a> {{aim.deadline}}
             <br/><br/>
          </div>
@@ -29,4 +36,5 @@
     {% else %}
       <p>Список пуст :((</p>
     {% endif %}       
+    </div>
 {% endblock %}
