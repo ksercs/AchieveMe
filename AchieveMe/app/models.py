@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.timezone import now
 
+
 class Aim(models.Model):
     user_name  = models.CharField       (max_length = 120)
     list_id         = models.IntegerField     (default = -1)
@@ -11,6 +12,7 @@ class Aim(models.Model):
     is_remind     = models.BooleanField  (default = 0)
     is_made 	   = models.BooleanField  (default = 0)
     time_to_do   = models.IntegerField    ()
+    image = models.ImageField(upload_to='images/', default='images/cat.jpg')
 	
 class List(models.Model):
 	name 	     = models.CharField(max_length = 120)
