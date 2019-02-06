@@ -68,6 +68,12 @@ body, html{
     border-color: #e94c6f; 
   }
 
+  .btn-primary:hover {
+    color: #fff;
+    background-color: #42218E;
+    border-color: #42218E;
+  }
+
 
   button.btn.btn-primary a, a:hover{
     color: #e94c6f;
