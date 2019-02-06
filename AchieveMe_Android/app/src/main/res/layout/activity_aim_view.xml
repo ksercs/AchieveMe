@@ -6,22 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".AimViewActivity">
 
-    <TextView
-        android:id="@+id/deadlineView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/descrView"
-        app:layout_constraintTop_toBottomOf="@+id/avatarView"
-        tools:layout_editor_absoluteX="177dp" />
-
     <ImageView
         android:id="@+id/avatarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/deadlineView"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/deadlineDateView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,14 +20,28 @@
         app:srcCompat="@android:drawable/btn_star_big_on" />
 
     <TextView
-        android:id="@+id/descrView"
+        android:id="@+id/deadlineDateView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deadlineTimeView"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avatarView" />
+
+    <TextView
+        android:id="@+id/deadlineTimeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="TextView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/deadlineDateView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/deadlineView" />
+        app:layout_constraintStart_toEndOf="@+id/deadlineDateView" />
 
 </android.support.constraint.ConstraintLayout>
