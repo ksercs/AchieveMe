@@ -16,6 +16,10 @@ body, html{
     font-family: 'Glyphicons Halflings';
   }
 
+  .fa-book{
+	padding-left: 7px;
+  }
+
   .main{
     padding: 10px 10px 0 10px;
   }
@@ -62,6 +66,12 @@ body, html{
     color: #fff;
     background-color: #e94c6f;
     border-color: #e94c6f; 
+  }
+
+  .btn-primary:hover {
+    color: #fff;
+    background-color: #42218E;
+    border-color: #42218E;
   }
 
 

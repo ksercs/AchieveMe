@@ -1,6 +1,28 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block content %}
+   {% if saved %}
+        <div style="padding-left: 20px;">
+            <div class="form-group col" role="alert">
+                Цель добавлена
+            </div>
+        </div>
+	{% endif %}
+	<div class="col-sm-5">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% for field in form %}
+                    {%if field != label%}
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Добавить новую цель</button>
+            </form>
+    </div>
+    
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    
     <h1>Цели списка "{{listname}}"</h1>
 
     {% if aims %}
@@ -8,7 +30,9 @@
 
      {% for aim in aims %} 
          <div class="row">
-            <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a>
+            <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "7%" height = "7%">
+            <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a> {{aim.deadline}}
+            <br/><br/>
          </div>
      {% endfor %}
 

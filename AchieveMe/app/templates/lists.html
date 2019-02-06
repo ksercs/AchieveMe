@@ -1,8 +1,28 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Списки</h1>
-
+    {% if saved %}
+        <div style="padding-left: 20px;">
+            <div class="form-group col" role="alert">
+                Список создан
+            </div>
+        </div>
+	{% endif %}
+	<div class="col-sm-5">
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    {%if field != label%}
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Создать</button>
+            </form>
+    </div>
+    
+    <br/><br/><br/>
+    
+    <div ><h1>Списки</h1></div>
     {% if lists %}
     <ul>
 
@@ -15,5 +35,5 @@
     </ul>
     {% else %}
       <p>Списков нету :((</p>
-    {% endif %}       
-{% endblock %}
+    {% endif %}      
+{% endblock %} 

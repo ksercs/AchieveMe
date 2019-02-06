@@ -66,8 +66,8 @@
             {% endif %}
           </ul>
         </li>
-        {% if user.is_authenticated %}     
-        <li ><a href="{% url 'add_list' %}">Списки<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a></li>
+        {% if user.is_authenticated %}
+        <li ><a href="{% url 'lists' username=user.username %}">Списки<span style="font-size:16px;" class="fa fa-book"></span></a></li>
         <li ><a href="{% url 'settings' %}">Настройки<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a></li>
         {% endif %}
       </ul>

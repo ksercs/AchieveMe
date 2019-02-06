@@ -1,8 +1,12 @@
 from django.urls import include, path
 from django.conf.urls import url
 
+from django.conf.urls.static import static
+from django.conf import settings
+
 from . import views
 
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.http import HttpResponsePermanentRedirect
 
 urlpatterns = [
@@ -15,12 +19,16 @@ urlpatterns = [
         views.activate, name='activate'),
 		
 	url(r'^accounts/profile/$', views.profile_redirect, name='url_redirect'),
-	url(r'^add_list/$', views.add_list, name='add_list'),
-    url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/(?P<aimid>\d+)$', views.AimDeepView, name='deep_aim'),
-    url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/add_aim$',           views.add_aim, name='add_aim'),
-    url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/$',                        views.AimView, name='aim_lists'),
-    url(r'^(?P<username>\w+)/lists/$',                                              views.AimListView, name='lists'),
+    url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/(?P<aimid>\d+)$', views.AimDeepView, name = 'deep_aim'),
+    url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/$',                        views.AimView,        name = 'aims'),
+    url(r'^(?P<username>\w+)/lists/$',                                              views.AimListView,   name = 'lists'),
 	url(r'^settings/$', views.settings, name='settings'),	
 	url(r'^api/(?P<username>\w+)/lists/$', views.api_lists),
 	url(r'^api/(?P<username>\w+)/check_password/$', views.api_check_password)
 ]
+
+if settings.DEBUG:
+    if settings.MEDIA_ROOT:
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += staticfiles_urlpatterns()
