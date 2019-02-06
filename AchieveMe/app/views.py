@@ -60,6 +60,18 @@ def api_aims(request, username, listid):
                                  ensure_ascii=False, indent=2)
     return HttpResponse(data, content_type='application/json')
 
+def api_aim(request, username, listid, aimid):
+    if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
+        return HttpResponse(status=404)
+    
+    try:
+        aim = Aim.objects.get(pk=aimid)
+    except Aim.DoesNotExist:
+        return HttpResponse(status=404)
+            
+    data = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)
+    return HttpResponse(data[2:-2], content_type='application/json')
+
 def index(request):
     return render(request, 'index.html')
 	

@@ -19,7 +19,6 @@
                 <div>
                     {% if lists %}
                     <ul>
-
                      {% for list in lists %} 
                          <div class="row">
                             <a href="{{ list.get_absolute_url }}{{list.id}}">{{ list.name }}</a>
