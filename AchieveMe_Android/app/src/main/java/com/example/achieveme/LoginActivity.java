@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.achieveme.model.ResObj;
+import com.example.achieveme.model.Auth.AuthRes;
 import com.example.achieveme.remote.ApiUtils;
 import com.example.achieveme.remote.LoginService;
 
@@ -58,13 +58,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void doLogin(final String username, final String password) {
         LoginService loginService = ApiUtils.getLoginService();
-        Call<ResObj> call = loginService.login(username, password);
-        call.enqueue(new Callback<ResObj>() {
+        Call<AuthRes> call = loginService.login(username, password);
+        call.enqueue(new Callback<AuthRes>() {
             @Override
-            public void onResponse(Call<ResObj> call, Response<ResObj> response) {
+            public void onResponse(Call<AuthRes> call, Response<AuthRes> response) {
                 if (response.isSuccessful()) {
-                    ResObj resObj = response.body();
-                    if (resObj.isCorrect()) {
+                    AuthRes authRes = response.body();
+                    if (authRes.isCorrect()) {
                         SharedPreferences sharedPreferences = getSharedPreferences("creds", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString(USERNAME, username);
@@ -82,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResObj> call, Throwable t) {
+            public void onFailure(Call<AuthRes> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

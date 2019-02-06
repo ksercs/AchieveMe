@@ -8,7 +8,7 @@ public class ApiUtils {
         return RetrofitClient.getClient(BASE_URL).create(LoginService.class);
     }
 
-    public static AimsListService getAimsListService () {
-        return RetrofitClient.getClient(BASE_URL).create(AimsListService.class);
+    public static ListsService getAimsListService () {
+        return RetrofitClient.getClient(BASE_URL).create(ListsService.class);
     }
 }

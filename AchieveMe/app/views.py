@@ -45,11 +45,12 @@ def api_check_password(request, username):
     return JsonResponse({'correct' : validate(username, password)})
     
 def api_lists(request, username):
-    if 'HTTP_PASSWORD' not in request.META:
-        return HttpResponse('Password is required')
-    response = serializers.serialize('json', List.objects.filter(user_name=username),
+    if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
+        return HttpResponse(status=404)
+    
+    data = serializers.serialize('json', ListModel.objects.filter(user_name=username),
                                      fields=('name'), ensure_ascii=False, indent=2)
-    return HttpResponse(response, content_type='application/json')
+    return HttpResponse(data, content_type='application/json')
 
 def index(request):
     return render(request, 'index.html')
