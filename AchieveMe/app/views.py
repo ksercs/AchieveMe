@@ -162,6 +162,7 @@ def AimDeepView(request, username, listid, aimid):
     aims = Aim.objects.all()
     aim = Aim.objects.get(user_name = username, list_id = listid, id = aimid)
     var = dict(aim = aim, listname = list.name, name = aim.name)
+    
     return render(request, 'deep_aim.html', var)
 
 def settings(request):

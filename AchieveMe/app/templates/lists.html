@@ -1,46 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="wrapper">
-    <div class="container">
-        <div class="row">   
-        	<div class="col-lg-3">
-                    <form method="POST">
-                        {% csrf_token %}
-                        {% for field in form %}
-                            {%if field != label%}
-                                {{ field }}
-                            {% endif %}
-                        {% endfor %}
-                        <button type="submit" class="btn btn-primary">Создать</button>
-                    </form>
-            </div>
-            
-            <div class="col-lg-9">
+<div style = "float:left;padding-left:30px;">
+    <div class="row"> 
 
-            <h2>Списки</h2>
-            <hr>
-            <div class="row">
-                <div class="goals col-lg-3 col-md-3 col-sm-3 col-xs-6">
-                    <div class="goals">
-                        {% if lists %}
-                        <ul>
+        <h1>Списки:</h1>
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        {%if field != label%}
+                            {{ field }}
+                        {% endif %}
+                    {% endfor %}
+                </form>
+        
+        <div class="row" style = "line-height:30px;">
+            <div>
+                <div>
+                    {% if lists %}
+                    <ul>
 
-                         {% for list in lists %} 
-                             <div class="row">
-                                <img src="imagestar/star.png" alt="цель">
-                                <a href="{{ list.get_absolute_url }}{{list.id}}">{{ list.name }}</a>
-                             </div>
-                         {% endfor %}
-                        </ul>
-                        {% else %}
-                          <p>Списков нету :((</p>
-                        {% endif %}      
-                    </div>
+                     {% for list in lists %} 
+                         <div class="row">
+                            <a href="{{ list.get_absolute_url }}{{list.id}}">{{ list.name }}</a>
+                         </div>
+                     {% endfor %}
+                    </ul>
+                    {% else %}
+                      <p>Списков нет :(</p>
+                    {% endif %}      
                 </div>
-            </div>
             </div>
         </div>
     </div>
-</div>  
+</div>
+
 {% endblock %} 

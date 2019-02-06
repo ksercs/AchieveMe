@@ -2,6 +2,11 @@
 
 {% block content %}
     <h1>{{ listname }}</h1>
+    <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "12%" height = "12%">
     <h2>{{ name }}</h2>
+    
+    Дедлайн: {{aim.deadline}}
+    <br/>
+    Время на выполнение: {{aim.time_to_do}}
 
 {% endblock %}
