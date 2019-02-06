@@ -11,6 +11,6 @@ import retrofit2.http.Path;
 
 public interface ListsService {
 
-    @GET("/api/{username}/aims_list/")
+    @GET("/api/{username}/lists/")
     Call<List<ListRes>> userAims(@Path("username") String username, @Header("PASSWORD") String password);
 }

@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString(PASSWORD, password);
                         editor.apply();
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, ListsActivity.class);
                         startActivity(intent);
                     } else {
                         Toast.makeText(LoginActivity.this, "Неверный логин или пароль", Toast.LENGTH_SHORT).show();
