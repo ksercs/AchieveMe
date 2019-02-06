@@ -38,7 +38,7 @@ def validate(username, password):
         return false
     return user.check_password(password)
         
-def check_password(request, username):
+def api_check_password(request, username):
     if 'HTTP_PASSWORD' not in request.META:
         return HttpResponse('Password is required')
     password = request.META['HTTP_PASSWORD']
@@ -47,7 +47,8 @@ def check_password(request, username):
 def api_lists(request, username):
     if 'HTTP_PASSWORD' not in request.META:
         return HttpResponse('Password is required')
-    response = serializers.serialize('json', Aim.objects.filter(user_name=username), fields=('name'), ensure_ascii=False, indent=2)
+    response = serializers.serialize('json', List.objects.filter(user_name=username),
+                                     fields=('name'), ensure_ascii=False, indent=2)
     return HttpResponse(response, content_type='application/json')
 
 def index(request):

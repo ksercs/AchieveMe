@@ -64,10 +64,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<ResObj> call, Response<ResObj> response) {
                 if (response.isSuccessful()) {
                     ResObj resObj = response.body();
-                    if (resObj.isValid()) {
+                    if (resObj.isCorrect()) {
                         SharedPreferences sharedPreferences = getSharedPreferences("creds", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString(USERNAME, username);
+                        editor.putString(PASSWORD, password);
                         editor.apply();
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

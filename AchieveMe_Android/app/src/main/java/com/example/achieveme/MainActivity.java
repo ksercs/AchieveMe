@@ -1,5 +1,6 @@
 package com.example.achieveme;
 
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -26,9 +27,11 @@ public class MainActivity extends AppCompatActivity {
         final ListView listView = findViewById(R.id.listView);
 
         AimsListService aimsListService = ApiUtils.getAimsListService();
-        String username = getSharedPreferences("creds", MODE_PRIVATE)
-                .getString(LoginActivity.USERNAME, null);
-        Call<List<Model>> call = aimsListService.userAims(username);
+        SharedPreferences creds = getSharedPreferences("creds", MODE_PRIVATE);
+        String username = creds.getString(LoginActivity.USERNAME, null);
+        String password = creds.getString(LoginActivity.PASSWORD, null);
+
+        Call<List<Model>> call = aimsListService.userAims(username, password);
 
         call.enqueue(new Callback<List<Model>>() {
             @Override
