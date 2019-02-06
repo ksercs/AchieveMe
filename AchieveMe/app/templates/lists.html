@@ -1,39 +1,47 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if saved %}
-        <div style="padding-left: 20px;">
-            <div class="form-group col" role="alert">
-                Список создан
+<div class="wrapper">
+    <div class="container">
+        <div class="row">   
+        	<div class="col-lg-3">
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            {%if field != label%}
+                                {{ field }}
+                            {% endif %}
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Создать</button>
+                    </form>
+            </div>
+            
+            <div class="col-lg-9">
+
+            <h2>Списки</h2>
+            <hr>
+            <div class="row">
+                <div class="goals col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                    <div class="goals">
+                        {% if lists %}
+                        <ul>
+
+                         {% for list in lists %} 
+                             <div class="row">
+                                <img src="app/imagestar/star.png" alt="цель">
+                                <a href="{{ list.get_absolute_url }}{{list.id}}">{{ list.name }}</a>
+                             </div>
+                         {% endfor %}
+
+                        </ul>
+                        {% else %}
+                          <p>Списков нету :((</p>
+                        {% endif %}      
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
-	{% endif %}
-	<div class="col-sm-5">
-            <form method="POST">
-                {% csrf_token %}
-                {% for field in form %}
-                    {%if field != label%}
-                        {{ field }}
-                    {% endif %}
-                {% endfor %}
-                <button type="submit" class="btn btn-primary">Создать</button>
-            </form>
     </div>
-    
-    <br/><br/><br/>
-    
-    <div ><h1>Списки</h1></div>
-    {% if lists %}
-    <ul>
-
-     {% for list in lists %} 
-         <div class="row">
-            <a href="{{ list.get_absolute_url }}{{list.id}}">{{ list.name }}</a>
-         </div>
-     {% endfor %}
-
-    </ul>
-    {% else %}
-      <p>Списков нету :((</p>
-    {% endif %}      
+</div>
 {% endblock %} 
