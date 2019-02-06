@@ -1,4 +1,4 @@
-package com.example.achieveme;
+package com.example.achieveme.model.Lists;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,12 +11,12 @@ import com.example.achieveme.model.Lists.ListRes;
 
 import java.util.List;
 
-public class AimAdapter extends ArrayAdapter {
+public class ListsAdapter extends ArrayAdapter {
 
     private Context context;
     private List<ListRes> values;
 
-    public AimAdapter(Context context, List<ListRes> values) {
+    public ListsAdapter(Context context, List<ListRes> values) {
         super(context, android.R.layout.simple_list_item_1, values);
 
         this.context = context;
@@ -39,7 +39,7 @@ public class AimAdapter extends ArrayAdapter {
 
         String message = item.getFields().getName();
         textView.setText(message);
-
+        textView.setTag(item.getId());
         return row;
     }
 }
