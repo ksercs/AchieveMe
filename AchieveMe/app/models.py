@@ -3,7 +3,7 @@ from django.utils.timezone import now
 
 class Aim(models.Model):
     user_name  = models.CharField       (max_length = 120)
-    list_id         = models.IntegerField         (default = -1)
+    list_id         = models.IntegerField     (default = -1)
     parrent_id    = models.IntegerField    (default = -1)
     name 		  = models.CharField        (max_length = 120, default ='')
     deadline       = models.DateTimeField(default = now)

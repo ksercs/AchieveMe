@@ -95,8 +95,34 @@ def activate(request, uidb64, token):
 def profile(request):
     return render(request, 'profile.html')
 
-def add_aim(request, username, listid):
-    attachment = {'form': AimForm()}
+def AimListView(request, username):
+    lists = ListModel.objects.filter(user_name = username)
+    vars = dict(
+        lists = lists,
+        form = ListForm()
+        )
+    if request.method == 'POST':
+        form = ListForm(request.POST)
+        if form.is_valid():
+            list = form.save(commit = False)
+            list.user_name = request.user.username
+            list.save()
+            vars['saved'] = True
+            render(request, 'lists.html', vars)
+    else:
+        form = ListForm()
+ 
+    return render(request, 'lists.html', vars)
+    
+def AimView(request, username, listid):
+    aims = Aim.objects.filter(user_name = username, list_id = listid)
+    list = ListModel.objects.get(id = listid)
+    vars = dict(
+        aims = aims,
+        listname = list.name,
+        form = AimForm()
+        )
+        
     if request.method == 'POST':
         form = AimForm(request.POST)
         if form.is_valid():
@@ -105,42 +131,11 @@ def add_aim(request, username, listid):
             list = ListModel.objects.get(id = listid)
             aim.list_id= list.id
             aim.save()
-            attachment['saved'] = True
-            render(request, 'add_aim.html', attachment)
+            vars['saved'] = True
+            render(request, 'aims.html', vars)
     else:
         form = AimForm()
 
-    return render(request, 'add_aim.html', attachment)
-    
-def add_list(request):
-    attachment = {'form': ListForm()}
-    if request.method == 'POST':
-        form = ListForm(request.POST)
-        if form.is_valid():
-            list = form.save(commit = False)
-            list.user_name = request.user.username
-            list.save()
-            attachment['saved'] = True
-            render(request, 'add_list.html', attachment)
-    else:
-        form = ListForm()
-
-    return render(request, 'add_list.html', attachment)
-
-def AimListView(request, username):
-    lists = ListModel.objects.filter(user_name = username)
-    vars = dict(
-        lists = lists,
-        )
-    return render(request, 'lists.html', vars)
-    
-def AimView(request, username, listid):
-    aims = Aim.objects.filter(user_name = username, list_id = listid)
-    list = ListModel.objects.get(id = listid)
-    vars = dict(
-        aims = aims,
-        listname = list.name
-        )
     return render(request, 'aims.html', vars)
     
 def AimDeepView(request, username, listid, aimid):

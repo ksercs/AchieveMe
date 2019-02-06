@@ -1,6 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
+   {% if saved %}
+        <div style="padding-left: 20px;">
+            <div class="form-group col" role="alert">
+                Цель добавлена
+            </div>
+        </div>
+	{% endif %}
+	<div class="col-sm-5">
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    {%if field != label%}
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Добавить новую цель</button>
+            </form>
+    </div>
+    
+    <br/><br/><br/><br/><br/><br/><br/><br/>
+    
     <h1>Цели списка "{{listname}}"</h1>
 
     {% if aims %}
