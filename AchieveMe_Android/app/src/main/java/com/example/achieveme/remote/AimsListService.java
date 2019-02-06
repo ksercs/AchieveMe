@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
 
-public interface AimsService {
+public interface AimsListService {
 
     @GET("/api/{username}/{list_id}/")
     Call<List<AimRes>> userAims(@Path("username") String username, @Path("list_id") int list_id,
