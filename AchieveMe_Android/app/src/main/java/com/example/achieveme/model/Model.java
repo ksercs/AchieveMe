@@ -1,4 +1,4 @@
-package com.example.achieveme;
+package com.example.achieveme.model;
 
 public class Model {
 

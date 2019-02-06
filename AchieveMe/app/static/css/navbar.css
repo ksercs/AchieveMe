@@ -2,11 +2,22 @@ body, html{
     height: 100%;
   }
 
+
+
   nav.sidebar, .main{
     -webkit-transition: margin 200ms ease-out;
       -moz-transition: margin 200ms ease-out;
       -o-transition: margin 200ms ease-out;
       transition: margin 200ms ease-out;
+  }
+
+  .glyphicon {
+    padding-left: 5px;
+    font-family: 'Glyphicons Halflings';
+  }
+
+  .fa-book{
+	padding-left: 7px;
   }
 
   .main{
@@ -19,6 +30,7 @@ body, html{
   }
 
   .header h1 {
+    font-family: Telugu MN;
     letter-spacing: 3px;
     font-size: 300%;
   }
@@ -26,14 +38,19 @@ body, html{
   .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
     color: white;
     background-color: #e94c6f;
+    font-family: Tahoma;
+    border-radius: 3px;
   }
 
   .navbar-inverse .navbar-nav>li>a {
+    font-family: Tahoma;
     color: white;
   }
 
   .navbar-inverse .navbar-nav>li>a:hover {
+    border-radius: 3px;
     background-color: #e94c6f;
+    font-family: Tahoma;
   }
 
   .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
@@ -44,6 +61,29 @@ body, html{
     padding: 2%;
     text-align: center;
   }
+
+  .btn-primary {
+    color: #fff;
+    background-color: #e94c6f;
+    border-color: #e94c6f; 
+  }
+
+  .btn-primary:hover {
+    color: #fff;
+    background-color: #42218E;
+    border-color: #42218E;
+  }
+
+
+  button.btn.btn-primary a, a:hover{
+    color: #e94c6f;
+  }
+
+  .btn-primary>a {
+    background-color: #e94c6f;
+    color: #e94c6f;
+  }
+
 
   .container {
     padding-right: 200px;

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  {% block title %}<title>AchieveMe</title>{% endblock %}
+  {% block title %}<title style="font-style: italic;">AchieveMe</title>{% endblock %}
   <meta charset="utf-8">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -67,7 +67,8 @@
           </ul>
         </li>
         {% if user.is_authenticated %}     
-        <li ><a href="{% url 'add_aim' %}">Цели<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a></li>
+        <li ><a href="{% url 'add_list' %}">Списки<span style="font-size:16px;" class="fa fa-book"></span></a></li>
+        <li ><a href="{% url 'settings' %}">Настройки<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a></li>
         {% endif %}
       </ul>
             </div>
@@ -83,7 +84,7 @@
 
       <!-- main part -->
       
-            <div style="font-size: 14pt;" class="col-xl-10 col-lg-9 col-md-7 col-sm-6" name="main">
+            <div style="font-size: 14pt;" class="container-fluid" name="main">
             
       {% block content %}{% endblock %}
       </div> 

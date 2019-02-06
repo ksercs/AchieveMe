@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Цели списка "{{listname}}"</h1>
+
+    {% if aims %}
+    <ul>
+
+     {% for aim in aims %} 
+         <div class="row">
+            <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a>
+         </div>
+     {% endfor %}
+
+    </ul>
+    {% else %}
+      <p>Список пуст :((</p>
+    {% endif %}       
+{% endblock %}

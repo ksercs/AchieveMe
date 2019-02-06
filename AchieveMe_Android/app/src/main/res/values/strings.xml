@@ -2,22 +2,7 @@
     <string name="app_name">AchieveMe</string>
     <string name="edit_message">Enter a message</string>
     <string name="button_send">Send</string>
-
-    <string-array name="cat_names">
-        <item>Рыжик</item>
-        <item>Барсик</item>
-        <item>Мурзик</item>
-        <item>Мурка</item>
-        <item>Васька</item>
-        <item>Томасина</item>
-        <item>Кристина</item>
-        <item>Пушок</item>
-        <item>Дымка</item>
-        <item>Кузя</item>
-        <item>Китти</item>
-        <item>Масяня</item>
-        <item>Симба</item>
-    </string-array>
-
-
+    <string name="edit_username">Username</string>
+    <string name="edit_passw">Password</string>
+    <string name="button_login">login</string>
 </resources>

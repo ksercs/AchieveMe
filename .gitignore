@@ -1,3 +1,8 @@
-/AchieveMe/AchieveMe/__pycache__
-/AchieveMe/AchieveMe/__pycache__
-/AchieveMe/app/__pycache__
+*.DS_Store
+*.sqlite3
+static/
+AchieveMe/app/migrations/*
+AchieveMe/app/__pycache__/*
+AchieveMe/AchieveMe/__pycache__/*
+__pycache__
+*.pyc
