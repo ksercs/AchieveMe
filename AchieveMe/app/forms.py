@@ -46,8 +46,6 @@ class AimForm(forms.ModelForm):
             {'class': 'custom-control-label', 'placeholder': 'Нужно напоминание?', 'maxlength': '200'})
         self.fields['time_to_do'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Сколько времени нужно на выполнение? (в минутах)', 'maxlength': '120'})
-        self.fields['image'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Загрузите изображение', 'maxlength': '120'})
             
 class ListForm(forms.ModelForm):
     class Meta:

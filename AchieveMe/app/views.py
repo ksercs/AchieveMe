@@ -84,6 +84,12 @@ def signup(request):
 
 def profile_redirect(request):
     return HttpResponsePermanentRedirect("/profile/")
+    
+def redirect_to_aim(request, username, listid):
+    return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid)
+    
+def redirect_to_list(request, username):
+    return HttpResponsePermanentRedirect("/"+username+"/lists/")
 
 def activate(request, uidb64, token):
     try:
@@ -114,8 +120,7 @@ def AimListView(request, username):
             list = form.save(commit = False)
             list.user_name = request.user.username
             list.save()
-            vars['saved'] = True
-            render(request, 'lists.html', vars)
+            return HttpResponseRedirect("/"+username+"/lists/red_to_list")
     else:
         form = ListForm()
  
@@ -138,8 +143,7 @@ def AimView(request, username, listid):
             list = ListModel.objects.get(id = listid)
             aim.list_id= list.id
             aim.save()
-            vars['saved'] = True
-            render(request, 'aims.html', vars)
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")
     else:
         form = AimForm()
 
