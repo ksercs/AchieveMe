@@ -23,7 +23,6 @@ urlpatterns = [
     url(r'^(?P<username>\w+)/lists/$',                                              views.AimListView,   name = 'lists'),
 	url(r'^settings/$', views.settings, name='settings'),	
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 	url(r'^api/(?P<username>\w+)/aims_list/$', views.api_lists),
 	url(r'^api/(?P<username>\w+)/check_password/$', views.check_password)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
