@@ -38,8 +38,8 @@ def validate_login_passw(request):
     try:
         user = User.objects.get(username=Username)
     except User.DoesNotExist:
-        return JsonResponse({'valid' : False, 'token' : ""})
-    return JsonResponse({'valid' : user.check_password(Password), 'token': user.password})
+        return JsonResponse({'valid' : False})
+    return JsonResponse({'valid' : user.check_password(Password)})
     
 def aims_list(request, username):
     response = serializers.serialize('json', Aim.objects.filter(user_name=username), fields=('name'), ensure_ascii=False, indent=2)
