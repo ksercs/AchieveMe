@@ -24,7 +24,7 @@ class SignupForm(UserCreationForm):
 class AimForm(forms.ModelForm):
     class Meta:
         model = Aim
-        fields = ('name', 'deadline', 'is_important', 'is_remind', 'time_to_do')
+        fields = ('name', 'deadline', 'is_important', 'is_remind', 'time_to_do', 'image')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -38,12 +38,12 @@ class AimForm(forms.ModelForm):
             {'class': 'form-control', 'placeholder': 'Нужно напоминание?', 'maxlength': '120'})
         self.fields['time_to_do'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Сколько времени нужно на выполнение? (в минутах)', 'maxlength': '120'})
-			
+			  self.fields['image'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Загрузите изображение', 'maxlength': '120'})
 class ListForm(forms.ModelForm):
     class Meta:
         model = List
         fields = ('name',)
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['name'].widget.attrs.update(
