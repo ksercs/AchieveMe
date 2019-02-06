@@ -6,3 +6,5 @@ AchieveMe/app/__pycache__/*
 AchieveMe/AchieveMe/__pycache__/*
 __pycache__
 *.pyc
+*.jpg
+AchieveMe/media/*
