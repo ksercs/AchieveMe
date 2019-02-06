@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block content %}
    {% if saved %}
@@ -20,7 +21,7 @@
             </form>
     </div>
     
-    <br/><br/><br/><br/><br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
     
     <h1>Цели списка "{{listname}}"</h1>
 
@@ -29,7 +30,9 @@
 
      {% for aim in aims %} 
          <div class="row">
+            <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "7%" height = "7%">
             <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a> {{aim.deadline}}
+            <br/><br/>
          </div>
      {% endfor %}
 

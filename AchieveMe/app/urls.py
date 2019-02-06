@@ -6,6 +6,7 @@ from django.conf import settings
 
 from . import views
 
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.http import HttpResponsePermanentRedirect
 
 urlpatterns = [
@@ -25,4 +26,10 @@ urlpatterns = [
 
 	url(r'^api/(?P<username>\w+)/aims_list/$', views.api_lists),
 	url(r'^api/(?P<username>\w+)/check_password/$', views.check_password)
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    if settings.MEDIA_ROOT:
+        urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += staticfiles_urlpatterns()
