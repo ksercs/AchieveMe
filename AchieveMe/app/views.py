@@ -38,17 +38,19 @@ def validate(username, password):
         return false
     return user.check_password(password)
         
-def check_password(request, username):
+def api_check_password(request, username):
     if 'HTTP_PASSWORD' not in request.META:
         return HttpResponse('Password is required')
     password = request.META['HTTP_PASSWORD']
     return JsonResponse({'correct' : validate(username, password)})
     
 def api_lists(request, username):
-    if 'HTTP_PASSWORD' not in request.META:
-        return HttpResponse('Password is required')
-    response = serializers.serialize('json', Aim.objects.filter(user_name=username), fields=('name'), ensure_ascii=False, indent=2)
-    return HttpResponse(response, content_type='application/json')
+    if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
+        return HttpResponse(status=404)
+    
+    data = serializers.serialize('json', ListModel.objects.filter(user_name=username),
+                                     fields=('name'), ensure_ascii=False, indent=2)
+    return HttpResponse(data, content_type='application/json')
 
 def index(request):
     return render(request, 'index.html')
@@ -129,7 +131,7 @@ def AimView(request, username, listid):
         )
         
     if request.method == 'POST':
-        form = AimForm(request.POST)
+        form = AimForm(request.POST, request.FILES)
         if form.is_valid():
             aim = form.save(commit = False)
             aim.user_name = username

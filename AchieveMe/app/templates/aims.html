@@ -2,27 +2,23 @@
 {% load staticfiles %}
 
 {% block content %}
-   {% if saved %}
-        <div style="padding-left: 20px;">
-            <div class="form-group col" role="alert">
-                Цель добавлена
-            </div>
-        </div>
-	{% endif %}
-	<div class="col-sm-5">
-            <form method="POST">
+
+	<div class="col-sm-5" style = "text-align:left; float:right;">
+            <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                {% for field in form %}
-                    {%if field != label%}
-                        {{ field }}
+                {% for field in form%}
+                    {{ field.label }}
+                    {{ field }}
+                    {% if field.name == 'is_remind' %}
+                        <br/>
                     {% endif %}
-                {% endfor %}
-                <button type="submit" class="btn btn-primary">Добавить новую цель</button>
+                {% endfor%}
+                <br>
+                <button type="submit" class="btn btn-primary">Создать</button>
             </form>
     </div>
     
-    <br/><br/><br/><br/><br/><br/><br/><br/><br/>
-    
+    <div class="col-sm-5" style = "text-align:left; float:left;">
     <h1>Цели списка "{{listname}}"</h1>
 
     {% if aims %}
@@ -30,7 +26,7 @@
 
      {% for aim in aims %} 
          <div class="row">
-            <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "7%" height = "7%">
+            <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "12%" height = "12%">
             <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a> {{aim.deadline}}
             <br/><br/>
          </div>
@@ -40,4 +36,5 @@
     {% else %}
       <p>Список пуст :((</p>
     {% endif %}       
+    </div>
 {% endblock %}
