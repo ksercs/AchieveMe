@@ -2,11 +2,45 @@
 {% load staticfiles %}
 
 {% block content %}
+<div style = "float:left;padding-left:30px;">
+    <div class="row"> 
 
-	<div class="col-sm-5" style = "line-height:30   px;padding-top:40px;padding-right:150px;float:right;">
+        <h1>Списки:</h1>
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in formB %}
+                        {%if field != label%}
+                            {{ field }}
+                        {% endif %}
+                    {% endfor %}
+                </form>
+        
+        <div class="row" style = "line-height:30px;">
+            <div>
+                <div>
+                    {% if lists %}
+                    <ul>
+                     {% for list in lists %} 
+                         <div class="row">
+                            <a href="{{ list_link }}{{ list.id }}">{{ list.name }}</a>
+                         </div>
+                     {% endfor %}
+                    </ul>
+                    {% else %}
+                      <p>Списков нет :(</p>
+                    {% endif %}      
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<div  style = "line-height:30px;padding-top:20px;padding-right:30px;float:right;">
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                {% for field in form%}
+                {% for field in formA%}
                     {{ field.label }}
                     {{ field }}
                     {% if field.name == 'is_remind' or field.name == 'is_important' or field.name == 'time_to_do' %}
@@ -18,7 +52,7 @@
             </form>
     </div>
     
-    <div class="col-sm-5" style = "float:left;padding-left:10px;">
+    <div class="col-sm-5" style = "float:left;padding-left:30px;">
     <h1>{{listname}}:</h1>
 
     {% if aims %}
@@ -39,7 +73,9 @@
 
     </ul>
     {% else %}
+    <div style = "padding-left:10px;">
       <p>Список пуст :((</p>
+    </div>
     {% endif %}       
     </div>
 {% endblock %}

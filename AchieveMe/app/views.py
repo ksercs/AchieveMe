@@ -147,12 +147,16 @@ def AimListView(request, username):
     return render(request, 'lists.html', vars)
     
 def AimView(request, username, listid):
+    lists = ListModel.objects.filter(user_name = username)
     aims = Aim.objects.filter(user_name = username, list_id = listid)
     list = ListModel.objects.get(id = listid)
     vars = dict(
+        lists = lists,
         aims = aims,
         listname = list.name,
-        form = AimForm()
+        formA = AimForm(),
+        formB = ListForm(),
+        list_link = "/"+username+"/lists/"
         )
         
     if request.method == 'POST':
