@@ -1,9 +1,10 @@
 package com.example.achieveme;
 
+
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -11,7 +12,7 @@ import android.widget.Toast;
 import com.example.achieveme.model.Aims.AimRes;
 import com.example.achieveme.remote.AimService;
 import com.example.achieveme.remote.ApiUtils;
-import com.example.achieveme.remote.WebImage;
+import com.example.achieveme.remote.AsyncTaskLoadImage;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,12 +22,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AimViewActivity extends AppCompatActivity {
+public class AimViewActivity extends BaseActivity {
+
+    @Override
+    int getContentViewId() {
+        return R.layout.activity_aim_view;
+    }
+
+    @Override
+    int getNavigationMenuItemId() {
+        return R.id.navigation_home;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_aim_view);
 
         Intent intent = getIntent();
         setTitle(intent.getStringExtra(AimsActivity.AIMNAME));
@@ -61,11 +71,8 @@ public class AimViewActivity extends AppCompatActivity {
                     }
 
                     ImageView avatarView = findViewById(R.id.avatarView);
-                    try {
-                        avatarView.setImageDrawable(WebImage.LoadImage("http://i.imgur.com/bIRGzVO.jpg"));
-                    } catch (Throwable t) {
-                        Toast.makeText(AimViewActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
+
+                    new AsyncTaskLoadImage(avatarView).execute(ApiUtils.BASE_URL + "media/" + aim.getFields().getImage());
 
                 } else {
                     SharedPreferences.Editor edit = creds.edit();
@@ -82,5 +89,15 @@ public class AimViewActivity extends AppCompatActivity {
                 Toast.makeText(AimViewActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -59,7 +59,7 @@ def api_aims(request, username, listid):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
         return HttpResponse(status=404)
     
-    data = serializers.serialize('json', Aim.objects.filter(user_name=username, list_id=int(listid)),
+    data = serializers.serialize('json', Aim.objects.filter(user_name=username, list_id=int(listid), parent_id=-1),
                                  ensure_ascii=False, indent=2)
     return HttpResponse(data, content_type='application/json')
 
