@@ -6,17 +6,21 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.achieveme.model.Aims.AimRes;
+import com.example.achieveme.model.Aims.AimsAdapter;
 import com.example.achieveme.remote.AimService;
 import com.example.achieveme.remote.ApiUtils;
 import com.example.achieveme.remote.AsyncTaskLoadImage;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -71,8 +75,13 @@ public class AimViewActivity extends BaseActivity {
                     }
 
                     ImageView avatarView = findViewById(R.id.avatarView);
-
                     new AsyncTaskLoadImage(avatarView).execute(ApiUtils.BASE_URL + "media/" + aim.getFields().getImage());
+
+                    ListView subaimsList = findViewById(R.id.subaimsListView);
+                    aim.getSubaims().orElse(Collections.<AimRes>emptyList());
+                    /*
+                    List<AimRes> subaims = aim.getSubaims().orElse(Collections.<AimRes>emptyList());
+                    subaimsList.setAdapter(new AimsAdapter(AimViewActivity.this, subaims));*/
 
                 } else {
                     SharedPreferences.Editor edit = creds.edit();
