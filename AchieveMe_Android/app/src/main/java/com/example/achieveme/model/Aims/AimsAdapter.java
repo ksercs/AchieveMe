@@ -2,16 +2,26 @@ package com.example.achieveme.model.Aims;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.achieveme.AimViewActivity;
 import com.example.achieveme.R;
+import com.example.achieveme.remote.ApiUtils;
+import com.example.achieveme.remote.WebImage;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class AimsAdapter extends ArrayAdapter {
@@ -37,13 +47,12 @@ public class AimsAdapter extends ArrayAdapter {
         }
         final CheckBox completed = row.findViewById(R.id.isCompleted);
         final TextView textView = row.findViewById(R.id.aimNameView);
+        TextView dateView = row.findViewById(R.id.dateView);
+        ImageView avatarView = row.findViewById(R.id.aimAvatarView);
 
         AimRes item = values.get(position);
 
-        completed.setChecked(item.getFields().isIs_made());
-        textView.setText(item.getFields().getName());
-        textView.setTag(item.getId());
-
+        completed.setChecked(item.getFields().isIs_completed());
         completed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -54,6 +63,27 @@ public class AimsAdapter extends ArrayAdapter {
                 }
             }
         });
+
+        textView.setText(item.getFields().getName());
+        textView.setTag(item.getId());
+
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        final SimpleDateFormat format_date = new SimpleDateFormat("dd-MM-yy");
+        String deadline_s = item.getFields().getDeadline();
+        try {
+            Date deadline_date = format.parse(deadline_s);
+            dateView.setText(format_date.format(deadline_date));
+        } catch (ParseException e) {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        Uri avatar_address = Uri.parse("http://i.imgur.com/bIRGzVO.jpg");
+        avatarView.setImageURI(avatar_address);
+        /*Drawable avatar = WebImage.LoadImage("http://i.imgur.com/bIRGzVO.jpg");
+        if (avatar != null) {
+            avatarView.setImageDrawable(avatar);
+        }*/
+
         return row;
     }
 }
