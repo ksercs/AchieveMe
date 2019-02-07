@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -54,9 +56,12 @@ public class AimViewActivity extends BaseActivity {
         final SimpleDateFormat format_date = new SimpleDateFormat("yyyy-MM-dd");
         final SimpleDateFormat format_time = new SimpleDateFormat("HH:mm:ss");
 
+        final View header = getLayoutInflater().inflate(R.layout.aim_header, null);
+        final ImageView avatarView = header.findViewById(R.id.avatarView);
         //TextView descrView = findViewById(R.id.descrView);
-        final TextView deadlineDateView = findViewById(R.id.deadlineDateView);
-        final TextView deadlineTimeView = findViewById(R.id.deadlineTimeView);
+        final TextView deadlineDateView = header.findViewById(R.id.deadlineDateView);
+        final TextView deadlineTimeView = header.findViewById(R.id.deadlineTimeView);
+        final ListView subaimsList = findViewById(R.id.subaimsListView);
 
         AimService aimService = ApiUtils.getAimService();
         Call<AimRes> call = aimService.aimInfo(username, list_id, aim_id, password);
@@ -75,10 +80,9 @@ public class AimViewActivity extends BaseActivity {
                         Toast.makeText(AimViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
-                    ImageView avatarView = findViewById(R.id.avatarView);
                     new AsyncTaskLoadImage(avatarView).execute(ApiUtils.BASE_URL + "media/" + aim.getFields().getImage());
 
-                    ListView subaimsList = findViewById(R.id.subaimsListView);
+                    subaimsList.addHeaderView(header);
                     List<SubAimRes> subaims = aim.getSubaims();
                     subaimsList.setAdapter(new SubAimsAdapter(AimViewActivity.this, subaims));
 
