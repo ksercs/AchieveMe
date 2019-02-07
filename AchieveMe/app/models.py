@@ -10,7 +10,7 @@ class Aim(models.Model):
     deadline       = models.DateTimeField(default = now)
     is_important = models.BooleanField  (default = 0)
     is_remind     = models.BooleanField  (default = 0)
-    is_made 	   = models.BooleanField  (default = 0)
+    is_completed 	   = models.BooleanField  (default = 0)
     time_to_do   = models.IntegerField    ()
     image = models.ImageField(upload_to='images/', default='images/cat.jpg')
 	

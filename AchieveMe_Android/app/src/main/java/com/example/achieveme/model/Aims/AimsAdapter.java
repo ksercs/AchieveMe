@@ -1,13 +1,16 @@
-package com.example.achieveme.model.Lists;
+package com.example.achieveme.model.Aims;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.example.achieveme.model.Aims.AimRes;
+import com.example.achieveme.R;
 
 import java.util.List;
 
@@ -17,7 +20,7 @@ public class AimsAdapter extends ArrayAdapter {
     private List<AimRes> values;
 
     public AimsAdapter(Context context, List<AimRes> values) {
-        super(context, android.R.layout.simple_list_item_1, values);
+        super(context, R.layout.aim_list_item, values);
 
         this.context = context;
         this.values = values;
@@ -25,21 +28,32 @@ public class AimsAdapter extends ArrayAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
 
+        View row = convertView;
         if (row == null) {
             LayoutInflater inflater =
                     (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            row = inflater.inflate(R.layout.aim_list_item, parent, false);
         }
-
-        TextView textView = row.findViewById(android.R.id.text1);
+        final CheckBox completed = row.findViewById(R.id.isCompleted);
+        final TextView textView = row.findViewById(R.id.aimNameView);
 
         AimRes item = values.get(position);
 
-        String message = item.getFields().getName();
-        textView.setText(message);
+        completed.setChecked(item.getFields().isIs_made());
+        textView.setText(item.getFields().getName());
         textView.setTag(item.getId());
+
+        completed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                }
+            }
+        });
         return row;
     }
 }

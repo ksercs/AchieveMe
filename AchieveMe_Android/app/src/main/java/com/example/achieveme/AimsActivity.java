@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.achieveme.model.Aims.AimRes;
-import com.example.achieveme.model.Lists.AimsAdapter;
+import com.example.achieveme.model.Aims.AimsAdapter;
 import com.example.achieveme.remote.AimsListService;
 import com.example.achieveme.remote.ApiUtils;
 
@@ -25,6 +25,7 @@ public class AimsActivity extends AppCompatActivity {
 
     public static final String AIMID = "com.example.achieveme.AIMID";
     public static final String AIMNAME = "com.example.achieveme.AIMNAME";
+    private int list_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +34,10 @@ public class AimsActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         setTitle(intent.getStringExtra(ListsActivity.LISTNAME));
-        final int list_id = intent.getIntExtra(ListsActivity.LISTID, 1);
+        list_id = intent.getIntExtra(ListsActivity.LISTID, 1);
 
         final ListView listView = findViewById(R.id.aimsListView);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         final SharedPreferences creds = getSharedPreferences("creds", MODE_PRIVATE);
         String username = creds.getString(LoginActivity.USERNAME, null);
@@ -70,12 +72,20 @@ public class AimsActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position,
                                     long id) {
-                Intent intent = new Intent(AimsActivity.this, AimViewActivity.class);
-                intent.putExtra(ListsActivity.LISTID, list_id);
-                intent.putExtra(AIMID, (Integer) itemClicked.getTag());
-                intent.putExtra(AIMNAME, ((TextView) itemClicked).getText());
-                startActivity(intent);
+                    Intent intent = new Intent(AimsActivity.this, AimViewActivity.class);
+                    intent.putExtra(ListsActivity.LISTID, list_id);
+                    intent.putExtra(AIMID, (Integer) itemClicked.getTag());
+                    intent.putExtra(AIMNAME, ((TextView) itemClicked).getText());
+                    startActivity(intent);
             }
         });
+    }
+
+    public void openAim(View view) {
+        Intent intent = new Intent(AimsActivity.this, AimViewActivity.class);
+        intent.putExtra(ListsActivity.LISTID, list_id);
+        intent.putExtra(AIMID, (Integer) view.getTag());
+        intent.putExtra(AIMNAME, ((TextView) view).getText());
+        startActivity(intent);
     }
 }
