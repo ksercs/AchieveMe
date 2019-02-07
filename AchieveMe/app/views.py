@@ -29,6 +29,9 @@ from django.views.generic.list import ListView
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.shortcuts import render_to_response
 from django.template import RequestContext
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.urls import reverse
 
 
 def validate(username, password):
@@ -185,7 +188,11 @@ def AimView(request, username, listid):
         form = ListForm()
 
     return render(request, 'aims.html', vars)
-    
+
+class editSubAimView(UpdateView):
+    model = Aim
+    form_class = AimForm
+
 def SubAimView(request, username, listid, aimid):
     parent = Aim.objects.get(id = aimid)
     lists = ListModel.objects.filter(user_name = username)

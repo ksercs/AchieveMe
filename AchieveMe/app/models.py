@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.timezone import now
-
+from django.urls import reverse
 
 class Aim(models.Model):
     user_name  = models.CharField       (max_length = 120)
@@ -13,6 +13,12 @@ class Aim(models.Model):
     is_completed 	   = models.BooleanField  (default = 0)
     time_to_do   = models.IntegerField    ()
     image = models.ImageField(upload_to='images/', default='images/cat.jpg')
+    
+    def get_absolute_url(self):
+        if self.parent_id != -1:
+            return reverse('subaim', args=[self.user_name, str(self.list_id), str(self.parent_id)])
+        else :
+            return reverse('aims', args=[self.user_name, str(self.list_id)])
 	
 class List(models.Model):
 	name 	     = models.CharField(max_length = 120)
