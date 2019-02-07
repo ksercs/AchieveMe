@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.achieveme.model.Aims.AimRes;
 import com.example.achieveme.remote.AimService;
 import com.example.achieveme.remote.ApiUtils;
+import com.example.achieveme.remote.WebImage;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -58,6 +60,12 @@ public class AimViewActivity extends AppCompatActivity {
                         Toast.makeText(AimViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
+                    ImageView avatarView = findViewById(R.id.avatarView);
+                    try {
+                        avatarView.setImageDrawable(WebImage.LoadImage("http://i.imgur.com/bIRGzVO.jpg"));
+                    } catch (Throwable t) {
+                        Toast.makeText(AimViewActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
 
                 } else {
                     SharedPreferences.Editor edit = creds.edit();
