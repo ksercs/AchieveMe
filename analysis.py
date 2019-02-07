@@ -2,6 +2,43 @@ import datetime
 import pymorphy2
 import calendar
 
+def mypush3(stack, i):
+    stack += [i]
+    stack += [i + 1]
+    stack += [i + 2] 
+
+def mypush2(stack, i):
+    stack += [i]
+    stack += [i + 1]
+    
+def myreplace(i, words, word1, word2):
+    return words[i + 2].lower() == word1 and words[i + 1].lower() == word2
+    
+def conditions_month(i, words):
+    b1 = i + 2 < len(words) 
+    if b1:
+        b2 = myreplace(i, words, "месяцу", "следующему")
+        b3 = myreplace(i, words, "месяца", "концу")
+        b4 = myreplace(i, words, "месяца", "следующего")
+        b5 = myreplace(i, words, "месяца", "конца")
+        return b2 or b3 or b4 or b5 
+    return b1
+
+def conditions_week(i, words):
+    b1 = i + 2 < len(words) 
+    if b1:
+        b2 = myreplace(i, words, "неделе", "следущей")
+        b3 = myreplace(i, words, "недели", "концу")
+        b4 = myreplace(i, words, "недели", "следующей")
+        b5 = myreplace(i, words, "недели", "конца")
+        return b2 or b3 or b4 or b5 
+    return b1
+
+def conditions_through(i, word1, word2, words):
+    return i + 2 < len(words) and words[i + 1].isdigit() and (words[i + 2].lower() == word1 or words[i + 2].lower() == word2)
+def conditions_through0(i, words, word1):
+    return i + 2 < len(words) and words[i + 1].lower() == word1
+
 def number_in_digits(s):
     nums_letters = ['сорок', 'тридцать', 'семь', 'восемнадцать', 'пятьдесят', 'семьдесят', 'девяносто', 'десять', 'семнадцать', 'девятьсот', 'восемьдесят', 'шестьдесят', 'девятнадцать', 'девять', 'шестнадцать', 'двенадцать', 'двадцать', 'пятнадцать', 'пять', 'одиннадцать', 'пятьсот', 'восемь', 'тринадцать', 'семьсот', 'два', 'шесть', 'ноль', 'шестьсот', 'восемьсот', 'двести', 'четыреста', 'четыре', 'один', 'три', 'четырнадцать', 'триста', 'сто', 'тысяча']
     nums_digits = [40, 30, 7, 18, 50, 70, 90, 10, 17, 90, 80, 60, 19, 9, 16, 12, 20, 15, 5, 11, 500, 8, 13, 700, 2, 6, 0, 600, 800, 200, 400, 4, 1, 3, 14, 300, 100, 1000]
@@ -82,17 +119,14 @@ def goal_analysis(s):
                 stack += [i]
             # к первому декабря
             if words[i + 1].isdigit() and words[i + 2].lower() in mas_month:
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]
+                mypush3(stack, i)
                 day = int(words[i + 1])
                 month = mas_month.index(words[i + 2]) + 1
                 specific_date = 0
                 
             # к понедельнику
             if words[i + 1].lower() in mas_days or words[i + 1].lower() in mas_days2:
-                stack += [i]
-                stack += [i + 1]
+                mypush2(stack, i)
                 if words[i + 1].lower() in mas_days:
                     while (day_week != mas_days.index(words[i + 1])):
                         day_week = (day_week + 1) % 7
@@ -101,100 +135,42 @@ def goal_analysis(s):
                     while (day_week != mas_days2.index(words[i + 1])):
                         day_week = (day_week + 1) % 7
                         day += 1
-            # ко следующей неделе
-            if i + 2 < N and words[i + 2].lower() == "неделe" and words[i + 1].lower() == "следующей":
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]
+            # ко ... неделе
+            if conditions_week(i, words):
+                mypush3(stack, i)
                 while (day_week != 0):
                     day_week = (day_week + 1) % 7
-                    day += 1
-            # к концу недели
-            if i + 2 < N and words[i + 2].lower() == "недели" and words[i + 1].lower() == "концу":
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]
-                while (day_week != 0):
-                    day_week = (day_week + 1) % 7
-                    day += 1 
-            # до следующей недели
-            if i + 2 < N and words[i + 2].lower() == "недели" and words[i + 1].lower() == "следующей":
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]
-                while (day_week != 0):
-                    day_week = (day_week + 1) % 7
-                    day += 1
-            # до конца недели
-            if i + 2 < N and words[i + 2].lower() == "недели" and words[i + 1].lower() == "конца":
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]
-                while (day_week != 0):
-                    day_week = (day_week + 1) % 7
-                    day += 1             
+                    day += 1       
             # к следующему месяцу
-            if i + 2 < N and words[i + 2].lower() == "месяцу" and words[i + 1].lower() == "следующему":
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]
-                start_month = 1
-            # к концу месяца
-            if i + 2 < N and words[i + 2].lower() == "месяца" and words[i + 1].lower() == "концу":
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]
-                start_month = 1
-            # до следующего месяца
-            if i + 2 < N and words[i + 2].lower() == "месяца" and words[i + 1].lower() == "следующего":
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]
-                start_month = 1
-            # до конца месяца
-            if i + 2 < N and words[i + 2].lower() == "месяца" and words[i + 1].lower() == "конца":
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]
+            if conditions_month(i, words):
+                mypush3(stack, i)
                 start_month = 1
         if words[i].lower() == "через":
             # через 2 дня/недели/месяца/года
-            if i + 2 < N and words[i + 1].isdigit() and (words[i + 2].lower() == "дня" or words[i + 2].lower() == "дней"):
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]
+            if conditions_through(i, "дня", "дней", words):
+                mypush3(stack, i)
                 day += int(words[i + 1])
-            if i + 2 < N and words[i + 1].isdigit() and (words[i + 2].lower() == "недель" or words[i + 2].lower() == "недели"):
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]                
+            if conditions_through(i, "недель", "недели", words):
+                mypush3(stack, i)              
                 day += int(words[i + 1]) * 7
-            if i + 2 < N and words[i + 1].isdigit() and (words[i + 2].lower() == "месяца" or words[i + 2].lower() == "месяцев"):
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]                
+            if conditions_through(i, "месяца", "месяцев", words):
+                mypush3(stack, i)               
                 month += int(words[i + 1])
-            if i + 2 < N and words[i + 1].isdigit() and (words[i + 2].lower() == "год" or words[i + 2].lower() == "лет"):
-                stack += [i]
-                stack += [i + 1]
-                stack += [i + 2]                
+            if conditions_through(i, "год", "лет", words):
+                mypush3(stack, i)                
                 year += int(words[i + 1])
             # через день/неделю/месяц/год
-            if i + 2 < N and words[i + 1].lower() == "день":
-                stack += [i]
-                stack += [i + 1]               
+            if conditions_through0(i, words, "день"):
+                mypush2(stack, i)             
                 day += 1
-            if i + 2 < N and words[i + 1].lower() == "неделю":
-                stack += [i]
-                stack += [i + 1] 
+            if conditions_through0(i, words, "неделю"):
+                mypush2(stack, i)
                 day += 7
-            if i + 2 < N and words[i + 1].lower() == "месяц":
-                stack += [i]
-                stack += [i + 1] 
+            if conditions_through0(i, words, "месяц"):
+                mypush2(stack, i)
                 month += 1
-            if i + 2 < N and words[i + 1].lower() == "год":
-                stack += [i]
-                stack += [i + 1] 
+            if conditions_through0(i, words, "год"):
+                mypush2(stack, i)
                 year += 1
     goal = []
     for i in range(len(words)):
@@ -210,9 +186,9 @@ def goal_analysis(s):
         print(a.year, month, day)
     if start_month:
         if month == 12:
-            print("Дедлайн:", a.year + 1, 0, 0)
+            print("Дедлайн:", a.year + 1, 1, 1)
         else:
-            print("Дедлайн:", a.year, a.month + 1, 0)
+            print("Дедлайн:", a.year, a.month + 1, 1)
     else:   
         print("Дедлайн:", a.year + year + (a.month + month) // 12, (a.month + month) % 12, a.day)
     print("Цель:", ' '.join(goal), '\n')
@@ -221,5 +197,5 @@ goal_analysis("хочу научиться плавать через 40 дней
 goal_analysis("До вторника надо навестить бабушку")
 goal_analysis("Через 10 дней необходимо сдать доклад")
 goal_analysis("До завтра выброшу мусор")
-goal_analysis("Хочу научиться говорить на испанском до конца недели")
+goal_analysis("Хочу научиться говорить на испанском до конца месяца")
 goal_analysis("До 10 августа нужно выучить 10 слов")
