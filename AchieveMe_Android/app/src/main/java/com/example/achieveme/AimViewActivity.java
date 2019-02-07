@@ -11,7 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.achieveme.model.Aims.AimRes;
-import com.example.achieveme.model.Aims.AimsAdapter;
+import com.example.achieveme.model.Aims.SubAimRes;
+import com.example.achieveme.model.Aims.SubAimsAdapter;
 import com.example.achieveme.remote.AimService;
 import com.example.achieveme.remote.ApiUtils;
 import com.example.achieveme.remote.AsyncTaskLoadImage;
@@ -78,10 +79,8 @@ public class AimViewActivity extends BaseActivity {
                     new AsyncTaskLoadImage(avatarView).execute(ApiUtils.BASE_URL + "media/" + aim.getFields().getImage());
 
                     ListView subaimsList = findViewById(R.id.subaimsListView);
-                    aim.getSubaims().orElse(Collections.<AimRes>emptyList());
-                    /*
-                    List<AimRes> subaims = aim.getSubaims().orElse(Collections.<AimRes>emptyList());
-                    subaimsList.setAdapter(new AimsAdapter(AimViewActivity.this, subaims));*/
+                    List<SubAimRes> subaims = aim.getSubaims();
+                    subaimsList.setAdapter(new SubAimsAdapter(AimViewActivity.this, subaims));
 
                 } else {
                     SharedPreferences.Editor edit = creds.edit();
