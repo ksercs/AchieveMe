@@ -37,4 +37,5 @@ public class AimFields {
     public String getImage() {
         return image;
     }
+
 }

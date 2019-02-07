@@ -77,7 +77,7 @@ def api_aim(request, username, listid, aimid):
                                     ensure_ascii=False, indent=2)
     aim_info = json.loads(data[2:-2])
     subaims_info = json.loads(subaims)
-    aim_info['fields']['subaims'] = subaims_info
+    aim_info['subaims'] = subaims_info
     return JsonResponse(aim_info)
 
 def index(request):
