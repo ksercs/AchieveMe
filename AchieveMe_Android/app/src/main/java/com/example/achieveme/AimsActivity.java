@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.achieveme.model.Aims.AimRes;
 import com.example.achieveme.model.Aims.AimsAdapter;
+import com.example.achieveme.model.Aims.SubAimRes;
 import com.example.achieveme.remote.AimsListService;
 import com.example.achieveme.remote.ApiUtils;
 
@@ -44,7 +45,7 @@ public class AimsActivity extends BaseActivity {
 
         Intent intent = getIntent();
         setTitle(intent.getStringExtra(ListsActivity.LISTNAME));
-        list_id = intent.getIntExtra(ListsActivity.LISTID, 1);
+        list_id = intent.getIntExtra(ListsActivity.LISTID, 0);
 
         final ListView listView = findViewById(R.id.aimsListView);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -54,13 +55,13 @@ public class AimsActivity extends BaseActivity {
         String password = creds.getString(LoginActivity.PASSWORD, null);
 
         AimsListService aimsListService = ApiUtils.getAimsService();
-        Call<List<AimRes>> call = aimsListService.userAims(username, list_id, password);
+        Call<List<SubAimRes>> call = aimsListService.userAims(username, list_id, password);
 
-        call.enqueue(new Callback<List<AimRes>>() {
+        call.enqueue(new Callback<List<SubAimRes>>() {
             @Override
-            public void onResponse(Call<List<AimRes>> call, Response<List<AimRes>> response) {
+            public void onResponse(Call<List<SubAimRes>> call, Response<List<SubAimRes>> response) {
                 if (response.isSuccessful()) {
-                    List<AimRes> aims = response.body();
+                    List<SubAimRes> aims = response.body();
                     listView.setAdapter(new AimsAdapter(AimsActivity.this, aims));
                 } else {
                     SharedPreferences.Editor edit = creds.edit();
@@ -73,7 +74,7 @@ public class AimsActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<List<AimRes>> call, Throwable t) {
+            public void onFailure(Call<List<SubAimRes>> call, Throwable t) {
                 Toast.makeText(AimsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -100,6 +101,9 @@ public class AimsActivity extends BaseActivity {
     }
 
     public void openAim(View view) {
+        if (list_id == 0) {
+            return;
+        }
         Intent intent = new Intent(AimsActivity.this, AimViewActivity.class);
         intent.putExtra(ListsActivity.LISTID, list_id);
         intent.putExtra(AIMID, (Integer) view.getTag());
