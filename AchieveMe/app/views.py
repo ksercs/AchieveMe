@@ -138,7 +138,8 @@ def AimListView(request, username):
     lists = ListModel.objects.filter(user_name = username)
     vars = dict(
         lists = lists,
-        form = ListForm()
+        form = ListForm(),
+        list_link = "/"+username+"/lists/"
         )
     if request.method == 'POST':
         form = ListForm(request.POST)
@@ -192,6 +193,17 @@ def AimView(request, username, listid):
 class editSubAimView(UpdateView):
     model = Aim
     form_class = SubAimForm
+    
+class deleteSubAimView(DeleteView):
+    model = Aim
+    form_class = SubAimForm
+    
+    def get_success_url(self):
+        parent = Aim.objects.get(id = self.object.parent_id)
+        return reverse ('subaim', kwargs={'username': parent.user_name, 'listid': parent.list_id, 'aimid': parent.id})
+    
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 def SubAimView(request, username, listid, aimid):
     parent = Aim.objects.get(id = aimid)

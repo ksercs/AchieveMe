@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+<form method="post">{% csrf_token %}
+    <p>Точно хочешь удалить подцель"{{ object.name }}"?</p>
+    <input type="submit" value="Да">
+</form>
+{% endblock %}

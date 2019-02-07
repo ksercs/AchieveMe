@@ -68,6 +68,7 @@
                  <div class="row">
                         {{ subaim.name }} {{subaim.deadline}}
                         <a href="{{ .get_absolute_url }}{{ subaim.id }}/edit"><span style="font-size:15px;" class="pull-right glyphicon glyphicon-pencil"></span></a>
+                        <a href="{{ .get_absolute_url }}{{ subaim.id }}/delete"><span style="font-size:15px;" class="pull-right glyphicon glyphicon-remove"></span></a>
                  </div>
              {% endfor %}
         </ul>
