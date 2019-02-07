@@ -193,9 +193,6 @@ def goal_analysis(s):
         print("Дедлайн:", a.year + year + (a.month + month) // 12, (a.month + month) % 12, a.day)
     print("Цель:", ' '.join(goal), '\n')
            
-goal_analysis("хочу научиться плавать через 40 дней")
-goal_analysis("До вторника надо навестить бабушку")
-goal_analysis("Через 10 дней необходимо сдать доклад")
-goal_analysis("До завтра выброшу мусор")
-goal_analysis("Хочу научиться говорить на испанском до конца месяца")
-goal_analysis("До 10 августа нужно выучить 10 слов")
+s = input()         
+           
+goal_analysis(s)
