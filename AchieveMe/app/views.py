@@ -17,7 +17,7 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import render_to_response
 
-from .forms import AimForm, ListForm
+from .forms import AimForm, ListForm, SubAimForm
 from django.core import serializers	
 
 from .models import Setting, Aim, List as ListModel
@@ -105,6 +105,9 @@ def signup(request):
 def profile_redirect(request):
     return HttpResponsePermanentRedirect("/profile/")
     
+def redirect_to_subaim(request, username, listid, aimid):
+    return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid + '/' + aimid)
+    
 def redirect_to_aim(request, username, listid):
     return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid)
     
@@ -148,7 +151,7 @@ def AimListView(request, username):
     
 def AimView(request, username, listid):
     lists = ListModel.objects.filter(user_name = username)
-    aims = Aim.objects.filter(user_name = username, list_id = listid)
+    aims = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1)
     list = ListModel.objects.get(id = listid)
     vars = dict(
         lists = lists,
@@ -180,17 +183,48 @@ def AimView(request, username, listid):
             return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")#"/"+username+"/lists/red_to_list")
     else:
         form = ListForm()
- 
 
     return render(request, 'aims.html', vars)
     
-def AimDeepView(request, username, listid, aimid):
+def SubAimView(request, username, listid, aimid):
+    parent = Aim.objects.get(id = aimid)
+    lists = ListModel.objects.filter(user_name = username)
     list = ListModel.objects.get(id = listid)
-    aims = Aim.objects.all()
-    aim = Aim.objects.get(user_name = username, list_id = listid, id = aimid)
-    var = dict(aim = aim, listname = list.name, name = aim.name)
-    
-    return render(request, 'deep_aim.html', var)
+    subaims = Aim.objects.filter(parent_id = aimid)
+    vars = dict(
+        subaims = subaims,
+        lists = lists,
+        aim = parent,
+        listname = list.name,
+        formA = SubAimForm(),
+        formB = ListForm(),
+        list_link = "/"+username+"/lists/"
+        )
+
+    if request.method == 'POST' and 'aimbtn' in request.POST:
+        form = SubAimForm(request.POST, request.FILES)
+        if form.is_valid():
+            aim = form.save(commit = False)
+            aim.user_name = username
+            list = ListModel.objects.get(id = listid)
+            aim.list_id = listid
+            aim.parent_id = aimid
+            aim.save()
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_subaim")
+    else:
+        form = SubAimForm()
+        
+    if request.method == 'POST':   
+        form = ListForm(request.POST)
+        if form.is_valid():
+            list = form.save(commit = False)
+            list.user_name = request.user.username
+            list.save()
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")
+    else:
+        form = ListForm()
+
+    return render(request, 'deep_aim.html', vars)
 
 def settings(request):
     if request.method == 'POST':
