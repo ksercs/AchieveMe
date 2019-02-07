@@ -158,8 +158,8 @@ def AimView(request, username, listid):
         formB = ListForm(),
         list_link = "/"+username+"/lists/"
         )
-        
-    if request.method == 'POST':
+
+    if request.method == 'POST' and 'aimbtn' in request.POST:
         form = AimForm(request.POST, request.FILES)
         if form.is_valid():
             aim = form.save(commit = False)
@@ -170,6 +170,17 @@ def AimView(request, username, listid):
             return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")
     else:
         form = AimForm()
+        
+    if request.method == 'POST':   
+        form = ListForm(request.POST)
+        if form.is_valid():
+            list = form.save(commit = False)
+            list.user_name = request.user.username
+            list.save()
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")#"/"+username+"/lists/red_to_list")
+    else:
+        form = ListForm()
+ 
 
     return render(request, 'aims.html', vars)
     
