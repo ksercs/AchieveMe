@@ -2,8 +2,7 @@ package com.example.achieveme.model.Aims;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.achieveme.AimViewActivity;
 import com.example.achieveme.R;
 import com.example.achieveme.remote.ApiUtils;
-import com.example.achieveme.remote.WebImage;
+import com.example.achieveme.remote.AsyncTaskLoadImage;
 
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -77,12 +76,7 @@ public class AimsAdapter extends ArrayAdapter {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-        Uri avatar_address = Uri.parse("http://i.imgur.com/bIRGzVO.jpg");
-        avatarView.setImageURI(avatar_address);
-        /*Drawable avatar = WebImage.LoadImage("http://i.imgur.com/bIRGzVO.jpg");
-        if (avatar != null) {
-            avatarView.setImageDrawable(avatar);
-        }*/
+        new AsyncTaskLoadImage(avatarView).execute(ApiUtils.BASE_URL + "media/" + item.getFields().getImage());
 
         return row;
     }

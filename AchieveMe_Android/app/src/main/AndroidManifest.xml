@@ -12,10 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AimViewActivity"
-                  android:parentActivityName=".AimsActivity">
-        </activity>
+                  android:parentActivityName=".AimsActivity"/>
         <activity android:name=".AimsActivity"
                   android:parentActivityName=".ListsActivity"/>
+        <activity
+            android:name=".ListsActivity"
+            android:label="Списки" />
+        <activity android:name=".LoginActivity" />
         <activity
             android:name=".MainEmptyActivity"
             android:theme="@android:style/Theme.NoDisplay">
@@ -25,10 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginActivity" />
-        <activity
-            android:name=".ListsActivity"
-            android:label="Списки" />
     </application>
 
 </manifest>
