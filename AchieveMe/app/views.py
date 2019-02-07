@@ -191,7 +191,7 @@ def AimView(request, username, listid):
 
 class editSubAimView(UpdateView):
     model = Aim
-    form_class = AimForm
+    form_class = SubAimForm
 
 def SubAimView(request, username, listid, aimid):
     parent = Aim.objects.get(id = aimid)
