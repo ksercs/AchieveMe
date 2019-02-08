@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">AchieveMe</string>
-    <string name="edit_message">Enter a message</string>
-    <string name="button_send">Send</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
     <string name="edit_username">Username</string>
     <string name="edit_passw">Password</string>
     <string name="button_login">login</string>
+    <string name="action_settings">Новый список</string>
+
+    <string-array name="menu">
+        <item>Edit</item>
+        <item>Delete</item>
+        <item>Send</item>
+    </string-array>
 </resources>

@@ -14,10 +14,11 @@ public class MainEmptyActivity extends AppCompatActivity {
 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         Intent activityIntent;
         SharedPreferences creds = getSharedPreferences("creds", MODE_PRIVATE);
         if (creds.contains(LoginActivity.USERNAME)
-         && creds.contains(LoginActivity.PASSWORD)) {
+                && creds.contains(LoginActivity.PASSWORD)) {
             activityIntent = new Intent(MainEmptyActivity.this, ListsActivity.class);
         } else {
             activityIntent = new Intent(MainEmptyActivity.this, LoginActivity.class);

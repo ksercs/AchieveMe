@@ -23,13 +23,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class AimsAdapter extends ArrayAdapter {
+public class SubAimsAdapter extends ArrayAdapter {
 
     private Context context;
     private List<SubAimRes> values;
 
-    public AimsAdapter(Context context, List<SubAimRes> values) {
-        super(context, R.layout.aim_list_item, values);
+    public SubAimsAdapter(Context context, List<SubAimRes> values) {
+        super(context, R.layout.subaim_list_item, values);
 
         this.context = context;
         this.values = values;
@@ -42,12 +42,11 @@ public class AimsAdapter extends ArrayAdapter {
         if (row == null) {
             LayoutInflater inflater =
                     (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.aim_list_item, parent, false);
+            row = inflater.inflate(R.layout.subaim_list_item, parent, false);
         }
         final CheckBox completed = row.findViewById(R.id.isCompleted);
         final TextView textView = row.findViewById(R.id.aimNameView);
         TextView dateView = row.findViewById(R.id.dateView);
-        ImageView avatarView = row.findViewById(R.id.aimAvatarView);
 
         SubAimRes item = values.get(position);
 
@@ -77,9 +76,6 @@ public class AimsAdapter extends ArrayAdapter {
         } catch (ParseException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
-        new AsyncTaskLoadImage(avatarView).execute(ApiUtils.BASE_URL + "media/" + item.getFields().getImage());
-
         row.setOnCreateContextMenuListener(null);
         return row;
     }
