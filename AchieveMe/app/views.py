@@ -249,6 +249,48 @@ class deleteSubAimView(DeleteView):
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
+def editAimView(request, username, listid, pk):
+    lists = ListModel.objects.filter(user_name = username)
+    aims = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1)
+    list = ListModel.objects.get(id = listid)
+    cur_aim = Aim.objects.get(id == pk)
+    vars = dict(
+        lists = lists,
+        aims = aims,
+        listname = list.name,
+        formA = AimForm(),
+        formB = ListForm(),
+        list_link = "/"+username+"/lists/"
+        )
+
+    if request.method == 'POST' and 'aimbtn' in request.POST:
+        form = AimForm(request.POST, request.FILES)
+        if form.is_valid():
+            aim.user_name = username
+            cur_subaim.name = form.cleaned_data['name']
+            cur_subaim.deadline = form.cleaned_data['deadline']
+            cur_subaim.is_important = form.cleaned_data['is_important']
+            cur_subaim.is_remind = form.cleaned_data['is_remind']
+            list = ListModel.objects.get(id = listid)
+            aim.list_id= list.id
+            aim.save()
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
+    else:
+        form = AimForm()
+        
+    return render(request, 'aims.html', vars)
+    
+class deleteAimView(DeleteView):
+    model = Aim
+    form_class = SubAimForm
+    
+    def get_success_url(self):
+        parent = Aim.objects.get(id = self.object.parent_id)
+        return reverse ('subaim', kwargs={'username': parent.user_name, 'listid': parent.list_id, 'aimid': parent.id})
+    
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
 def SubAimView(request, username, listid, aimid):
     parent = Aim.objects.get(id = aimid)
     lists = ListModel.objects.filter(user_name = username)

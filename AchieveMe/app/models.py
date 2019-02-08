@@ -11,7 +11,6 @@ class Aim(models.Model):
     is_important = models.BooleanField  (default = 0)
     is_remind     = models.BooleanField  (default = 0)
     is_completed 	   = models.BooleanField  (default = 0)
-    time_to_do   = models.IntegerField    ()
     image = models.ImageField(upload_to='images/', default='images/cat.jpg')
     
     def get_absolute_url(self):
