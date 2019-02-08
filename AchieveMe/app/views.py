@@ -165,8 +165,6 @@ def AimView(request, username, listid):
             aim.list_id= list.id
             aim.save()
             setting = Setting.objects.get(user_name = username)
-            print("google_sync")
-            print(setting.google_sync)
             if setting.google_sync:# and aim.parent_id != -1:
                 add_to_calendar(aim, setting.Gmt)
             return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")
