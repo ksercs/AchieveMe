@@ -32,11 +32,18 @@ def add_to_calendar(aim, Gmt):
 		flow = client.flow_from_clientsecrets('app/client_secret.json', SCOPES)
 		creds = tools.run_flow(flow, store, flags)
 	GCAL = discovery.build('calendar', 'v3', http=creds.authorize(Http()))
-	start_time = aim.deadline - datetime.timedelta(minutes=aim.time_to_do)
+	start_time = aim.deadline - datetime.timedelta(minutes=1)
 	EVENT = {
-		'summary': aim.name,
-		'start': {'dateTime': str(start_time).replace(' ', 'T')},
-		'end': {'dateTime': str(aim.deadline).replace(' ', 'T')},
+		'summary': "oсталась неделя до конца цели: " + aim.name,
+		'start': {'dateTime': str(start_time - datetime.timedelta(days=7)).replace(' ', 'T')},
+		'end': {'dateTime': str(aim.deadline - datetime.timedelta(days=7)).replace(' ', 'T')},
+	}
+
+	e = GCAL.events().insert(calendarId='primary', sendNotifications=True, body=EVENT).execute()
+	EVENT = {
+		'summary': "Остался день до конца цели: " + aim.name,
+		'start': {'dateTime': str(start_time - datetime.timedelta(days=1)).replace(' ', 'T')},
+		'end': {'dateTime': str(aim.deadline - datetime.timedelta(days=1)).replace(' ', 'T')},
 	}
 
 	e = GCAL.events().insert(calendarId='primary', sendNotifications=True, body=EVENT).execute()
