@@ -379,12 +379,6 @@ def SubAimView(request, username, listid, aimid):
                 name, deadline = goal_analysis(row)
                 aim = Aim(name = name, deadline = deadline, user_name = username, list_id = listid, parent_id = aimid)
                 aim.save()
-#            aim = form.save(commit = False)
-#            aim.user_name = username
-#            list = ListModel.objects.get(id = listid)
-#            aim.list_id = listid
-#            aim.parent_id = aimid
-#            aim.save()
             return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
     else:
         formC = SubaimParsingForm()
