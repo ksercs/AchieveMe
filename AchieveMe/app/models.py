@@ -11,7 +11,6 @@ class Aim(models.Model):
     is_important = models.BooleanField  (default = 0)
     is_remind     = models.BooleanField  (default = 0)
     is_completed 	   = models.BooleanField  (default = 0)
-    time_to_do   = models.IntegerField    ()
     image = models.ImageField(upload_to='images/', default='images/cat.jpg')
     
     def get_absolute_url(self):
@@ -28,6 +27,7 @@ class Setting(models.Model):
 	user_name 				   = models.CharField     (max_length = 20)
 	is_notification_to_email = models.BooleanField(default = True)
 	Gmt						       = models.IntegerField  (default = '+3')
+	google_sync = models.BooleanField(default = False)
 
 class Description(models.Model):
     aim_id = models.IntegerField()
@@ -42,3 +42,5 @@ class File(models.Model):
     comment_id = models.IntegerField  (default = 0)
     name = models.FileField(upload_to='images/', default = "")
     
+class Text(models.Model):
+    text = models.TextField(default = "")

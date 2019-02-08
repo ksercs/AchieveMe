@@ -17,11 +17,11 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import render_to_response
 
-from .forms import AimForm, ListForm, SubAimForm
+from .forms import AimForm, ListForm, SubAimForm, SubaimParsingForm
 from django.core import serializers	
 
 from .models import Setting, Aim, Description, List as ListModel
-
+from .analysis import *
 from django.http import JsonResponse
 import json
 
@@ -32,6 +32,8 @@ from django.template import RequestContext
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.urls import reverse
+
+from .google_calendar_interaction import calendar_authorization, add_to_calendar
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -112,8 +114,8 @@ def signup(request):
             user = form.save(commit=False)
             user.is_active = False
             user.save()
-            setting = Setting(user_name=request.user.username)
-            setting.save()
+            setting = Setting.objects.create(user_name=user.username)
+#            setting.save()
             current_site = get_current_site(request)
             mail_subject = 'Активация аккаунта - AchieveMe'
             message = render_to_string('acc_active_email.html', {
@@ -134,13 +136,13 @@ def signup(request):
 
 def profile_redirect(request):
     return HttpResponsePermanentRedirect("/profile/")
+
+def redirect_to_aim(request, username, listid, aimid):
+    return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid+'/'+aimid)
     
-def redirect_to_subaim(request, username, listid, aimid):
-    return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid + '/' + aimid)
-    
-def redirect_to_aim(request, username, listid):
+def redirect_to_aimlist(request, username, listid):
     return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid)
-    
+
 def redirect_to_list(request, username):
     return HttpResponsePermanentRedirect("/"+username+"/lists/")
 
@@ -201,7 +203,10 @@ def AimView(request, username, listid):
             list = ListModel.objects.get(id = listid)
             aim.list_id= list.id
             aim.save()
-            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")
+            setting = Setting.objects.get(user_name = username)
+            if setting.google_sync:# and aim.parent_id != -1:
+                add_to_calendar(aim, setting.Gmt)
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
     else:
         form = AimForm()
         
@@ -211,15 +216,55 @@ def AimView(request, username, listid):
             list = form.save(commit = False)
             list.user_name = request.user.username
             list.save()
-            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")#"/"+username+"/lists/red_to_list")
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
     else:
         form = ListForm()
 
     return render(request, 'aims.html', vars)
 
-class editSubAimView(UpdateView):
-    model = Aim
-    form_class = SubAimForm
+def editSubAimView(request, username, listid, aimid, pk):
+    parent = Aim.objects.get(id = aimid)
+    lists = ListModel.objects.filter(user_name = username)
+    list = ListModel.objects.get(id = listid)
+    subaims = Aim.objects.filter(parent_id = aimid)
+    cur_subaim = Aim.objects.get(id = pk)
+    
+    vars = dict(
+        subaims = subaims,
+        lists = lists,
+        aim = parent,
+        listname = list.name,
+        formA = SubAimForm(),
+        formB = ListForm(),
+        list_link = "/"+username+"/lists/"
+        )
+
+    if request.method == 'POST' and 'aimbtn' in request.POST:
+        form = SubAimForm(request.POST, request.FILES)
+        if form.is_valid():
+            cur_subaim.user_name = username
+            cur_subaim.name = form.cleaned_data['name']
+            cur_subaim.deadline = form.cleaned_data['deadline']
+            cur_subaim.is_important = form.cleaned_data['is_important']
+            cur_subaim.is_remind = form.cleaned_data['is_remind']
+            list = ListModel.objects.get(id = listid)
+            cur_subaim.list_id = listid
+            cur_subaim.parent_id = aimid
+            cur_subaim.save()
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
+    else:
+        form = SubAimForm(instance = Aim.objects.get(id = pk))
+	
+    vars['formA'] = form
+    return render(request, 'edit_subaim.html', vars)
+
+class deleteListView(DeleteView):
+    model = ListModel
+    form_class = ListForm
+    
+    def get_success_url(self):
+        list = ListModel.objects.get(id = self.object.id)
+        return reverse('lists', kwargs={'username': list.user_name})
     
 class deleteSubAimView(DeleteView):
     model = Aim
@@ -228,6 +273,71 @@ class deleteSubAimView(DeleteView):
     def get_success_url(self):
         parent = Aim.objects.get(id = self.object.parent_id)
         return reverse ('subaim', kwargs={'username': parent.user_name, 'listid': parent.list_id, 'aimid': parent.id})
+    
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+
+def editListView(request, username, pk):
+    lists = ListModel.objects.filter(user_name = username)
+    cur_list = ListModel.objects.get(id = pk)
+    vars = dict(
+        lists = lists,
+        form = ListForm(),
+        list_link = "/"+username+"/lists/"
+        )
+    if request.method == 'POST':
+        form = ListForm(request.POST)
+        if form.is_valid():
+            cur_list.user_name = request.user.username
+            cur_list.name = form.cleaned_data['name']
+            cur_list.save()
+            return HttpResponseRedirect("/"+username+"/lists/red_to_list")
+    else:
+        form = ListForm(instance = ListModel.objects.get(id = pk))
+ 
+    vars['form'] = form
+    return render(request, 'edit_list.html', vars)
+
+def editAimView(request, username, listid, pk):
+    lists = ListModel.objects.filter(user_name = username)
+    aims = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1)
+    list = ListModel.objects.get(id = listid)
+    cur_aim = Aim.objects.get(id = pk)
+    vars = dict(
+        lists = lists,
+        aims = aims,
+        listname = list.name,
+        formA = AimForm(),
+        formB = ListForm(),
+        list_link = "/"+username+"/lists/"
+        )
+
+    if request.method == 'POST' and 'aimbtn' in request.POST:
+        form = AimForm(request.POST, request.FILES)
+        if form.is_valid():
+            cur_aim.user_name = username
+            cur_aim.name = form.cleaned_data['name']
+            cur_aim.deadline = form.cleaned_data['deadline']
+            cur_aim.is_important = form.cleaned_data['is_important']
+            cur_aim.is_remind = form.cleaned_data['is_remind']
+            cur_aim.image = form.cleaned_data['image']
+            list = ListModel.objects.get(id = listid)
+            cur_aim.list_id= list.id
+            cur_aim.save()
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
+    else:
+        form = AimForm(instance = Aim.objects.get(id = pk))
+        
+    vars['formA'] = form
+    return render(request, 'edit_aim.html', vars)
+    
+class deleteAimView(DeleteView):
+    model = Aim
+    form_class = AimForm
+    
+    def get_success_url(self):
+        parent = Aim.objects.get(id = self.object.id)
+        return reverse ('aims', kwargs={'username': parent.user_name, 'listid': parent.list_id})
     
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
@@ -244,42 +354,65 @@ def SubAimView(request, username, listid, aimid):
         listname = list.name,
         formA = SubAimForm(),
         formB = ListForm(),
+        formC = SubaimParsingForm(),
         list_link = "/"+username+"/lists/"
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:
-        form = SubAimForm(request.POST, request.FILES)
-        if form.is_valid():
-            aim = form.save(commit = False)
+        formA= SubAimForm(request.POST, request.FILES)
+        if formA.is_valid():
+            aim = formA.save(commit = False)
             aim.user_name = username
             list = ListModel.objects.get(id = listid)
             aim.list_id = listid
             aim.parent_id = aimid
             aim.save()
-            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_subaim")
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
     else:
-        form = SubAimForm()
+        formA = SubAimForm()
+        
+    if request.method == 'POST' and 'parsebtn' in request.POST:
+        formC = SubaimParsingForm(request.POST, request.FILES)
+        if formC.is_valid():
+            text = formC.cleaned_data['text']
+#            aim = form.save(commit = False)
+#            aim.user_name = username
+#            list = ListModel.objects.get(id = listid)
+#            aim.list_id = listid
+#            aim.parent_id = aimid
+#            aim.save()
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
+    else:
+        formC = SubaimParsingForm()
         
     if request.method == 'POST':   
-        form = ListForm(request.POST)
-        if form.is_valid():
-            list = form.save(commit = False)
+        formB = ListForm(request.POST)
+        if formB.is_valid():
+            list = formB.save(commit = False)
             list.user_name = request.user.username
             list.save()
-            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
     else:
-        form = ListForm()
+        formB = ListForm()
 
+    vars['formA'] = formA
+    vars['formB'] = formB
+    vars['formC'] = formC
     return render(request, 'deep_aim.html', vars)
 
-def settings(request):
+def settings(request, username):
     if request.method == 'POST':
         form = SettingForm(request.POST)
         if form.is_valid():
             setting = form.save(commit = False)
+            setting.user_name = username
+            Setting.objects.get(user_name = username).delete()
             setting.save()
+            if setting.google_sync:
+                calendar_authorization(username)
+
     else:
-        form = SettingForm()
+        form = SettingForm(instance = Setting.objects.get(user_name = username))
     return render(request, 'settings.html', {'form': form})
 
 

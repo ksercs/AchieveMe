@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Setting, Aim, List
+from .models import Setting, Aim, List, Text
 from django.db import models
 
 class SignupForm(UserCreationForm):
@@ -24,7 +24,7 @@ class SignupForm(UserCreationForm):
 class AimForm(forms.ModelForm):
     class Meta:
         model = Aim
-        fields = ('name', 'deadline', 'is_important', 'is_remind', 'time_to_do', 'image')
+        fields = ('name', 'deadline', 'is_important', 'is_remind', 'image')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -33,7 +33,6 @@ class AimForm(forms.ModelForm):
         self.fields['deadline'].label = 'Дедлайн:'
         self.fields['is_important'].label = 'Важное:'
         self.fields['is_remind'].label = 'Уведомление:'
-        self.fields['time_to_do'].label = 'Время на выполнение:'
         self.fields['image'].label = 'Аватар:'
 
         self.fields['name'].widget.attrs.update(
@@ -44,13 +43,11 @@ class AimForm(forms.ModelForm):
             {'class':'.mark', 'placeholder': 'Важное ли?', 'maxlength': '1'})
         self.fields['is_remind'].widget.attrs.update(
             {'class': 'custom-control-label', 'placeholder': 'Нужно напоминание?', 'maxlength': '200'})
-        self.fields['time_to_do'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Сколько времени нужно на выполнение? (в минутах)', 'maxlength': '120'})
-
+            
 class SubAimForm(forms.ModelForm):
     class Meta:
         model = Aim
-        fields = ('name', 'deadline', 'is_important', 'is_remind', 'time_to_do')
+        fields = ('name', 'deadline', 'is_important', 'is_remind')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -59,7 +56,6 @@ class SubAimForm(forms.ModelForm):
         self.fields['deadline'].label = 'Дедлайн:'
         self.fields['is_important'].label = 'Важное:'
         self.fields['is_remind'].label = 'Уведомление:'
-        self.fields['time_to_do'].label = 'Время на выполнение:'
 
         self.fields['name'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Новая подцель', 'maxlength': '120'})
@@ -69,9 +65,18 @@ class SubAimForm(forms.ModelForm):
             {'class':'.mark', 'placeholder': 'Важное ли?', 'maxlength': '1'})
         self.fields['is_remind'].widget.attrs.update(
             {'class': 'custom-control-label', 'placeholder': 'Нужно напоминание?', 'maxlength': '200'})
-        self.fields['time_to_do'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Сколько времени нужно на выполнение? (в минутах)', 'maxlength': '120'})
-            
+        
+class SubaimParsingForm(forms.ModelForm):
+    class Meta:
+        model = Text
+        fields = ('text',)
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        self.fields['text'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Тут будет описание зачем это надо и как пользоваться', 'maxlength': '500'})
+        
 class ListForm(forms.ModelForm):
     class Meta:
         model = List
@@ -84,10 +89,12 @@ class ListForm(forms.ModelForm):
 class SettingForm(forms.ModelForm):
     class Meta:
         model = Setting
-        fields = ('Gmt', 'is_notification_to_email')
+        fields = ('Gmt', 'is_notification_to_email', 'google_sync')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['Gmt'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Часовой пояс'})
         self.fields['is_notification_to_email'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Высылать уведомления', 'style' : 'width:20px;height:20px;'})
+        self.fields['google_sync'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Синхронизация', 'style' : 'width:20px;height:20px;'})
