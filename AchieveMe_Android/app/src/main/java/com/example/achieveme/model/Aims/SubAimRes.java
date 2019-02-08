@@ -15,4 +15,12 @@ public class SubAimRes {
     public int getId() {
         return aim_id;
     }
+
+    public SubAimRes(int aim_id, AimFields fields) {
+        this.aim_id = aim_id;
+        this.fields = fields;
+    }
+
+    public SubAimRes() {
+    }
 }
