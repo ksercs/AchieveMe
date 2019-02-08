@@ -1,6 +1,6 @@
 *.DS_Store
 *.sqlite3
-static/
+AchieveMe/static/
 AchieveMe/app/migrations/*
 AchieveMe/app/__pycache__/*
 AchieveMe/AchieveMe/__pycache__/*
@@ -9,3 +9,4 @@ __pycache__
 *.jpg
 AchieveMe/media/images/*
 !AchieveMe/media/images/cat.jpg
+AchieveMe/app/static/secret_data/*.json
