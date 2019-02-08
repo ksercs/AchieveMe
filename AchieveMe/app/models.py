@@ -8,7 +8,6 @@ class Aim(models.Model):
     parent_id    = models.IntegerField    (default = -1)
     name 		  = models.CharField        (max_length = 120, default ='')
     deadline       = models.DateTimeField(default = now)
-    start_time = models.DateTimeField(default = now)
     is_important = models.BooleanField  (default = 0)
     is_remind     = models.BooleanField  (default = 0)
     is_completed 	   = models.BooleanField  (default = 0)
