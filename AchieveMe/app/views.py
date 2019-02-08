@@ -237,6 +237,14 @@ def editSubAimView(request, username, listid, aimid, pk):
 	
     vars['formA'] = form
     return render(request, 'edit_subaim.html', vars)
+
+class deleteListView(DeleteView):
+    model = ListModel
+    form_class = ListForm
+    
+    def get_success_url(self):
+        list = ListModel.objects.get(id = self.object.id)
+        return reverse('lists', kwargs={'username': list.user_name})
     
 class deleteSubAimView(DeleteView):
     model = Aim
