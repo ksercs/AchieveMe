@@ -67,24 +67,38 @@ def api_aims(request, username, listid):
 
 def api_aim(request, username, listid, aimid):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
-        return HttpResponse(status=404)
-    
+            return HttpResponse(status=404)
     try:
         aim = Aim.objects.get(pk=aimid)
     except Aim.DoesNotExist:
         return HttpResponse(status=404)
-    
-    data = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)
-    subaims = serializers.serialize('json', Aim.objects.filter(parent_id=aimid),
-                                    ensure_ascii=False, indent=2)
-    descr = serializers.serialize('json', Description.objects.filter(aim_id=aimid))
-    aim_info = json.loads(data[2:-2])
-    subaims_info = json.loads(subaims)
-    description = json.loads(descr)
-    aim_info['subaims'] = subaims_info
-    aim_info['fields']['description'] = description[0] if description else {}
         
-    return JsonResponse(aim_info)
+    if request.method == 'GET':        
+        data = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)
+        subaims = serializers.serialize('json', Aim.objects.filter(parent_id=aimid),
+                                        ensure_ascii=False, indent=2)
+        descr = serializers.serialize('json', Description.objects.filter(aim_id=aimid))
+        aim_info = json.loads(data[2:-2])
+        subaims_info = json.loads(subaims)
+        description = json.loads(descr)
+        aim_info['subaims'] = subaims_info
+        aim_info['fields']['description'] = description[0] if description else {}
+        return JsonResponse(aim_info)
+    
+    if request.method == 'POST':
+        fields = json.loads(request.body)
+        aim.name = fields['name']
+        aim.deadlime = datetime.strptime(fields['date'] + ' ' + fields['time'], '%Y-%m-%d %H:%M:%S')
+        try:
+            descr = Description.objects.get(aim_id=aimid)
+            descr.text = fields['description']
+            descr.save()
+        except Description.DoesNotExist:
+            pass
+        aim.save()
+        
+        response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)
+        return HttpResponse(response[2:-2])
 
 def index(request):
     return render(request, 'index.html')

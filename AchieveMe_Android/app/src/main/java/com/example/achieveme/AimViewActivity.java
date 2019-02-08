@@ -35,6 +35,18 @@ import retrofit2.Response;
 
 public class AimViewActivity extends BaseActivity {
 
+    View header;
+    ImageView avatarView;
+    TextView descrView;
+    TextView deadlineDateView;
+    TextView deadlineTimeView;
+    ListView subaimsList;
+
+    public final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    public final static SimpleDateFormat format_date = new SimpleDateFormat("yyyy-MM-dd");
+    public final static SimpleDateFormat format_time = new SimpleDateFormat("HH:mm:ss");
+
+    int list_id;
 
     @Override
     int getContentViewId() {
@@ -52,21 +64,18 @@ public class AimViewActivity extends BaseActivity {
 
         Intent intent = getIntent();
         setTitle(intent.getStringExtra(AimsActivity.AIMNAME));
-        int list_id = intent.getIntExtra(ListsActivity.LISTID, 1);
+        list_id = intent.getIntExtra(ListsActivity.LISTID, 1);
         int aim_id = intent.getIntExtra(AimsActivity.AIMID, 1);
         final SharedPreferences creds = getSharedPreferences("creds", MODE_PRIVATE);
         String username = creds.getString(LoginActivity.USERNAME, null);
         String password = creds.getString(LoginActivity.PASSWORD, null);
-        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        final SimpleDateFormat format_date = new SimpleDateFormat("yyyy-MM-dd");
-        final SimpleDateFormat format_time = new SimpleDateFormat("HH:mm:ss");
 
-        final View header = getLayoutInflater().inflate(R.layout.aim_header, null);
-        final ImageView avatarView = header.findViewById(R.id.avatarView);
-        final TextView descrView = findViewById(R.id.descrView);
-        final TextView deadlineDateView = header.findViewById(R.id.deadlineDateView);
-        final TextView deadlineTimeView = header.findViewById(R.id.deadlineTimeView);
-        final ListView subaimsList = findViewById(R.id.subaimsListView);
+        header = getLayoutInflater().inflate(R.layout.aim_header, null);
+        avatarView = header.findViewById(R.id.avatarView);
+        descrView = findViewById(R.id.descrView);
+        deadlineDateView = header.findViewById(R.id.deadlineDateView);
+        deadlineTimeView = header.findViewById(R.id.deadlineTimeView);
+        subaimsList = findViewById(R.id.subaimsListView);
         registerForContextMenu(subaimsList);
 
         AimService aimService = ApiUtils.getAimService();
@@ -134,16 +143,30 @@ public class AimViewActivity extends BaseActivity {
         inflater.inflate(R.menu.aim_context, menu);
     }
 
-    /*@Override
+    @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int menuItemIndex = item.getItemId();
-        int aimId = (int) subaimsList.getChildAt(info.position).getTag();
+        View t = getViewByPosition(info.position, subaimsList);
+        int aimId = (int) t.findViewById(R.id.aimNameView).getTag();
         if (menuItemIndex == R.id.Edit) {
             Intent intent = new Intent(AimViewActivity.this, editAimActivity.class);
+            intent.putExtra(ListsActivity.LISTID, list_id);
             intent.putExtra(AimsActivity.AIMID, aimId);
             startActivity(intent);
         }
         return true;
-    }*/
+    }
+
+    public static View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
+    }
 }
