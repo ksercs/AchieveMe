@@ -30,6 +30,10 @@ public class AimFields {
         return is_completed;
     }
 
+    public void setIs_completed(boolean is_completed) {
+        this.is_completed = is_completed;
+    }
+
     public int getTime_to_do() {
         return time_to_do;
     }

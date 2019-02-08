@@ -20,7 +20,7 @@ from django.shortcuts import render_to_response
 from .forms import AimForm, ListForm, SubAimForm
 from django.core import serializers	
 
-from .models import Setting, Aim, List as ListModel
+from .models import Setting, Aim, Description, List as ListModel
 
 from django.http import JsonResponse
 import json
@@ -75,9 +75,13 @@ def api_aim(request, username, listid, aimid):
     data = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)
     subaims = serializers.serialize('json', Aim.objects.filter(parent_id=aimid),
                                     ensure_ascii=False, indent=2)
+    descr = serializers.serialize('json', Description.objects.filter(aim_id=aimid))
     aim_info = json.loads(data[2:-2])
     subaims_info = json.loads(subaims)
+    description = json.loads(descr)
     aim_info['subaims'] = subaims_info
+    aim_info['fields']['description'] = description[0] if description else {}
+        
     return JsonResponse(aim_info)
 
 def index(request):
