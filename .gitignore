@@ -7,5 +7,5 @@ AchieveMe/AchieveMe/__pycache__/*
 __pycache__
 *.pyc
 *.jpg
-AchieveMe/media/*
+AchieveMe/media/images/*
 !AchieveMe/media/images/cat.jpg
