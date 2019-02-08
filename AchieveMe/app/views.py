@@ -95,8 +95,8 @@ def signup(request):
             user = form.save(commit=False)
             user.is_active = False
             user.save()
-            setting = Setting(user_name=user.username)
-            setting.save()
+            setting = Setting.objects.create(user_name=user.username)
+#            setting.save()
             current_site = get_current_site(request)
             mail_subject = 'Активация аккаунта - AchieveMe'
             message = render_to_string('acc_active_email.html', {
