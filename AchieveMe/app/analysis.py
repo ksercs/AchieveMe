@@ -83,6 +83,8 @@ def number_in_digits(s):
 def goal_analysis(s):
     morph = pymorphy2.MorphAnalyzer()
     now = datetime.datetime.now()
+    if s == "":
+        return "", now     
     words = number_in_digits(s)
     N = len(words)
     # указываю текущее время
