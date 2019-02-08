@@ -76,8 +76,8 @@ def number_in_digits(s):
         else:
             new_words += [words[i]]
             flag = 0
-#    if new_words[-1][-1] == '.':
-#        new_words[-1] = new_words[-1][:-1]
+    if new_words[-1][-1] == '.':
+        new_words[-1] = new_words[-1][:-1]
     return new_words    
 
 def goal_analysis(s):
@@ -100,17 +100,17 @@ def goal_analysis(s):
            "апрель", "май", "июнь",
            "июль", "август", "сентябрь",
            "октябрь", "ноябрь",	"декабрь"]
-    mas_days = ["понедельнику", "вторнику", "среде", "четвергу", "пятнице", "субботе", "воскресенью"]
-    mas_days2 = ["понедельника", "вторника", "среды", "четверга", "пятницы", "субботы", "воскресенья"]
+    mas_days = ["понедельник", "вторник", "среда", "четверг", "пятница", "суббота", "воскресенье"]
     stack = []
     for i in range(N):
+        
         if words[i].lower() == "завтра":
             day += 2
             stack += [i]
         if words[i].lower() == "послезавтра":
             day += 3
             stack += [i]
-        if words[i].lower() == "к" or words[i].lower() == "ко"  or words[i].lower() == "до":
+        if words[i].lower() == "к" or words[i].lower() == "ко"  or words[i].lower() == "до" or words[i].lower() == "в" or words[i].lower() == "во" or words[i].lower() == "по":
           
             if (i + 3 < N):
                 w2 = morph.parse(words[i + 1])[0].normal_form
@@ -175,14 +175,11 @@ def goal_analysis(s):
                 specific_date = 1
               
             # к понедельнику
-            if words[i + 1].lower() in mas_days or words[i + 1].lower() in mas_days2:
+            w2 = morph.parse(words[i + 1])[0].normal_form
+            if w2 in mas_days:
                 mypush(stack, i, 2)
-                if words[i + 1].lower() in mas_days:
-                    while (day_week != mas_days.index(words[i + 1])):
-                        day_week = (day_week + 1) % 7
-                        day += 1
-                if words[i + 1].lower() in mas_days2:
-                    while (day_week != mas_days2.index(words[i + 1])):
+                if w2 in mas_days:
+                    while (day_week != mas_days.index(w2)):
                         day_week = (day_week + 1) % 7
                         day += 1
             # к ... дня
@@ -214,7 +211,7 @@ def goal_analysis(s):
             if conditions_through(i, "месяца", "месяцев", words):
                 mypush(stack, i, 3)               
                 month += int(words[i + 1])
-            if conditions_through(i, "год", "лет", words):
+            if conditions_through(i, "года", "лет", words):
                 mypush(stack, i, 3)                
                 year += int(words[i + 1])
             # через день/неделю/месяц/год
@@ -250,10 +247,10 @@ def goal_analysis(s):
     if start_year:
         result = datetime.datetime(a.year + start_year, 1, 1)
     elif specific_date:
-        if month < a.month or (a.month >= month and a.day < day):
-            result = datetime.datetime(a.year + 1, month, day)
+        if month < tod.month or (tod.month >= month and tod.day > day):
+            result = datetime.datetime(tod.year + 1, month, day)
         else:
-            result = datetime.datetime(a.year, month, day)
+            result = datetime.datetime(tod.year, month, day)
     elif start_month:
         if a.month + start_month >= 13:
             result = datetime.datetime(a.year + 1, (a.month + start_month) % 12, 1)
