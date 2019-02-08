@@ -240,21 +240,17 @@ def goal_analysis(s):
     if goal[-1][-1] != '.':
         goal[-1] = goal[-1] + '.'
     if start_year:
-        print(a.year + start_year, 1, 1)
+        result = datetime.datetime(a.year + start_year, 1, 1)
     elif specific_date:
         if month < a.month or (a.month >= month and a.day < day):
-            print(a.year + 1, month, day)
+            result = datetime.datetime(a.year + 1, month, day)
         else:
-            print(a.year, month, day)
+            result = datetime.datetime(a.year, month, day)
     elif start_month:
         if a.month + start_month >= 13:
-            print("Дедлайн:", a.year + 1, (a.month + start_month) % 12, 1)
+            result = datetime.datetime(a.year + 1, (a.month + start_month) % 12, 1)
         else:
-            print("Дедлайн:", a.year, a.month + start_month, 1)        
+            result = datetime.datetime(a.year, a.month + start_month, 1)
     else:   
-        print("Дедлайн:", a.year + year + (a.month + month) // 12, (a.month + month) % 12, a.day)
-    print("Цель:", ' '.join(goal), '\n')
-           
-s = input()         
-           
-goal_analysis(s)
+        result = datetime.datetime(a.year + year + (a.month + month) // 12, (a.month + month) % 12, a.day)
+    return ' '.join(goal), result
