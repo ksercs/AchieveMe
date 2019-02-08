@@ -35,7 +35,6 @@ import retrofit2.Response;
 
 public class AimViewActivity extends BaseActivity {
 
-    final ListView subaimsList = findViewById(R.id.subaimsListView);
 
     @Override
     int getContentViewId() {
@@ -67,7 +66,7 @@ public class AimViewActivity extends BaseActivity {
         final TextView descrView = findViewById(R.id.descrView);
         final TextView deadlineDateView = header.findViewById(R.id.deadlineDateView);
         final TextView deadlineTimeView = header.findViewById(R.id.deadlineTimeView);
-
+        final ListView subaimsList = findViewById(R.id.subaimsListView);
         registerForContextMenu(subaimsList);
 
         AimService aimService = ApiUtils.getAimService();
@@ -135,7 +134,7 @@ public class AimViewActivity extends BaseActivity {
         inflater.inflate(R.menu.aim_context, menu);
     }
 
-    @Override
+    /*@Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int menuItemIndex = item.getItemId();
@@ -146,5 +145,5 @@ public class AimViewActivity extends BaseActivity {
             startActivity(intent);
         }
         return true;
-    }
+    }*/
 }
