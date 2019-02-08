@@ -43,18 +43,15 @@ LOGIN_REDIRECT_URL = 'profile'
 LOGOUT_REDIRECT_URL = 'index'
 # Application definition
 
-EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
-
 INSTALLED_APPS = [
+    'app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'registration',
-	'app'
+	'registration'
 ]
 
 MIDDLEWARE = [
@@ -88,6 +85,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AchieveMe.wsgi.application'
 
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader', 
+    'django.template.loaders.app_directories.Loader', 
+    ) 
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
