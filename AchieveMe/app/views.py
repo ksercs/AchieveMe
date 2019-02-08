@@ -284,11 +284,11 @@ def editAimView(request, username, listid, pk):
     
 class deleteAimView(DeleteView):
     model = Aim
-    form_class = SubAimForm
+    form_class = AimForm
     
     def get_success_url(self):
-        parent = Aim.objects.get(id = self.object.parent_id)
-        return reverse ('subaim', kwargs={'username': parent.user_name, 'listid': parent.list_id, 'aimid': parent.id})
+        parent = Aim.objects.get(id = self.object.id)
+        return reverse ('aims', kwargs={'username': parent.user_name, 'listid': parent.list_id})
     
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
