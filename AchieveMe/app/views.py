@@ -89,7 +89,7 @@ def api_aim(request, username, listid, aimid):
         return JsonResponse(aim_info)
     
     if request.method == 'POST':
-        fields = json.loads(request.body.decode('utf-8')
+        fields = json.loads(request.body.decode('utf-8'))
         aim.name = fields['name']
         aim.deadlime = datetime.strptime(fields['date'] + ' ' + fields['time'], '%Y-%m-%d %H:%M:%S')
         try:
