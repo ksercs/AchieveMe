@@ -38,6 +38,9 @@ EMAIL_HOST_USER = 'ksercs0@gmail.com'
 EMAIL_HOST_PASSWORD = '181ASDcxz818'
 EMAIL_PORT = 587
 
+
+LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'index'
 # Application definition
 
 INSTALLED_APPS = [
