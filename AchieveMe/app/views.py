@@ -249,6 +249,27 @@ class deleteSubAimView(DeleteView):
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
 
+def editListView(request, username, pk):
+    lists = ListModel.objects.filter(user_name = username)
+    cur_list = ListModel.objects.get(id = pk)
+    vars = dict(
+        lists = lists,
+        form = ListForm(),
+        list_link = "/"+username+"/lists/"
+        )
+    if request.method == 'POST':
+        form = ListForm(request.POST)
+        if form.is_valid():
+            cur_list.user_name = request.user.username
+            cur_list.name = form.cleaned_data['name']
+            cur_list.save()
+            return HttpResponseRedirect("/"+username+"/lists/red_to_list")
+    else:
+        form = ListForm(instance = ListModel.objects.get(id = pk))
+ 
+    vars['form'] = form
+    return render(request, 'edit_list.html', vars)
+
 def editAimView(request, username, listid, pk):
     lists = ListModel.objects.filter(user_name = username)
     aims = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1)
