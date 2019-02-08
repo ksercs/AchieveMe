@@ -69,7 +69,6 @@ def api_aims(request, username, listid):
 @csrf_exempt
 def api_aim(request, username, listid, aimid):
     
-    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
             return HttpResponse(status=404)
     try:
