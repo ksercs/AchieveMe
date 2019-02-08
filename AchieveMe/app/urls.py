@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/(?P<aimid>\d+)$', views.AimDeepView, name = 'deep_aim'),
     url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/$',                        views.AimView,        name = 'aims'),
     url(r'^(?P<username>\w+)/lists/$',                                              views.AimListView,   name = 'lists'),
-	url(r'^settings/$', views.settings, name='settings'),	
+	url(r'^(?P<username>\w+)/settings/$', views.settings, name='settings'),	
 	url(r'^api/(?P<username>\w+)/lists/$', views.api_lists),
 	url(r'^api/(?P<username>\w+)/check_password/$', views.api_check_password),
 	url(r'^api/(?P<username>\w+)/(?P<listid>\d+)/$', views.api_aims),

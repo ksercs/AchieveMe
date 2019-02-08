@@ -9,7 +9,7 @@
                 {% for field in form%}
                     {{ field.label }}
                     {{ field }}
-                    {% if field.name == 'is_remind' or field.name == 'is_important' or field.name == 'time_to_do' %}
+                    {% if field.name == 'is_remind' or field.name == 'is_important' or field.name == 'time_to_do'%}
                         <br/>
                     {% endif %}
                 {% endfor%}
