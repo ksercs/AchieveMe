@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.timezone import now
 from django.urls import reverse
+from PIL import Image
 
 class Aim(models.Model):
     user_name  = models.CharField       (max_length = 120)
@@ -13,6 +14,13 @@ class Aim(models.Model):
     is_completed 	   = models.BooleanField  (default = 0)
     image = models.ImageField(upload_to='images/', default='images/cat.jpg')
     
+    def save(self, *args, **kwargs):
+        if self.image:
+            im = Image.open(self.image)
+            im.thumbnail((128, 128))
+            im.save(self.image, "JPEG")
+        super(Aim, self).save(*args, **kwargs)
+
     def get_absolute_url(self):
         if self.parent_id != -1:
             return reverse('subaim', args=[self.user_name, str(self.list_id), str(self.parent_id)])
