@@ -23,6 +23,10 @@
                      {% for list in lists %} 
                          <div class="row">
                             <a href="{{ list_link }}{{ list.id }}">{{ list.name }}</a>
+                            <div style = "float:left;">
+                                <a href="{{ .get_absolute_url }}{{ subaim.id }}/delete"><span style="font-size:15px;" class="glyphicon glyphicon-remove"></span></a>
+                                <a href="{{ list_link }}{{ list.id }}/edit"><span style="font-size:15px;" class="glyphicon glyphicon-pencil"></span></a>
+                            </div>
                          </div>
                      {% endfor %}
                     </ul>
@@ -43,7 +47,7 @@
                 {% for field in formA%}
                     {{ field.label }}
                     {{ field }}
-                    {% if field.name == 'is_remind' or field.name == 'is_important' or field.name == 'time_to_do' %}
+                    {% if field.name == 'is_remind' or field.name == 'is_important' %}
                         <br/>
                     {% endif %}
                 {% endfor%}
@@ -65,6 +69,8 @@
             </div>
             <div class="col-lg-9">
             <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a> {{aim.deadline}}
+                <a href="{{ .get_absolute_url }}{{ aim.id }}/edit"><span style="font-size:15px;" class="glyphicon glyphicon-pencil"></span></a>
+                <a href="{{ .get_absolute_url }}{{ aim.id }}/delete"><span style="font-size:15px;" class="glyphicon glyphicon-remove"></span></a>
             <br/>
             </div>
          </div>

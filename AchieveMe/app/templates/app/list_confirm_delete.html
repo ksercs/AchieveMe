@@ -3,7 +3,7 @@
 
 {% block content %}
 <form method="post">{% csrf_token %}
-    <p>Точно хочешь удалить подцель"{{ object.name }}"?</p>
+    <p>Точно хочешь удалить список"{{ object.name }}"?</p>
     <input type="submit" value="Да">
 </form>
 {% endblock %}
