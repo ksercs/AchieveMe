@@ -247,10 +247,10 @@ def goal_analysis(s):
     if start_year:
         result = datetime.datetime(a.year + start_year, 1, 1)
     elif specific_date:
-        if month < a.month or (a.month >= month and a.day < day):
-            result = datetime.datetime(a.year + 1, month, day)
+        if month < tod.month or (tod.month >= month and tod.day > day):
+            result = datetime.datetime(tod.year + 1, month, day)
         else:
-            result = datetime.datetime(a.year, month, day)
+            result = datetime.datetime(tod.year, month, day)
     elif start_month:
         if a.month + start_month >= 13:
             result = datetime.datetime(a.year + 1, (a.month + start_month) % 12, 1)
