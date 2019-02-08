@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,6 +34,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AimViewActivity extends BaseActivity {
+
+    final ListView subaimsList = findViewById(R.id.subaimsListView);
 
     @Override
     int getContentViewId() {
@@ -64,7 +67,7 @@ public class AimViewActivity extends BaseActivity {
         final TextView descrView = findViewById(R.id.descrView);
         final TextView deadlineDateView = header.findViewById(R.id.deadlineDateView);
         final TextView deadlineTimeView = header.findViewById(R.id.deadlineTimeView);
-        final ListView subaimsList = findViewById(R.id.subaimsListView);
+
         registerForContextMenu(subaimsList);
 
         AimService aimService = ApiUtils.getAimService();
@@ -130,5 +133,18 @@ public class AimViewActivity extends BaseActivity {
                                     ContextMenu.ContextMenuInfo menuInfo) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.aim_context, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        int aimId = (int) subaimsList.getChildAt(info.position).getTag();
+        if (menuItemIndex == R.id.Edit) {
+            Intent intent = new Intent(AimViewActivity.this, editAimActivity.class);
+            intent.putExtra(AimsActivity.AIMID, aimId);
+            startActivity(intent);
+        }
+        return true;
     }
 }
