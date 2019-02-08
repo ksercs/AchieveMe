@@ -76,8 +76,8 @@ def number_in_digits(s):
         else:
             new_words += [words[i]]
             flag = 0
-    if new_words[-1][-1] == '.':
-        new_words[-1] = new_words[-1][:-1]
+#    if new_words[-1][-1] == '.':
+#        new_words[-1] = new_words[-1][:-1]
     return new_words    
 
 def goal_analysis(s):

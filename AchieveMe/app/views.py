@@ -370,7 +370,11 @@ def SubAimView(request, username, listid, aimid):
     if request.method == 'POST' and 'parsebtn' in request.POST:
         formC = SubaimParsingForm(request.POST, request.FILES)
         if formC.is_valid():
-            text = formC.cleaned_data['text']
+            text = formC.cleaned_data['text'].split('\n')
+            for row in text:
+                name, deadline = goal_analysis(row)
+                aim = Aim(name = name, deadline = deadline, user_name = username, list_id = listid, parent_id = aimid)
+                aim.save()
 #            aim = form.save(commit = False)
 #            aim.user_name = username
 #            list = ListModel.objects.get(id = listid)
