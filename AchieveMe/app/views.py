@@ -35,6 +35,7 @@ from django.urls import reverse
 
 from .google_calendar_interaction import calendar_authorization, add_to_calendar
 
+from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 
 def validate(username, password):
@@ -91,7 +92,7 @@ def api_aim(request, username, listid, aimid):
     if request.method == 'POST':
         fields = json.loads(request.body.decode('utf-8'))
         aim.name = fields['name']
-        aim.deadlime = datetime.strptime(fields['date'] + ' ' + fields['time'], '%Y-%m-%d %H:%M:%S')
+        aim.deadline = datetime.strptime(fields['date'] + ' ' + fields['time'], '%Y-%m-%d %H:%M:%S')
         try:
             descr = Description.objects.get(aim_id=aimid)
             descr.text = fields['description']
