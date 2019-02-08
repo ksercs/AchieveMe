@@ -23,7 +23,6 @@ def calendar_authorization(username):
 	if not creds or creds.invalid:
 		flow = client.flow_from_clientsecrets('app/client_secret.json', SCOPES)
 		creds = tools.run_flow(flow, store, flags)
-	 #discovery.build('calendar', 'v3', http=creds.authorize(Http()))
 
 
 def add_to_calendar(aim, Gmt):
@@ -39,12 +38,5 @@ def add_to_calendar(aim, Gmt):
 		'start': {'dateTime': str(start_time).replace(' ', 'T')},
 		'end': {'dateTime': str(aim.deadline).replace(' ', 'T')},
 	}
-	print(str(start_time).replace(' ', 'T'))
-	print(str(aim.deadline).replace(' ', 'T'))
 
 	e = GCAL.events().insert(calendarId='primary', sendNotifications=True, body=EVENT).execute()
-	print(e)
-	print('''*** %r event added:
-    	Start: %s
-    	End:   %s''' % (e['summary'].encode('utf-8'),
-        e['start']['dateTime'], e['end']['dateTime']))
