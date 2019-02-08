@@ -1,19 +1,13 @@
 package com.example.achieveme.model.Aims;
 
-import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
-public class AimRes {
 
-    @SerializedName("pk")
-    private int aim_id;
+public class AimRes extends SubAimRes {
 
-    private AimFields fields;
+    private List<SubAimRes> subaims;
 
-    public AimFields getFields() {
-        return fields;
-    }
-
-    public int getId() {
-        return aim_id;
+    public List<SubAimRes> getSubaims() {
+        return subaims;
     }
 }

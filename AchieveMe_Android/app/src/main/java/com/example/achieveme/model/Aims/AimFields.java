@@ -6,7 +6,7 @@ public class AimFields {
     private String deadline;
     private boolean is_imortant;
     private boolean is_remind;
-    private boolean is_made;
+    private boolean is_completed;
     private int time_to_do;
     private String image;
 
@@ -26,8 +26,12 @@ public class AimFields {
         return is_remind;
     }
 
-    public boolean isIs_made() {
-        return is_made;
+    public boolean isIs_completed() {
+        return is_completed;
+    }
+
+    public void setIs_completed(boolean is_completed) {
+        this.is_completed = is_completed;
     }
 
     public int getTime_to_do() {
@@ -37,4 +41,5 @@ public class AimFields {
     public String getImage() {
         return image;
     }
+
 }

@@ -5,14 +5,14 @@
     <div class="row"> 
 
         <h1>Списки:</h1>
-                <form method="POST">
-                    {% csrf_token %}
-                    {% for field in form %}
-                        {%if field != label%}
-                            {{ field }}
-                        {% endif %}
-                    {% endfor %}
-                </form>
+            <form method="POST">
+                {% csrf_token %}
+                {% for field in form %}
+                    {%if field != label%}
+                        {{ field }}
+                    {% endif %}
+                {% endfor %}
+            </form>
         
         <div class="row" style = "line-height:30px;">
             <div>
@@ -21,7 +21,7 @@
                     <ul>
                      {% for list in lists %} 
                          <div class="row">
-                            <a href="{{ list.get_absolute_url }}{{list.id}}">{{ list.name }}</a>
+                            <a href = "{{list_link}}{{list.id}}" >{{ list.name }}</a>
                          </div>
                      {% endfor %}
                     </ul>
@@ -33,5 +33,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %} 

@@ -2,6 +2,7 @@ package com.example.achieveme.remote;
 
 
 import com.example.achieveme.model.Aims.AimRes;
+import com.example.achieveme.model.Aims.SubAimRes;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

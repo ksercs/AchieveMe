@@ -2,23 +2,57 @@
 {% load staticfiles %}
 
 {% block content %}
+<div style = "float:left;padding-left:30px;">
+    <div class="row"> 
 
-	<div class="col-sm-5" style = "line-height:30   px;padding-top:40px;padding-right:150px;float:right;">
+        <h1>Списки:</h1>
+                <form method="POST">
+                    {% csrf_token %}
+                    {% for field in formB %}
+                        {%if field != label%}
+                            {{ field }}
+                        {% endif %}
+                    {% endfor %}
+                </form>
+        
+        <div class="row" style = "line-height:30px;">
+            <div>
+                <div>
+                    {% if lists %}
+                    <ul>
+                     {% for list in lists %} 
+                         <div class="row">
+                            <a href="{{ list_link }}{{ list.id }}">{{ list.name }}</a>
+                         </div>
+                     {% endfor %}
+                    </ul>
+                    {% else %}
+                      <p>Списков нет :(</p>
+                    {% endif %}      
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+	<div  style = "line-height:30px;padding-top:20px;padding-right:30px;float:right;">
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
-                {% for field in form%}
+                {% for field in formA%}
                     {{ field.label }}
                     {{ field }}
-                    {% if field.name == 'is_remind' or field.name == 'is_important' or field.name == 'time_to_do'%}
+                    {% if field.name == 'is_remind' or field.name == 'is_important' %}
                         <br/>
                     {% endif %}
                 {% endfor%}
                 <br>
-                <button type="submit" class="btn btn-primary">Создать</button>
+                <button type="submit" name = "aimbtn" class="btn btn-primary">Создать</button>
             </form>
     </div>
     
-    <div class="col-sm-5" style = "float:left;padding-left:10px;">
+    <div class="col-sm-5" style = "float:left;padding-left:30px;">
     <h1>{{listname}}:</h1>
 
     {% if aims %}
@@ -31,6 +65,8 @@
             </div>
             <div class="col-lg-9">
             <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a> {{aim.deadline}}
+                <a href="{{ .get_absolute_url }}{{ aim.id }}/edit"><span style="font-size:15px;" class="glyphicon glyphicon-pencil"></span></a>
+                <a href="{{ .get_absolute_url }}{{ aim.id }}/delete"><span style="font-size:15px;" class="glyphicon glyphicon-remove"></span></a>
             <br/>
             </div>
          </div>
@@ -39,7 +75,9 @@
 
     </ul>
     {% else %}
+    <div style = "padding-left:10px;">
       <p>Список пуст :((</p>
+    </div>
     {% endif %}       
     </div>
 {% endblock %}
