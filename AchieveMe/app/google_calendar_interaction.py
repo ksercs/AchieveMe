@@ -14,6 +14,7 @@ try:
 	flags = tools.argparser.parse_args([])
 except ImportError:
 	flags = None
+flags.noauth_local_webserver = True
 
 def calendar_authorization(username):
 	store = open('app/static/secret_data/' + username +'.json', 'w')

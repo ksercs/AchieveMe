@@ -41,4 +41,6 @@ class File(models.Model):
     description_id = models.IntegerField(default = 0)
     comment_id = models.IntegerField  (default = 0)
     name = models.FileField(upload_to='images/', default = "")
-
+    
+class Text(models.Model):
+    text = models.TextField(default = "")

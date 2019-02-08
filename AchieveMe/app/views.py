@@ -17,10 +17,11 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import render_to_response
 
-from .forms import AimForm, ListForm, SubAimForm
+from .forms import AimForm, ListForm, SubAimForm, SubaimParsingForm
 from django.core import serializers	
 
 from .models import Setting, Aim, Description, List as ListModel
+from .analysis import *
 from django.http import JsonResponse
 import json
 
@@ -117,10 +118,7 @@ def signup(request):
 
 def profile_redirect(request):
     return HttpResponsePermanentRedirect("/profile/")
-    
-def redirect_to_subaim(request, username, listid, aimid):
-    return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid + '/' + aimid)
-    
+
 def redirect_to_aim(request, username, listid, aimid):
     return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid+'/'+aimid)
     
@@ -235,7 +233,7 @@ def editSubAimView(request, username, listid, aimid, pk):
             cur_subaim.list_id = listid
             cur_subaim.parent_id = aimid
             cur_subaim.save()
-            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_subaim")
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
     else:
         form = SubAimForm(instance = Aim.objects.get(id = pk))
 	
@@ -338,13 +336,14 @@ def SubAimView(request, username, listid, aimid):
         listname = list.name,
         formA = SubAimForm(),
         formB = ListForm(),
+        formC = SubaimParsingForm(),
         list_link = "/"+username+"/lists/"
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:
-        form = SubAimForm(request.POST, request.FILES)
-        if form.is_valid():
-            aim = form.save(commit = False)
+        formA= SubAimForm(request.POST, request.FILES)
+        if formA.is_valid():
+            aim = formA.save(commit = False)
             aim.user_name = username
             list = ListModel.objects.get(id = listid)
             aim.list_id = listid
@@ -352,18 +351,35 @@ def SubAimView(request, username, listid, aimid):
             aim.save()
             return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
     else:
-        form = SubAimForm()
+        formA = SubAimForm()
+        
+    if request.method == 'POST' and 'parsebtn' in request.POST:
+        formC = SubaimParsingForm(request.POST, request.FILES)
+        if formC.is_valid():
+            text = formC.cleaned_data['text']
+#            aim = form.save(commit = False)
+#            aim.user_name = username
+#            list = ListModel.objects.get(id = listid)
+#            aim.list_id = listid
+#            aim.parent_id = aimid
+#            aim.save()
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
+    else:
+        formC = SubaimParsingForm()
         
     if request.method == 'POST':   
-        form = ListForm(request.POST)
-        if form.is_valid():
-            list = form.save(commit = False)
+        formB = ListForm(request.POST)
+        if formB.is_valid():
+            list = formB.save(commit = False)
             list.user_name = request.user.username
             list.save()
             return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
     else:
-        form = ListForm()
+        formB = ListForm()
 
+    vars['formA'] = formA
+    vars['formB'] = formB
+    vars['formC'] = formC
     return render(request, 'deep_aim.html', vars)
 
 def settings(request, username):

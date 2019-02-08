@@ -17,7 +17,6 @@ urlpatterns = [
 	url(r'^signup/$', views.signup, name='signup'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate, name='activate'),
-	url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/(?P<aimid>\d+)/red_to_subaim$', views.redirect_to_subaim, name = 'red_to_subaim'),
     url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/red_to_aimlist$', views.redirect_to_aimlist, name='redirect_to_aimlist'),
     url(r'^(?P<username>\w+)/lists/(?P<listid>\d+)/(?P<aimid>\d+)/red_to_aim$', views.redirect_to_aim, name='redirect_to_aim'),
     url(r'^(?P<username>\w+)/lists/red_to_list$', views.redirect_to_list, name='redirect_to_list'),
