@@ -7,4 +7,10 @@
     <string name="edit_passw">Password</string>
     <string name="button_login">login</string>
     <string name="action_settings">Новый список</string>
+
+    <string-array name="menu">
+        <item>Edit</item>
+        <item>Delete</item>
+        <item>Send</item>
+    </string-array>
 </resources>

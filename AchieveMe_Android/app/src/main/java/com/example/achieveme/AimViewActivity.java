@@ -4,6 +4,9 @@ package com.example.achieveme;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -58,10 +61,11 @@ public class AimViewActivity extends BaseActivity {
 
         final View header = getLayoutInflater().inflate(R.layout.aim_header, null);
         final ImageView avatarView = header.findViewById(R.id.avatarView);
-        //TextView descrView = findViewById(R.id.descrView);
+        final TextView descrView = findViewById(R.id.descrView);
         final TextView deadlineDateView = header.findViewById(R.id.deadlineDateView);
         final TextView deadlineTimeView = header.findViewById(R.id.deadlineTimeView);
         final ListView subaimsList = findViewById(R.id.subaimsListView);
+        registerForContextMenu(subaimsList);
 
         AimService aimService = ApiUtils.getAimService();
         Call<AimRes> call = aimService.aimInfo(username, list_id, aim_id, password);
@@ -80,12 +84,13 @@ public class AimViewActivity extends BaseActivity {
                         Toast.makeText(AimViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
 
+                    //descrView.setText();
+
                     new AsyncTaskLoadImage(avatarView).execute(ApiUtils.BASE_URL + "media/" + aim.getFields().getImage());
 
                     subaimsList.addHeaderView(header);
                     List<SubAimRes> subaims = aim.getSubaims();
                     subaimsList.setAdapter(new SubAimsAdapter(AimViewActivity.this, subaims));
-
                 } else {
                     SharedPreferences.Editor edit = creds.edit();
                     edit.clear();
@@ -104,6 +109,13 @@ public class AimViewActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_subaims, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -111,5 +123,12 @@ public class AimViewActivity extends BaseActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.aim_context, menu);
     }
 }
