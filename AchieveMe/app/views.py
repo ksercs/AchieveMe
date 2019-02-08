@@ -21,7 +21,6 @@ from .forms import AimForm, ListForm, SubAimForm
 from django.core import serializers	
 
 from .models import Setting, Aim, Description, List as ListModel
-
 from django.http import JsonResponse
 import json
 
@@ -32,6 +31,8 @@ from django.template import RequestContext
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.urls import reverse
+
+from .google_calendar_interaction import calendar_authorization, add_to_calendar
 
 
 def validate(username, password):
@@ -94,7 +95,7 @@ def signup(request):
             user = form.save(commit=False)
             user.is_active = False
             user.save()
-            setting = Setting(user_name=request.user.username)
+            setting = Setting(user_name=user.username)
             setting.save()
             current_site = get_current_site(request)
             mail_subject = 'Активация аккаунта - AchieveMe'
@@ -186,6 +187,9 @@ def AimView(request, username, listid):
             list = ListModel.objects.get(id = listid)
             aim.list_id= list.id
             aim.save()
+            setting = Setting.objects.get(user_name = username)
+            if setting.google_sync:# and aim.parent_id != -1:
+                add_to_calendar(aim, setting.Gmt)
             return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
     else:
         form = AimForm()
@@ -354,12 +358,17 @@ def SubAimView(request, username, listid, aimid):
 
     return render(request, 'deep_aim.html', vars)
 
-def settings(request):
+def settings(request, username):
     if request.method == 'POST':
         form = SettingForm(request.POST)
         if form.is_valid():
             setting = form.save(commit = False)
+            setting.user_name = username
+            Setting.objects.get(user_name = username).delete()
             setting.save()
+            if setting.google_sync:
+                calendar_authorization(username)
+
     else:
         form = SettingForm()
     return render(request, 'settings.html', {'form': form})
