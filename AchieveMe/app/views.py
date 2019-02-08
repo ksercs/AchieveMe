@@ -378,7 +378,7 @@ def settings(request, username):
                 calendar_authorization(username)
 
     else:
-        form = SettingForm()
+        form = SettingForm(instance = Setting.objects.get(user_name = username))
     return render(request, 'settings.html', {'form': form})
 
 
