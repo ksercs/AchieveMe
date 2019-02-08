@@ -36,7 +36,7 @@ public class AimsAdapter extends ArrayAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View row = convertView;
         if (row == null) {
@@ -56,8 +56,10 @@ public class AimsAdapter extends ArrayAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    values.get(position).getFields().setIs_completed(true);
                     textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 } else {
+                    values.get(position).getFields().setIs_completed(false);
                     textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 }
             }
@@ -78,6 +80,7 @@ public class AimsAdapter extends ArrayAdapter {
 
         new AsyncTaskLoadImage(avatarView).execute(ApiUtils.BASE_URL + "media/" + item.getFields().getImage());
 
+        row.setOnCreateContextMenuListener(null);
         return row;
     }
 }

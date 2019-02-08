@@ -36,7 +36,7 @@ public class SubAimsAdapter extends ArrayAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View row = convertView;
         if (row == null) {
@@ -55,8 +55,10 @@ public class SubAimsAdapter extends ArrayAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+                    values.get(position).getFields().setIs_completed(true);
                     textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 } else {
+                    values.get(position).getFields().setIs_completed(false);
                     textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 }
             }
@@ -74,7 +76,7 @@ public class SubAimsAdapter extends ArrayAdapter {
         } catch (ParseException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
+        row.setOnCreateContextMenuListener(null);
         return row;
     }
 }

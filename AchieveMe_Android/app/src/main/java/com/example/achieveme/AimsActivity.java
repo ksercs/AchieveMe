@@ -3,7 +3,9 @@ package com.example.achieveme;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,7 +13,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.achieveme.model.Aims.AimRes;
 import com.example.achieveme.model.Aims.AimsAdapter;
 import com.example.achieveme.model.Aims.SubAimRes;
 import com.example.achieveme.remote.AimsListService;
@@ -28,6 +29,7 @@ public class AimsActivity extends BaseActivity {
     public static final String AIMID = "com.example.achieveme.AIMID";
     public static final String AIMNAME = "com.example.achieveme.AIMNAME";
     private int list_id;
+    List<SubAimRes> aims;
 
     @Override
     int getContentViewId() {
@@ -48,7 +50,7 @@ public class AimsActivity extends BaseActivity {
         list_id = intent.getIntExtra(ListsActivity.LISTID, 0);
 
         final ListView listView = findViewById(R.id.aimsListView);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        registerForContextMenu(listView);
 
         final SharedPreferences creds = getSharedPreferences("creds", MODE_PRIVATE);
         String username = creds.getString(LoginActivity.USERNAME, null);
@@ -61,7 +63,7 @@ public class AimsActivity extends BaseActivity {
             @Override
             public void onResponse(Call<List<SubAimRes>> call, Response<List<SubAimRes>> response) {
                 if (response.isSuccessful()) {
-                    List<SubAimRes> aims = response.body();
+                    aims = response.body();
                     listView.setAdapter(new AimsAdapter(AimsActivity.this, aims));
                 } else {
                     SharedPreferences.Editor edit = creds.edit();
@@ -96,7 +98,7 @@ public class AimsActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_aims, menu);
         return true;
     }
 
@@ -125,4 +127,24 @@ public class AimsActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.aim_context, menu);
+    }
+
+    /*@Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        String[] menuItems = getResources().getStringArray(R.array.menu);
+        String menuItemName = menuItems[menuItemIndex];
+        String listItemName = Countries[info.position];
+
+        TextView text = (TextView) findViewById(R.id.footer);
+        text.setText(String.format("Selected %s for item %s", menuItemName, listItemName));
+        return true;
+    }*/
 }
