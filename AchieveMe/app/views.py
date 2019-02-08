@@ -236,7 +236,7 @@ def editSubAimView(request, username, listid, aimid, pk):
         form = SubAimForm(instance = Aim.objects.get(id = pk))
 	
     vars['formA'] = form
-    return render(request, 'app/aim_form.html', vars)
+    return render(request, 'edit_subaim.html', vars)
     
 class deleteSubAimView(DeleteView):
     model = Aim
@@ -253,7 +253,7 @@ def editAimView(request, username, listid, pk):
     lists = ListModel.objects.filter(user_name = username)
     aims = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1)
     list = ListModel.objects.get(id = listid)
-    cur_aim = Aim.objects.get(id == pk)
+    cur_aim = Aim.objects.get(id = pk)
     vars = dict(
         lists = lists,
         aims = aims,
@@ -266,19 +266,21 @@ def editAimView(request, username, listid, pk):
     if request.method == 'POST' and 'aimbtn' in request.POST:
         form = AimForm(request.POST, request.FILES)
         if form.is_valid():
-            aim.user_name = username
-            cur_subaim.name = form.cleaned_data['name']
-            cur_subaim.deadline = form.cleaned_data['deadline']
-            cur_subaim.is_important = form.cleaned_data['is_important']
-            cur_subaim.is_remind = form.cleaned_data['is_remind']
+            cur_aim.user_name = username
+            cur_aim.name = form.cleaned_data['name']
+            cur_aim.deadline = form.cleaned_data['deadline']
+            cur_aim.is_important = form.cleaned_data['is_important']
+            cur_aim.is_remind = form.cleaned_data['is_remind']
+            cur_aim.image = form.cleaned_data['image']
             list = ListModel.objects.get(id = listid)
-            aim.list_id= list.id
-            aim.save()
+            cur_aim.list_id= list.id
+            cur_aim.save()
             return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
     else:
-        form = AimForm()
+        form = AimForm(instance = Aim.objects.get(id = pk))
         
-    return render(request, 'aims.html', vars)
+    vars['formA'] = form
+    return render(request, 'edit_aim.html', vars)
     
 class deleteAimView(DeleteView):
     model = Aim
