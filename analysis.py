@@ -155,7 +155,7 @@ def goal_analysis(s):
                 stack += [i]
                 
             if words[i + 1].lower() == "завтрашнему":
-                mypush3(stack, i)
+                mypush(stack, i, 3)
                 day += 1
                 
             # к первому декабря
