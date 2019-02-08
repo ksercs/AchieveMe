@@ -8,3 +8,4 @@ __pycache__
 *.pyc
 *.jpg
 AchieveMe/media/*
+!AchieveMe/media/images/cat.jpg
