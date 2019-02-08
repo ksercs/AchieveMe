@@ -11,10 +11,16 @@
       		{{ form.Gmt }}
   		</div>
 	</div>
-	<div class="text-left" style="text-align: center;">
+	<div class="text-left" style="text-align: left;">
 		<label>Уведомление</label>
 		<div class="form-group col-md-1">
       		{{ form.is_notification_to_email }}
+      	</div>
+	</div>
+	<div class="text-left" style="text-align: left;">
+		<label>Синхронизация с Google Calendar</label>
+		<div class="form-group col-md-1">
+      		{{ form.google_sync }}
       	</div>
 	</div>
 	<div class="text-centre">

@@ -78,10 +78,12 @@ class ListForm(forms.ModelForm):
 class SettingForm(forms.ModelForm):
     class Meta:
         model = Setting
-        fields = ('Gmt', 'is_notification_to_email')
+        fields = ('Gmt', 'is_notification_to_email', 'google_sync')
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['Gmt'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Часовой пояс'})
         self.fields['is_notification_to_email'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Высылать уведомления', 'style' : 'width:20px;height:20px;'})
+        self.fields['google_sync'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Синхронизация', 'style' : 'width:20px;height:20px;'})
