@@ -262,5 +262,3 @@ def goal_analysis(s):
     else:   
         result = datetime.datetime(a.year + year + (a.month + month) // 12, (a.month + month) % 12, a.day)
     return ' '.join(goal), result
-
-print(goal_analysis("певрвая строка 10 февраля"))
