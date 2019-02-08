@@ -52,7 +52,7 @@
             {% for field in formA%}
                 {{ field.label }}
                 {{ field }}
-                {% if field.name == 'is_remind' or field.name == 'is_important' or field.name == 'time_to_do' %}
+                {% if field.name == 'is_remind' or field.name == 'is_important' %}
                     <br/>
                 {% endif %}
             {% endfor%}
@@ -61,14 +61,14 @@
     </div>
     
     
-    <div class="col-sm-9" style = "padding-left:200px;">
+    <div class="col-sm-9" style = "padding-left:5px;">
     {% if subaims %}
         <ul>
              {% for subaim in subaims %}
                  <div class="row">
                         {{ subaim.name }} {{subaim.deadline}}
-                        <a href="{{ .get_absolute_url }}{{ subaim.id }}/edit"><span style="font-size:15px;" class="pull-right glyphicon glyphicon-pencil"></span></a>
-                        <a href="{{ .get_absolute_url }}{{ subaim.id }}/delete"><span style="font-size:15px;" class="pull-right glyphicon glyphicon-remove"></span></a>
+                        <a href="{{ .get_absolute_url }}{{ subaim.id }}/edit"><span style="font-size:15px;" class="glyphicon glyphicon-pencil"></span></a>
+                        <a href="{{ .get_absolute_url }}{{ subaim.id }}/delete"><span style="font-size:15px;" class="glyphicon glyphicon-remove"></span></a>
                  </div>
              {% endfor %}
         </ul>

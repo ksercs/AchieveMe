@@ -1,9 +1,75 @@
 {% extends "base.html" %}
-{% load staticfiles %}
 
 {% block content %}
-    <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Обновить">
-    </form>
+    <div style = "float:left;padding-left:30px;">
+        <div class="row"> 
+
+            <h1>Списки:</h1>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {% for field in formB %}
+                            {%if field != label%}
+                                {{ field }}
+                            {% endif %}
+                        {% endfor %}
+                    </form>
+            
+            <div class="row" style = "line-height:30px;">
+                <div>
+                    <div>
+                        {% if lists %}
+                        <ul>
+                         {% for list in lists %} 
+                             <div class="row">
+                                <a href="{{ list_link }}{{ list.id }}">{{ list.name }}</a>
+                             </div>
+                         {% endfor %}
+                        </ul>
+                        {% else %}
+                          <p>Списков нет :(</p>
+                        {% endif %}      
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-sm-5" style = "float:left;padding-left:30px;">
+        <h1>{{ listname }}</h1>
+        <h2>{{ aim.name }}</h2>
+        <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "30%" height = "30%">
+        <br/>
+        Дедлайн: {{aim.deadline}}
+        <br/>
+        Время на выполнение: {{aim.time_to_do}} минуты
+        <br/>
+        <br/>
+    </div>
+
+     <div  style = "line-height:30px;padding-top:20px;padding-right:30px;float:right;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in formA%}
+                {{ field.label }}
+                {{ field }}
+                {% if field.name == 'is_remind' or field.name == 'is_important' %}
+                    <br/>
+                {% endif %}
+            {% endfor%}
+            <button type="submit" name = "aimbtn" class="btn btn-primary">Обновить</button>
+        </form>
+    </div>
+    
+    
+    <div class="col-sm-9" style = "padding-left:5px;">
+    {% if subaims %}
+        <ul>
+             {% for subaim in subaims %}
+                 <div class="row">
+                        {{ subaim.name }} {{subaim.deadline}}
+                 </div>
+             {% endfor %}
+        </ul>
+    {% endif %}
+    </div>
 {% endblock %}

@@ -116,9 +116,12 @@ def profile_redirect(request):
 def redirect_to_subaim(request, username, listid, aimid):
     return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid + '/' + aimid)
     
-def redirect_to_aim(request, username, listid):
-    return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid)
+def redirect_to_aim(request, username, listid, aimid):
+    return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid+'/'+aimid)
     
+def redirect_to_aimlist(request, username, listid):
+    return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid)
+
 def redirect_to_list(request, username):
     return HttpResponsePermanentRedirect("/"+username+"/lists/")
 
@@ -179,7 +182,7 @@ def AimView(request, username, listid):
             list = ListModel.objects.get(id = listid)
             aim.list_id= list.id
             aim.save()
-            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
     else:
         form = AimForm()
         
@@ -189,15 +192,47 @@ def AimView(request, username, listid):
             list = form.save(commit = False)
             list.user_name = request.user.username
             list.save()
-            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")#"/"+username+"/lists/red_to_list")
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
     else:
         form = ListForm()
 
     return render(request, 'aims.html', vars)
 
-class editSubAimView(UpdateView):
-    model = Aim
-    form_class = SubAimForm
+def editSubAimView(request, username, listid, aimid, pk):
+    parent = Aim.objects.get(id = aimid)
+    lists = ListModel.objects.filter(user_name = username)
+    list = ListModel.objects.get(id = listid)
+    subaims = Aim.objects.filter(parent_id = aimid)
+    cur_subaim = Aim.objects.get(id = pk)
+    
+    vars = dict(
+        subaims = subaims,
+        lists = lists,
+        aim = parent,
+        listname = list.name,
+        formA = SubAimForm(),
+        formB = ListForm(),
+        list_link = "/"+username+"/lists/"
+        )
+
+    if request.method == 'POST' and 'aimbtn' in request.POST:
+        form = SubAimForm(request.POST, request.FILES)
+        if form.is_valid():
+            cur_subaim.user_name = username
+            cur_subaim.name = form.cleaned_data['name']
+            cur_subaim.deadline = form.cleaned_data['deadline']
+            cur_subaim.is_important = form.cleaned_data['is_important']
+            cur_subaim.is_remind = form.cleaned_data['is_remind']
+            list = ListModel.objects.get(id = listid)
+            cur_subaim.list_id = listid
+            cur_subaim.parent_id = aimid
+            cur_subaim.save()
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_subaim")
+    else:
+        form = SubAimForm(instance = Aim.objects.get(id = pk))
+	
+    vars['formA'] = form
+    return render(request, 'app/aim_form.html', vars)
     
 class deleteSubAimView(DeleteView):
     model = Aim
@@ -234,7 +269,7 @@ def SubAimView(request, username, listid, aimid):
             aim.list_id = listid
             aim.parent_id = aimid
             aim.save()
-            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_subaim")
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
     else:
         form = SubAimForm()
         
@@ -244,7 +279,7 @@ def SubAimView(request, username, listid, aimid):
             list = form.save(commit = False)
             list.user_name = request.user.username
             list.save()
-            return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aim")
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
     else:
         form = ListForm()
 
