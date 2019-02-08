@@ -25,7 +25,7 @@ SECRET_KEY = '-lmtg#pk#2ngm$4_9a5mv0w$j&_5kh@-8qh$hg-5v(@6tv_ils'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.23.74.12', '127.0.0.1', '192.168.43.208']
+ALLOWED_HOSTS = ['10.23.74.12', '127.0.0.1', '192.168.43.208', '10.23.74.48']
 
 ACCOUNT_ACTIVATION_DAYS = 7
 AUTH_USER_EMAIL_UNIQUE = True

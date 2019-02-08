@@ -1,6 +1,7 @@
 package com.example.achieveme.remote;
 
 
+import com.example.achieveme.model.Aims.Aim;
 import com.example.achieveme.model.Aims.AimRes;
 import com.example.achieveme.model.Aims.SubAimRes;
 import com.example.achieveme.model.Aims.newAimInfo;
@@ -19,4 +20,11 @@ public interface AimService {
                            @Path("list_id") int list_id,
                            @Path("aim_id") int aim_id,
                            @Header("PASSWORD") String password);
+
+    @POST("/api/{username}/{list_id}/{aim_id}/")
+    Call<Aim> editAim(@Path("username") String username,
+                          @Path("list_id") int list_id,
+                          @Path("aim_id") int aim_id,
+                          @Header("PASSWORD") String password,
+                          @Body Aim aim);
 }
