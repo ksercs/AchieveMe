@@ -27,8 +27,8 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:ems="10"
+        android:hint="Дело"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -53,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:hint="ГГГГ-ММ-ДД"
             android:inputType="date" />
 
         <EditText
@@ -61,6 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:hint="ЧЧ-ММ-СС"
             android:inputType="time" />
     </LinearLayout>
 
@@ -75,6 +77,8 @@
         android:layout_marginRight="8dp"
         android:layout_marginBottom="16dp"
         android:ems="10"
+        android:gravity="top"
+        android:hint="Описание"
         android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/editButton"
         app:layout_constraintEnd_toEndOf="parent"

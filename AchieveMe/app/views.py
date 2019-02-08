@@ -59,13 +59,27 @@ def api_lists(request, username):
                                 ensure_ascii=False, indent=2)
     return HttpResponse(data, content_type='application/json')
 
+@csrf_exempt
 def api_aims(request, username, listid):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
         return HttpResponse(status=404)
     
-    data = serializers.serialize('json', Aim.objects.filter(user_name=username, list_id=int(listid), parent_id=-1),
-                                 ensure_ascii=False, indent=2)
-    return HttpResponse(data, content_type='application/json')
+    if request.method == 'GET':
+        data = serializers.serialize('json', Aim.objects.filter(user_name=username, list_id=int(listid), parent_id=-1),
+                                    ensure_ascii=False, indent=2)
+        return HttpResponse(data, content_type='application/json')
+    if request.method == 'POST':
+        fields = json.loads(request.body.decode('utf-8'))
+            
+        aim = Aim(user_name=username, list_id=listid, parent_id=fields['parent_id'], name=fields['name'],
+            deadline=datetime.strptime(fields['date'] + ' ' + fields['time'], '%Y-%m-%d %H:%M:%S'))
+        aim.save()
+        aim = Aim.objects.filter(user_name=username).last()
+        descr = Description(aim_id=aim.id, text=fields['description'])
+        descr.save()
+        response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
+        return HttpResponse(response)
+        
 
 @csrf_exempt
 def api_aim(request, username, listid, aimid):
@@ -86,10 +100,16 @@ def api_aim(request, username, listid, aimid):
         subaims_info = json.loads(subaims)
         description = json.loads(descr)
         aim_info['subaims'] = subaims_info
-        aim_info['fields']['description'] = description[0] if description else {}
+        aim_info['fields']['description'] = description[0] if description else {"fields" : {"text": ""}}
         return JsonResponse(aim_info)
     
+    response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
     if request.method == 'POST':
+        if not request.body:
+            aim.is_completed = not aim.is_completed
+            aim.save()
+            return HttpResponse(response)
+            
         fields = json.loads(request.body.decode('utf-8'))
         aim.name = fields['name']
         aim.deadline = datetime.strptime(fields['date'] + ' ' + fields['time'], '%Y-%m-%d %H:%M:%S')
@@ -98,11 +118,14 @@ def api_aim(request, username, listid, aimid):
             descr.text = fields['description']
             descr.save()
         except Description.DoesNotExist:
-            pass
+            descr = Description(aim_id=aimid, text=fields['description'])
+            descr.save()
         aim.save()
-        
-        response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)
-        return HttpResponse(response[2:-2])
+        return HttpResponse(response)
+    
+    if request.method == 'DELETE':
+        aim.delete()
+        return HttpResponse(response)
 
 def index(request):
     return render(request, 'index.html')

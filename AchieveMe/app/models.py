@@ -18,7 +18,7 @@ class Aim(models.Model):
         if self.image:
             im = Image.open(self.image)
             im.thumbnail((128, 128))
-            im.save(self.image, "JPEG")
+            #im.save(self.image, "JPEG")
         super(Aim, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
