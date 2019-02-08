@@ -21,11 +21,7 @@
                     <ul>
                      {% for list in lists %} 
                          <div class="row">
-                                <a href = "{{list_link}}{{list.id}}" >{{ list.name }}</a>
-                            <div style = "float:left;">
-                                <a href="{{ .get_absolute_url }}{{ subaim.id }}/delete"><span style="font-size:15px;" class="glyphicon glyphicon-remove"></span></a>
-                                <a href="{{ .get_absolute_url }}{{list.id}}/edit"><span style="font-size:15px;" class="glyphicon glyphicon-pencil"></span></a>
-                            </div>
+                            <a href = "{{list_link}}{{list.id}}" >{{ list.name }}</a>
                          </div>
                      {% endfor %}
                     </ul>
