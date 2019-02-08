@@ -7,4 +7,9 @@
         android:orderInCategory="100"
         android:title="Удалить"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/Edit"
+        android:orderInCategory="100"
+        android:title="Редактировать"
+        app:showAsAction="never" />
 </menu>
