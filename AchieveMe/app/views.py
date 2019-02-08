@@ -35,6 +35,7 @@ from django.urls import reverse
 
 from .google_calendar_interaction import calendar_authorization, add_to_calendar
 
+from django.views.decorators.csrf import csrf_exempt
 
 def validate(username, password):
     try:
@@ -65,7 +66,10 @@ def api_aims(request, username, listid):
                                  ensure_ascii=False, indent=2)
     return HttpResponse(data, content_type='application/json')
 
+@csrf_exempt
 def api_aim(request, username, listid, aimid):
+    
+    authentication_classes = (CsrfExemptSessionAuthentication, BasicAuthentication)
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
             return HttpResponse(status=404)
     try:

@@ -230,6 +230,12 @@ def goal_analysis(s):
             if conditions_through0(i, words, "год"):
                 mypush(stack, i, 2)
                 year += 1
+        if i + 1 < N and words[i].isdigit() and morph.parse(words[i + 1])[0].normal_form in mas_month:
+                mypush(stack, i, 2)
+                day = int(words[i])
+                month = mas_month.index(morph.parse(words[i + 1])[0].normal_form) + 1
+                specific_date = 1
+            
     goal = []
     for i in range(len(words)):
         if i not in stack:
