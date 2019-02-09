@@ -16,7 +16,7 @@ public interface AnalysisService {
     Call<SubAimRes> voiceSubAim(
             @Path("username") String username,
             @Path("list_id") int list_id,
-            @Body AimAnalysis subaim,
+            @Body SubAimAnalysis subaim,
             @Header("PASSWORD") String password
     );
 
@@ -24,7 +24,7 @@ public interface AnalysisService {
     Call<SubAimRes> voiceAim(
             @Path("username") String username,
             @Path("list_id") String list_id,
-            @Body SubAimAnalysis aim,
+            @Body AimAnalysis aim,
             @Header("PASSWORD") String password
     );
 }

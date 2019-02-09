@@ -259,12 +259,22 @@ public class AimViewActivity extends BaseActivity {
                         public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
                             if (response.isSuccessful()) {
                                 SubAimRes new_subaim = response.body();
+                                subaims.add(new_subaim);
+                                adapter.notifyDataSetChanged();
+                                return;
+                            } else {
+                                SharedPreferences.Editor edit = creds.edit();
+                                edit.clear();
+                                edit.apply();
+                                Intent intent = new Intent(AimViewActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<SubAimRes> call, Throwable t) {
-
+                            Toast.makeText(AimViewActivity.this, t.getMessage(), Toast.LENGTH_SHORT);
                         }
                     });
                 }
