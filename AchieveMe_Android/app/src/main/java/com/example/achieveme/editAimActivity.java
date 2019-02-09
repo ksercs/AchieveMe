@@ -125,6 +125,7 @@ public class editAimActivity extends AppCompatActivity {
                 SubAimRes new_aim = response.body();
                 aim_id = new_aim.getId();
                 Intent intent = new Intent();
+                intent.putExtra("image", new_aim.getFields().getImage());
                 intent.putExtra("new_name", name.getText().toString());
                 intent.putExtra("new_date", date.getText().toString());
                 intent.putExtra("pos", pos);

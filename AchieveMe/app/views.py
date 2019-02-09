@@ -105,7 +105,7 @@ def api_aims(request, username, listid):
 def api_aim(request, username, listid, aimid):
     
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
-            return HttpResponse(status=404)
+        return HttpResponse(status=404)
     try:
         aim = Aim.objects.get(pk=aimid)
     except Aim.DoesNotExist:
@@ -146,6 +146,23 @@ def api_aim(request, username, listid, aimid):
     if request.method == 'DELETE':
         aim.delete()
         return HttpResponse(response)
+    
+def api_analysis(request, username):
+    if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
+        return HttpResponse(status=404)
+    fields = json.loads(request.body.decode('utf-8'))
+    try:
+        parentid = fields['parent_id']
+    except KeyError:
+        parentid = -1
+        
+    name, deadline = goal_analysis(text)
+    aim = Aim(name = name, deadline = deadline, user_name = username, list_id = listid, parent_id = parentid)
+    aim.save()
+    response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
+    return HttpResponse(response)
+    
+    
 
 def index(request):
     return render(request, 'index.html')
