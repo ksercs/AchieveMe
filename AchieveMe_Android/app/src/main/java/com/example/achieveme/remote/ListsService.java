@@ -17,7 +17,7 @@ public interface ListsService {
     Call<List<ListRes>> userAims(@Path("username") String username, @Header("PASSWORD") String password);
 
     @DELETE("/api/{username}/{list_id}/")
-    Call<List> deleteList(
+    Call<ListRes> deleteList(
             @Path("username") String username,
             @Path("list_id") int list_id,
             @Header("PASSWORD") String password);
