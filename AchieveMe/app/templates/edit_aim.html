@@ -41,12 +41,15 @@
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in formA%}
-                    {{ field.label }}
-                    {{ field }}
+                    {% if field.name != 'image' %}
+                        {{ field.label }}
+                        {{ field }}
+                    {% endif %}
                     {% if field.name == 'is_remind' or field.name == 'is_important' %}
                         <br/>
                     {% endif %}
                 {% endfor%}
+                {{formA.image}}
                 <br>
                 <button type="submit" name = "aimbtn" class="btn btn-primary">Обновить</button>
             </form>

@@ -178,7 +178,7 @@ def signup(request):
 
 def profile_redirect(request):
     return HttpResponsePermanentRedirect("/profile/")
-
+    
 def redirect_to_aim(request, username, listid, aimid):
     return HttpResponsePermanentRedirect("/"+username+"/lists/"+listid+'/'+aimid)
     
@@ -388,7 +388,7 @@ def SubAimView(request, username, listid, aimid):
     parent = Aim.objects.get(id = aimid)
     lists = ListModel.objects.filter(user_name = username)
     list = ListModel.objects.get(id = listid)
-    subaims = Aim.objects.filter(parent_id = aimid)
+    subaims = Aim.objects.filter(parent_id = aimid).order_by('deadline')
     vars = dict(
         subaims = subaims,
         lists = lists,
@@ -421,12 +421,6 @@ def SubAimView(request, username, listid, aimid):
                 name, deadline = goal_analysis(row)
                 aim = Aim(name = name, deadline = deadline, user_name = username, list_id = listid, parent_id = aimid)
                 aim.save()
-#            aim = form.save(commit = False)
-#            aim.user_name = username
-#            list = ListModel.objects.get(id = listid)
-#            aim.list_id = listid
-#            aim.parent_id = aimid
-#            aim.save()
             return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
     else:
         formC = SubaimParsingForm()
