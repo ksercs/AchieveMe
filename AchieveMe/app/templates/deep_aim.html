@@ -75,8 +75,7 @@
     </div>
 {% endblock %}
 
-<html>
-<body>
+{% block parser %}
     <div  class = "box col-lg-3" style = "padding-bottom:5px;padding-left:10px;border-radius: 10px; border: 1px groove black; background:#FFF8DC; line-height:30px;padding-top:20px;padding-right:20px;float:right;">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
@@ -90,5 +89,4 @@
             <button type="submit" name = "aimbtn" class="btn btn-primary">Создать подцели</button>
         </form>
     </div>
-</body>
-</html>
+{% endblock %}
