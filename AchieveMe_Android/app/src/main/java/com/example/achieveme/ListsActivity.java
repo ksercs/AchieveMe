@@ -45,6 +45,8 @@ public class ListsActivity extends BaseActivity {
     String username;
     String password;
 
+    List<ListRes> lists;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +64,7 @@ public class ListsActivity extends BaseActivity {
             @Override
             public void onResponse(Call<List<ListRes>> call, Response<List<ListRes>> response) {
                 if (response.isSuccessful()) {
-                    List<ListRes> lists = response.body();
+                    lists = response.body();
                     listView.setAdapter(new ListsAdapter(ListsActivity.this, lists));
                 } else {
                     SharedPreferences.Editor edit = creds.edit();
@@ -121,7 +123,7 @@ public class ListsActivity extends BaseActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_context, menu);
     }
-
+    /*
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -132,7 +134,7 @@ public class ListsActivity extends BaseActivity {
         switch (menuItemIndex) {
             case R.id.Delete: {
                 ListsService listsService = ApiUtils.getListsService();
-                Call<List> call = listsService.deleteList(username, list_id, subaimId, password);
+                Call<List> call = listsService.deleteList(username, list_id, password);
                 call.enqueue(new Callback<List>() {
                     @Override
                     public void onResponse(Call<List> call, Response<List> response) {
@@ -149,13 +151,13 @@ public class ListsActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<Aim> call, Throwable t) {
-                        Toast.makeText(AimsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    public void onFailure(Call<List> call, Throwable t) {
+                        Toast.makeText(ListsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;
             }
         }
         return true;
-    }
+    }*/
 }
