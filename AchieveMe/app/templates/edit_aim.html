@@ -17,3 +17,51 @@
         </form>
 </div>
 {% endblock %}
+
+{% block content %}
+    <div class="col-lg-7" style = "height:100vh; float:left;padding-left:50px;">
+    <h1>{{listname}}:</h1>
+    <h2>Активные цели</h2>
+    {% if aims %}
+        {% for aim in aims %} 
+         <div class="row">
+         <div class="col-lg-3" style = "border: 2px solid #354D73;">
+            <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "100%" height = "100%">
+            </div>
+            <div class="col-lg-9">
+            <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a> {{aim.deadline}}
+                {% if aim.is_important == True %}
+                    <span style="font-size:18px; color:orange;" class="glyphicon glyphicon-star"></span>
+                {% endif %}
+            <br/>
+            </div>
+         </div>
+         <br/>
+        {% endfor %}
+    {% else %}
+    <div class = "alert alert-warning text-center" style = "color:#C37629;">
+        <p>Список пуст <span class="glyphicon glyphicon-thumbs-down"></span> </p>
+    </div>
+    {% endif %}       
+            
+    <h2>Выполненные цели</h2>
+    {% if completed %}
+        {% for aim in completed %} 
+             <div class="row">
+             <div class="col-lg-3" style = "border: 2px solid #354D73;">
+                <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "100%" height = "100%">
+                </div>
+                <div class="col-lg-9">
+                <s><a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a> {{aim.deadline}}</s>
+                    <a href="{{ .get_absolute_url }}{{ aim.id }}/cancel_complete"><span style="font-size:15px;" class="glyphicon glyphicon-repeat"></span></a>
+                </div>
+             </div>
+             <br/>
+        {% endfor %}
+    {% else %}
+        <div class = "alert alert-warning text-center" style = "color:#C37629;">
+            <p>Список пуст <span class="glyphicon glyphicon-thumbs-down"></span> </p>
+        </div>
+    {% endif %}    
+    </div>
+{% endblock %}
