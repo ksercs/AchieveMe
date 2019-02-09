@@ -6,7 +6,7 @@ def fcollage():
     tree = os.walk("/home/mtimokhin/AchieveMe/AchieveMe/media/images")  
     for i in tree:
         image = i[2]
-    pictures = "montage -geometry 300x "  
+    pictures = "montage -geometry 200x "  
     big_pictures = "montage -geometry 300x " 
     for i in image:
         pictures += " /home/mtimokhin/AchieveMe/AchieveMe/media/images/" + i
