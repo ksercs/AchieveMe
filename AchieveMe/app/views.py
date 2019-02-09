@@ -160,7 +160,7 @@ def api_analysis(request, username, listid):
     
 
     name, deadline = goal_analysis(fields['text'])
-    deadline.hour, deadline.minutes = 0, 0
+    deadline = deadline.replace(hour=0, minute=0)
     aim = Aim(name = name, deadline = deadline, user_name = username, list_id = listid, parent_id = parentid)
     aim.save()
     response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
