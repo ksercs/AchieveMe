@@ -157,8 +157,9 @@ def api_analysis(request, username, listid):
         parentid = fields['parent_id']
     except KeyError:
         parentid = -1
-        
-    name, deadline = goal_analysis(text)
+    
+
+    name, deadline = goal_analysis(fields['text'])
     aim = Aim(name = name, deadline = deadline, user_name = username, list_id = listid, parent_id = parentid)
     aim.save()
     response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
