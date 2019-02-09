@@ -46,7 +46,7 @@ public class AimViewActivity extends BaseActivity {
     TextView deadlineTimeView;
     ListView subaimsList;
 
-    public final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    public final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     public final static SimpleDateFormat format_date = new SimpleDateFormat("yyyy-MM-dd");
     public final static SimpleDateFormat format_time = new SimpleDateFormat("HH:mm:ss");
 
@@ -228,7 +228,7 @@ public class AimViewActivity extends BaseActivity {
                 int subaim_id = data.getIntExtra("aim_id", 1);
                 String image = data.getStringExtra("image");
                 if (pos < 0) {
-                    subaims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T00:00:00Z")));
+                    subaims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T12:00:00")));
                     adapter.notifyDataSetChanged();
                     return;
                 }
@@ -236,8 +236,6 @@ public class AimViewActivity extends BaseActivity {
                 TextView nameView = t.findViewById(R.id.aimNameView);
                 TextView dateView = t.findViewById(R.id.dateView);
                 nameView.setText(name);
-                final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                final SimpleDateFormat format_date = new SimpleDateFormat("dd-MM-yy");
                 try {
                     dateView.setText(format_date.format(format.parse(date)));
                 } catch (ParseException e) {

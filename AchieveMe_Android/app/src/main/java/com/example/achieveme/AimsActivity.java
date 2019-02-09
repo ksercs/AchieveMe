@@ -165,7 +165,7 @@ public class AimsActivity extends BaseActivity {
                 String image = data.getStringExtra("image");
 
                 if (pos < 0) {
-                    aims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T00:00:00Z")));
+                    aims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T12:00:00")));
                     adapter.notifyDataSetChanged();
                     View item = listView.getChildAt(listView.getLastVisiblePosition());
                     ImageView avatar = item.findViewById(R.id.aimAvatarView);
