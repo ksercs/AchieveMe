@@ -87,19 +87,19 @@ public class SubAimsAdapter extends ArrayAdapter {
                 String username = creds.getString(LoginActivity.USERNAME, null);
                 String password = creds.getString(LoginActivity.PASSWORD, null);
                 AimService aimService = ApiUtils.getAimService();
-                Call<Aim> call = aimService.markAim(
+                Call<SubAimRes> call = aimService.markAim(
                         username,
                         item.getFields().getList_id(),
                         item.getId(),
                         password);
 
-                call.enqueue(new Callback<Aim>() {
+                call.enqueue(new Callback<SubAimRes>() {
                     @Override
-                    public void onResponse(Call<Aim> call, Response<Aim> response) {
+                    public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
                     }
 
                     @Override
-                    public void onFailure(Call<Aim> call, Throwable t) {
+                    public void onFailure(Call<SubAimRes> call, Throwable t) {
                         Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
