@@ -9,9 +9,9 @@ class Aim(models.Model):
     parent_id    = models.IntegerField    (default = -1)
     name 		  = models.CharField        (max_length = 120, default ='')
     deadline       = models.DateTimeField(default = now)
-    is_important = models.BooleanField  (default = 0)
-    is_remind     = models.BooleanField  (default = 0)
-    is_completed 	   = models.BooleanField  (default = 0)
+    is_important = models.BooleanField  (default = False)
+    is_remind     = models.BooleanField  (default = False)
+    is_completed 	   = models.BooleanField  (default = False)
     image = models.ImageField(upload_to='images/', default='images/cat.jpg')
     
     def save(self, *args, **kwargs):

@@ -184,7 +184,8 @@ def AimListView(request, username):
     
 def AimView(request, username, listid):
     lists = ListModel.objects.filter(user_name = username)
-    aims = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1)
+    aims = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1, is_completed = False)
+    completed = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1, is_completed = True)
     list = ListModel.objects.get(id = listid)
     vars = dict(
         lists = lists,
@@ -192,7 +193,8 @@ def AimView(request, username, listid):
         listname = list.name,
         formA = AimForm(),
         formB = ListForm(),
-        list_link = "/"+username+"/lists/"
+        list_link = "/"+username+"/lists/",
+        completed = completed
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:
@@ -204,7 +206,7 @@ def AimView(request, username, listid):
             aim.list_id= list.id
             aim.save()
             setting = Setting.objects.get(user_name = username)
-            if setting.google_sync:# and aim.parent_id != -1:
+            if setting.google_sync:
                 add_to_calendar(aim, setting.Gmt)
             return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
     else:
@@ -331,6 +333,34 @@ def editAimView(request, username, listid, pk):
     vars['formA'] = form
     return render(request, 'edit_aim.html', vars)
     
+def completeAimView(request, username, listid, aimid):
+    cur_aim = Aim.objects.get(id = aimid)
+    cur_aim.is_completed = True
+    cur_aim.save()
+    
+    return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
+    
+def completeSubAimView(request, username, listid, aimid, subaim_id):
+    cur_aim = Aim.objects.get(id = subaim_id)
+    cur_aim.is_completed = True
+    cur_aim.save()
+    
+    return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
+    
+def cancel_completeSubAimView(request, username, listid, aimid, subaim_id):
+    cur_aim = Aim.objects.get(id = subaim_id)
+    cur_aim.is_completed = False
+    cur_aim.save()
+    
+    return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
+    
+def cancel_completeAimView(request, username, listid, aimid):
+    cur_aim = Aim.objects.get(id = aimid)
+    cur_aim.is_completed = False
+    cur_aim.save()
+    
+    return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
+    
 class deleteAimView(DeleteView):
     model = Aim
     form_class = AimForm
@@ -346,7 +376,8 @@ def SubAimView(request, username, listid, aimid):
     parent = Aim.objects.get(id = aimid)
     lists = ListModel.objects.filter(user_name = username)
     list = ListModel.objects.get(id = listid)
-    subaims = Aim.objects.filter(parent_id = aimid).order_by('deadline')
+    subaims = Aim.objects.filter(parent_id = aimid, is_completed = False).order_by('deadline')
+    completed = Aim.objects.filter(parent_id = aimid, is_completed = True).order_by('deadline')
     vars = dict(
         subaims = subaims,
         lists = lists,
@@ -355,7 +386,8 @@ def SubAimView(request, username, listid, aimid):
         formA = SubAimForm(),
         formB = ListForm(),
         formC = SubaimParsingForm(),
-        list_link = "/"+username+"/lists/"
+        list_link = "/"+username+"/lists/",
+        completed = completed
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:
