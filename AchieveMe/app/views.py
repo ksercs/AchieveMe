@@ -214,7 +214,7 @@ def AimListView(request, username):
     lists = ListModel.objects.filter(user_name = username)
     vars = dict(
         lists = lists,
-        form = ListForm(),
+        ListAddingForm = ListForm(),
         list_link = "/"+username+"/lists/"
         )
     if request.method == 'POST':
@@ -226,7 +226,7 @@ def AimListView(request, username):
             return HttpResponseRedirect("/"+username+"/lists/red_to_list")
     else:
         form = ListForm()
- 
+    vars['ListAddingForm'] = form
     return render(request, 'lists.html', vars)
     
 def AimView(request, username, listid):
@@ -241,7 +241,8 @@ def AimView(request, username, listid):
         formA = AimForm(),
         formB = ListForm(),
         list_link = "/"+username+"/lists/",
-        completed = completed
+        completed = completed,
+        ListAddingForm = ListForm()
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:
@@ -285,7 +286,8 @@ def editSubAimView(request, username, listid, aimid, pk):
         listname = list.name,
         formA = SubAimForm(),
         formB = ListForm(),
-        list_link = "/"+username+"/lists/"
+        list_link = "/"+username+"/lists/",
+        ListAddingForm = ListForm()
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:
@@ -332,7 +334,8 @@ def editListView(request, username, pk):
     vars = dict(
         lists = lists,
         form = ListForm(),
-        list_link = "/"+username+"/lists/"
+        list_link = "/"+username+"/lists/",
+        ListAddingForm = ListForm()
         )
     if request.method == 'POST':
         form = ListForm(request.POST)
@@ -358,7 +361,8 @@ def editAimView(request, username, listid, pk):
         listname = list.name,
         formA = AimForm(),
         formB = ListForm(),
-        list_link = "/"+username+"/lists/"
+        list_link = "/"+username+"/lists/",
+        ListAddingForm = ListForm()
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:
@@ -434,7 +438,8 @@ def SubAimView(request, username, listid, aimid):
         formB = ListForm(),
         formC = SubaimParsingForm(),
         list_link = "/"+username+"/lists/",
-        completed = completed
+        completed = completed,
+        ListAddingForm = ListForm()
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:

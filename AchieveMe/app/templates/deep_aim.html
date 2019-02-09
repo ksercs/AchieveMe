@@ -1,39 +1,7 @@
-{% extends "base.html" %}
+{% extends "lists.html" %}
 
 {% block content %}
-    <div class = "col-lg-2 sidebar" style = "height:100vh; padding-left:30px;">
-        <div class="row"> 
-
-            <h1>Списки:</h1>
-                    <form method="POST">
-                        {% csrf_token %}
-                        {% for field in formB %}
-                            {%if field != label%}
-                                {{ field }}
-                            {% endif %}
-                        {% endfor %}
-                    </form>
-            
-            <div class="row" style = "line-height:30px;">
-                <div>
-                    <div>
-                        {% if lists %}
-                        <ul>
-                         {% for list in lists %} 
-                             <div class="row">
-                                <a href="{{ list_link }}{{ list.id }}">{{ list.name }}</a>
-                             </div>
-                         {% endfor %}
-                        </ul>
-                        {% else %}
-                          <p>Списков нет :(</p>
-                        {% endif %}      
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+   
     <div class="col-sm-5" style = "float:left;padding-left:30px;">
         <h1>{{ listname }}</h1>
         <h2>{{ aim.name }}</h2>  
