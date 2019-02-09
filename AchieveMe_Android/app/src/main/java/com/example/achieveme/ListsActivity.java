@@ -46,6 +46,7 @@ public class ListsActivity extends BaseActivity {
     String password;
 
     List<ListRes> lists;
+    ListsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +66,8 @@ public class ListsActivity extends BaseActivity {
             public void onResponse(Call<List<ListRes>> call, Response<List<ListRes>> response) {
                 if (response.isSuccessful()) {
                     lists = response.body();
-                    listView.setAdapter(new ListsAdapter(ListsActivity.this, lists));
+                    adapter = new ListsAdapter(ListsActivity.this, lists);
+                    listView.setAdapter(adapter);
                 } else {
                     SharedPreferences.Editor edit = creds.edit();
                     edit.clear();
@@ -123,16 +125,15 @@ public class ListsActivity extends BaseActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_context, menu);
     }
-    /*
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int menuItemIndex = item.getItemId();
         View t = AimViewActivity.getViewByPosition(info.position, listView);
         int list_id = (int) t.getTag();
-        int subaimId = (int) t.findViewById(R.id.aimNameView).getTag();
         switch (menuItemIndex) {
-            case R.id.Delete: {
+            case R.id.delete_list: {
                 ListsService listsService = ApiUtils.getListsService();
                 Call<List> call = listsService.deleteList(username, list_id, password);
                 call.enqueue(new Callback<List>() {
@@ -142,11 +143,11 @@ public class ListsActivity extends BaseActivity {
                             SharedPreferences.Editor edit = creds.edit();
                             edit.clear();
                             edit.apply();
-                            Intent intent = new Intent(AimsActivity.this, LoginActivity.class);
+                            Intent intent = new Intent(ListsActivity.this, LoginActivity.class);
                             startActivity(intent);
                             finish();
                         }
-                        aims.remove(aims.get(info.position));
+                        lists.remove(lists.get(info.position));
                         adapter.notifyDataSetChanged();
                     }
 
@@ -159,5 +160,5 @@ public class ListsActivity extends BaseActivity {
             }
         }
         return true;
-    }*/
+    }
 }

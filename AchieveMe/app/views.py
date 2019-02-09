@@ -96,10 +96,10 @@ def api_aims(request, username, listid):
     
     if request.method == 'DELETE':
         try:
-            to_delete = List.objects.get(pk=listid)
+            to_delete = ListModel.objects.get(pk=listid)
             response = serializers.serialize('json', [to_delete], ensure_ascii=False, indent=2)[2:-2]
             return HttpResponse(response)
-        except List.DoesNotExist:
+        except ListModel.DoesNotExist:
             return HttpResponse(status=404)
         
 
