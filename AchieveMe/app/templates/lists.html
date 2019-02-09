@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 
-{% block content %}
-<div style = "float:left;padding-left:30px;">
+{% block lists_sidebar %}
+    <div class = "col-lg-2 sidebar" style = "height:100vh; padding-left:30px;">
     <div class="row"> 
 
         <h1>Списки:</h1>
             <form method="POST">
                 {% csrf_token %}
-                {% for field in form %}
+                {% for field in ListAddingForm %}
                     {%if field != label%}
                         {{ field }}
                     {% endif %}
@@ -37,4 +37,7 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block content %}
 {% endblock %} 
