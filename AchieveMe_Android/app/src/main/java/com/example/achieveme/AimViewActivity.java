@@ -4,6 +4,7 @@ package com.example.achieveme;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,17 +16,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.achieveme.model.Aims.Aim;
 import com.example.achieveme.model.Aims.AimFields;
 import com.example.achieveme.model.Aims.AimRes;
 import com.example.achieveme.model.Aims.SubAimRes;
 import com.example.achieveme.model.Aims.SubAimsAdapter;
+import com.example.achieveme.model.Analysis.AimAnalysis;
+import com.example.achieveme.model.Analysis.SubAimAnalysis;
 import com.example.achieveme.remote.AimService;
+import com.example.achieveme.remote.AnalysisService;
 import com.example.achieveme.remote.ApiUtils;
 import com.example.achieveme.remote.AsyncTaskLoadImage;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -216,26 +220,55 @@ public class AimViewActivity extends BaseActivity {
         if (data == null) {
             return;
         }
-        String name = data.getStringExtra("new_name");
-        String date = data.getStringExtra("new_date");
-        int pos = data.getIntExtra("pos", 1);
-        int subaim_id = data.getIntExtra("aim_id", 1);
-        String image = data.getStringExtra("image");
-        if (pos < 0) {
-            subaims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T00:00:00Z")));
-            adapter.notifyDataSetChanged();
-            return;
-        }
-        View t = getViewByPosition(pos, subaimsList);
-        TextView nameView = t.findViewById(R.id.aimNameView);
-        TextView dateView = t.findViewById(R.id.dateView);
-        nameView.setText(name);
-        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        final SimpleDateFormat format_date = new SimpleDateFormat("dd-MM-yy");
-        try {
-            dateView.setText(format_date.format(format.parse(date)));
-        } catch (ParseException e) {
-            Toast.makeText(AimViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
+        switch (requestCode) {
+            case 1: {
+                String name = data.getStringExtra("new_name");
+                String date = data.getStringExtra("new_date");
+                int pos = data.getIntExtra("pos", 1);
+                int subaim_id = data.getIntExtra("aim_id", 1);
+                String image = data.getStringExtra("image");
+                if (pos < 0) {
+                    subaims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T00:00:00Z")));
+                    adapter.notifyDataSetChanged();
+                    return;
+                }
+                View t = getViewByPosition(pos, subaimsList);
+                TextView nameView = t.findViewById(R.id.aimNameView);
+                TextView dateView = t.findViewById(R.id.dateView);
+                nameView.setText(name);
+                final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                final SimpleDateFormat format_date = new SimpleDateFormat("dd-MM-yy");
+                try {
+                    dateView.setText(format_date.format(format.parse(date)));
+                } catch (ParseException e) {
+                    Toast.makeText(AimViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
+                }
+                break;
+            }
+            case 2: {
+                if (resultCode == RESULT_OK) {
+                    ArrayList phrases = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    String text = ((String) phrases.get(0));
+                    SubAimAnalysis subaim = new SubAimAnalysis(text, aim_id);
+
+                    AnalysisService analysisService = ApiUtils.getAnalysisService();
+                    Call<SubAimRes> call = analysisService.voiceSubAim(username, list_id, subaim, password);
+
+                    call.enqueue(new Callback<SubAimRes>() {
+                        @Override
+                        public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
+                            if (response.isSuccessful()) {
+                                SubAimRes new_subaim = response.body();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<SubAimRes> call, Throwable t) {
+
+                        }
+                    });
+                }
+            }
         }
     }
 
@@ -249,5 +282,11 @@ public class AimViewActivity extends BaseActivity {
             final int childIndex = pos - firstListItemPosition;
             return listView.getChildAt(childIndex);
         }
+    }
+
+    public void speak(View v) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        startActivityForResult(intent, 2);
     }
 }

@@ -150,9 +150,11 @@ def api_aim(request, username, listid, aimid):
         aim.delete()
         return HttpResponse(response)
     
+@csrf_exempt
 def api_analysis(request, username):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
         return HttpResponse(status=404)
+    
     fields = json.loads(request.body.decode('utf-8'))
     try:
         parentid = fields['parent_id']
