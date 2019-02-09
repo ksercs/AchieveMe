@@ -15,4 +15,9 @@ public class ListRes {
     public int getId() {
         return list_id;
     }
+
+    public ListRes(int list_id, ListFields fields) {
+        this.list_id = list_id;
+        this.fields = fields;
+    }
 }

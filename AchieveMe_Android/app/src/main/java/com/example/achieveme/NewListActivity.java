@@ -34,6 +34,7 @@ public class NewListActivity extends AppCompatActivity {
         username = creds.getString(LoginActivity.USERNAME, null);
         password = creds.getString(LoginActivity.PASSWORD, null);
 
+        name = findViewById(R.id.newListName);
     }
 
     public void sendList(View view) {
