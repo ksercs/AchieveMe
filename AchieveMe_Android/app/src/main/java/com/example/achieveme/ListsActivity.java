@@ -113,10 +113,19 @@ public class ListsActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.new_list) {
+            Intent intent = new Intent(ListsActivity.this, NewListActivity.class);
+            startActivityForResult(intent, 1);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
     }
 
     @Override

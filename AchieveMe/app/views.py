@@ -63,7 +63,7 @@ def api_lists(request, username):
     
     if request.method == 'POST':
         fields = json.loads(request.body.decode('utf-8'))
-        new_list = List(name=fields['name'], user_name=username)
+        new_list = ListModel(name=fields['name'], user_name=username)
         new_list.save()
         response = serializers.serialize('json', [new_list], ensure_ascii=False, indent=2)[2:-2]
         return HttpResponse(response)

@@ -1,10 +1,10 @@
 package com.example.achieveme.model.Lists;
 
-public class List {
+public class ListModel {
     String name;
     int id;
 
-    public List(String name) {
+    public ListModel(String name) {
         this.name = name;
     }
 
