@@ -2,6 +2,10 @@ from django.db import models
 from django.utils.timezone import now
 from django.urls import reverse
 from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+import sys
+
 
 class Aim(models.Model):
     user_name  = models.CharField       (max_length = 120)
@@ -13,13 +17,19 @@ class Aim(models.Model):
     is_remind     = models.BooleanField  (default = 0)
     is_completed 	   = models.BooleanField  (default = 0)
     image = models.ImageField(upload_to='images/', default='images/cat.jpg')
-    
+
     def save(self, *args, **kwargs):
         if self.image:
             im = Image.open(self.image)
-            im.thumbnail((128, 128))
-            im.save(self.image, "JPEG")
+            output = BytesIO()
+            #im = im.resize((128, 128))
+            im.save(output, "JPEG", quality=20)
+            output.seek(0)
+            self.image = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %self.image.name.split('.')[0], 'images/', sys.getsizeof(output), None)
         super(Aim, self).save(*args, **kwargs)
+
+
+
 
     def get_absolute_url(self):
         if self.parent_id != -1:
