@@ -4,7 +4,6 @@ import calendar
 
 end_start_next = ["следующий", "конец", "начало"]
 measurement = ["день", "неделя", "месяц", "год"]
-day_adj = ["одни", "двое", "трое", "четверо", "пятеро", "шестеро", "семеро"]
 
 def different_forms(word, ):
     mas = [word, word, word, word]
