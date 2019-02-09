@@ -7,7 +7,7 @@ def fcollage():
     tree = os.walk(MEDIA_ROOT)  
     for i in tree:
         image = i[2]
-    pictures = "montage -geometry 300x "  
+    pictures = "montage -geometry 200x "  
     big_pictures = "montage -geometry 300x " 
     for i in image:
         pictures += MEDIA_ROOT + 'images/' + i + " "

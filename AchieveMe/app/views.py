@@ -150,16 +150,20 @@ def api_aim(request, username, listid, aimid):
         aim.delete()
         return HttpResponse(response)
     
-def api_analysis(request, username):
+@csrf_exempt
+def api_analysis(request, username, listid):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
         return HttpResponse(status=404)
+    
     fields = json.loads(request.body.decode('utf-8'))
     try:
         parentid = fields['parent_id']
     except KeyError:
         parentid = -1
-        
-    name, deadline = goal_analysis(text)
+    
+
+    name, deadline = goal_analysis(fields['text'])
+    deadline = deadline.replace(hour=0, minute=0)
     aim = Aim(name = name, deadline = deadline, user_name = username, list_id = listid, parent_id = parentid)
     aim.save()
     response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
