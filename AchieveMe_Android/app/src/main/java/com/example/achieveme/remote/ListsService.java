@@ -1,10 +1,12 @@
 package com.example.achieveme.remote;
 
+import com.example.achieveme.model.Lists.ListModel;
 import com.example.achieveme.model.Lists.ListRes;
 
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -21,4 +23,11 @@ public interface ListsService {
             @Path("username") String username,
             @Path("list_id") int list_id,
             @Header("PASSWORD") String password);
+
+    @POST("/api/{username}/lists/")
+    Call<ListRes> createList(
+            @Path("username") String username,
+            @Body ListModel list,
+            @Header("PASSWORD") String password
+    );
 }
