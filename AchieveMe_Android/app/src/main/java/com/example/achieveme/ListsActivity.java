@@ -122,19 +122,20 @@ public class ListsActivity extends BaseActivity {
         inflater.inflate(R.menu.list_context, menu);
     }
 
-    /*@Override
+    @Override
     public boolean onContextItemSelected(MenuItem item) {
         final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int menuItemIndex = item.getItemId();
         View t = AimViewActivity.getViewByPosition(info.position, listView);
+        int list_id = (int) t.getTag();
         int subaimId = (int) t.findViewById(R.id.aimNameView).getTag();
         switch (menuItemIndex) {
             case R.id.Delete: {
                 ListsService listsService = ApiUtils.getListsService();
                 Call<List> call = listsService.deleteList(username, list_id, subaimId, password);
-                call.enqueue(new Callback<Aim>() {
+                call.enqueue(new Callback<List>() {
                     @Override
-                    public void onResponse(Call<Aim> call, Response<Aim> response) {
+                    public void onResponse(Call<List> call, Response<List> response) {
                         if (!response.isSuccessful()) {
                             SharedPreferences.Editor edit = creds.edit();
                             edit.clear();
@@ -156,5 +157,5 @@ public class ListsActivity extends BaseActivity {
             }
         }
         return true;
-    }*/
+    }
 }

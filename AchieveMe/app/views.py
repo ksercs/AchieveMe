@@ -97,7 +97,7 @@ def api_aims(request, username, listid):
             response = serializers.serialize('json', [to_delete], ensure_ascii=False, indent=2)[2:-2]
             return HttpResponse(response)
         except List.DoesNotExist:
-            retrurn HttpResponse(status=404)
+            return HttpResponse(status=404)
         
 
 @csrf_exempt
