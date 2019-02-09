@@ -32,6 +32,9 @@ from django.template import RequestContext
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.urls import reverse
+from media.collage import fcollage
+import subprocess
+import os
 
 from .google_calendar_interaction import calendar_authorization, add_to_calendar
 
@@ -184,6 +187,7 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')
 		
 def profile(request):
+    fcollage()
     return render(request, 'profile.html')
 
 def AimListView(request, username):
