@@ -3,7 +3,9 @@ package com.example.achieveme;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,15 +39,21 @@ public class ListsActivity extends BaseActivity {
     public static final String LISTID = "com.example.achieveme.LISTID";
     public static final String LISTNAME = "com.example.achieveme.LISTNAME";
 
+    ListView listView;
+
+    SharedPreferences creds;
+    String username;
+    String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ListView listView = findViewById(R.id.listView);
-
-        final SharedPreferences creds = getSharedPreferences("creds", MODE_PRIVATE);
-        String username = creds.getString(LoginActivity.USERNAME, null);
-        String password = creds.getString(LoginActivity.PASSWORD, null);
+        listView = findViewById(R.id.listView);
+        registerForContextMenu(listView);
+        creds = getSharedPreferences("creds", MODE_PRIVATE);
+        username = creds.getString(LoginActivity.USERNAME, null);
+        password = creds.getString(LoginActivity.PASSWORD, null);
 
         ListsService listsService = ApiUtils.getListsService();
         Call<List<ListRes>> call = listsService.userAims(username, password);
@@ -100,10 +108,53 @@ public class ListsActivity extends BaseActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.new_list) {
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.list_context, menu);
+    }
+
+    /*@Override
+    public boolean onContextItemSelected(MenuItem item) {
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        int menuItemIndex = item.getItemId();
+        View t = AimViewActivity.getViewByPosition(info.position, listView);
+        int subaimId = (int) t.findViewById(R.id.aimNameView).getTag();
+        switch (menuItemIndex) {
+            case R.id.Delete: {
+                ListsService listsService = ApiUtils.getListsService();
+                Call<List> call = listsService.deleteList(username, list_id, subaimId, password);
+                call.enqueue(new Callback<Aim>() {
+                    @Override
+                    public void onResponse(Call<Aim> call, Response<Aim> response) {
+                        if (!response.isSuccessful()) {
+                            SharedPreferences.Editor edit = creds.edit();
+                            edit.clear();
+                            edit.apply();
+                            Intent intent = new Intent(AimsActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        aims.remove(aims.get(info.position));
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Aim> call, Throwable t) {
+                        Toast.makeText(AimsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
+        return true;
+    }*/
 }

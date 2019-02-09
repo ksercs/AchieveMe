@@ -63,13 +63,25 @@ public class SubAimsAdapter extends ArrayAdapter {
 
         final SubAimRes item = values.get(position);
 
+        completed.setOnCheckedChangeListener(null);
         completed.setChecked(item.getFields().isIs_completed());
         if (completed.isChecked()) {
             textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
+
         completed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    values.get(position).getFields().setIs_completed(true);
+                    textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    values.get(position).getFields().setIs_completed(false);
+                    textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+                }
 
                 final SharedPreferences creds = context.getSharedPreferences("creds", MODE_PRIVATE);
                 String username = creds.getString(LoginActivity.USERNAME, null);
@@ -92,13 +104,6 @@ public class SubAimsAdapter extends ArrayAdapter {
                     }
                 });
 
-                if (isChecked) {
-                    values.get(position).getFields().setIs_completed(true);
-                    textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                } else {
-                    values.get(position).getFields().setIs_completed(false);
-                    textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
-                }
             }
         });
 
