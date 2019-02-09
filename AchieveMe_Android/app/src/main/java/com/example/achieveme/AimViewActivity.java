@@ -220,6 +220,7 @@ public class AimViewActivity extends BaseActivity {
         String date = data.getStringExtra("new_date");
         int pos = data.getIntExtra("pos", 1);
         int subaim_id = data.getIntExtra("aim_id", 1);
+        String image = data.getStringExtra("image");
         if (pos < 0) {
             subaims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T00:00:00Z")));
             adapter.notifyDataSetChanged();

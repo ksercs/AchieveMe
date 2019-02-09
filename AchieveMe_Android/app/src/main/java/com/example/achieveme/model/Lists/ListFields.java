@@ -7,4 +7,8 @@ public class ListFields {
     public String getName() {
         return name;
     }
+
+    public ListFields(String name) {
+        this.name = name;
+    }
 }
