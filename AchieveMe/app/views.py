@@ -32,6 +32,9 @@ from django.template import RequestContext
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.urls import reverse
+from media.collage import fcollage
+import subprocess
+import os
 
 from .google_calendar_interaction import calendar_authorization, add_to_calendar
 
@@ -51,14 +54,24 @@ def api_check_password(request, username):
     password = request.META['HTTP_PASSWORD']
     return JsonResponse({'correct' : validate(username, password)})
     
+@csrf_exempt
 def api_lists(request, username):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
         return HttpResponse(status=404)
     
-    data = serializers.serialize('json', ListModel.objects.filter(user_name=username),
-                                ensure_ascii=False, indent=2)
-    return HttpResponse(data, content_type='application/json')
-
+    if request.method == 'GET':
+        data = serializers.serialize('json', ListModel.objects.filter(user_name=username),
+                                    ensure_ascii=False, indent=2)
+        return HttpResponse(data, content_type='application/json')
+    
+    if request.method == 'POST':
+        fields = json.loads(request.body.decode('utf-8'))
+        new_list = List(name=fields['name'], user_name=username)
+        new_list.save()
+        response = serializers.serialize('json', [new_list], ensure_ascii=False, indent=2)[2:-2]
+        return HttpResponse(response)
+    
+        
 @csrf_exempt
 def api_aims(request, username, listid):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
@@ -68,6 +81,7 @@ def api_aims(request, username, listid):
         data = serializers.serialize('json', Aim.objects.filter(user_name=username, list_id=int(listid), parent_id=-1),
                                     ensure_ascii=False, indent=2)
         return HttpResponse(data, content_type='application/json')
+    
     if request.method == 'POST':
         fields = json.loads(request.body.decode('utf-8'))
             
@@ -79,6 +93,15 @@ def api_aims(request, username, listid):
         descr.save()
         response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
         return HttpResponse(response)
+    
+    if request.method == 'DELETE':
+        try:
+            to_delete = ListModel.objects.get(pk=listid)
+            to_delete.delete()
+            response = serializers.serialize('json', [to_delete], ensure_ascii=False, indent=2)[2:-2]
+            return HttpResponse(response)
+        except ListModel.DoesNotExist:
+            return HttpResponse(status=404)
         
 
 @csrf_exempt
@@ -184,6 +207,7 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')
 		
 def profile(request):
+    fcollage()
     return render(request, 'profile.html')
 
 def AimListView(request, username):

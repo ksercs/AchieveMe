@@ -46,7 +46,7 @@ public class editAimActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_aim);
 
         Intent intent = getIntent();
-        aim_id = intent.getIntExtra(AimsActivity.AIMID, 1);
+        aim_id = intent.getIntExtra(AimsActivity.AIMID, -1);
         list_id = intent.getIntExtra(ListsActivity.LISTID, 1);
 
 

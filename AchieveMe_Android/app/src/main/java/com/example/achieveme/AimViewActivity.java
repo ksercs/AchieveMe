@@ -149,7 +149,7 @@ public class AimViewActivity extends BaseActivity {
                 intent.putExtra(ListsActivity.LISTID, list_id);
                 intent.putExtra(AimsActivity.AIMID, aim_id);
                 startActivityForResult(intent, 1);
-                return true;
+                break;
             }
             default:
                 return super.onOptionsItemSelected(item);
@@ -184,10 +184,10 @@ public class AimViewActivity extends BaseActivity {
             }
             case R.id.Delete: {
                 AimService aimService = ApiUtils.getAimService();
-                Call<Aim> call = aimService.deleteAim(username, list_id, subaimId, password);
-                call.enqueue(new Callback<Aim>() {
+                Call<SubAimRes> call = aimService.deleteAim(username, list_id, subaimId, password);
+                call.enqueue(new Callback<SubAimRes>() {
                     @Override
-                    public void onResponse(Call<Aim> call, Response<Aim> response) {
+                    public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
                         if (!response.isSuccessful()) {
                             SharedPreferences.Editor edit = creds.edit();
                             edit.clear();
@@ -201,7 +201,7 @@ public class AimViewActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<Aim> call, Throwable t) {
+                    public void onFailure(Call<SubAimRes> call, Throwable t) {
                         Toast.makeText(AimViewActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -229,7 +229,13 @@ public class AimViewActivity extends BaseActivity {
         TextView nameView = t.findViewById(R.id.aimNameView);
         TextView dateView = t.findViewById(R.id.dateView);
         nameView.setText(name);
-        dateView.setText(date);
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        final SimpleDateFormat format_date = new SimpleDateFormat("dd-MM-yy");
+        try {
+            dateView.setText(format_date.format(format.parse(date)));
+        } catch (ParseException e) {
+            Toast.makeText(AimViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
+        }
     }
 
     public static View getViewByPosition(int pos, ListView listView) {

@@ -33,14 +33,14 @@ public interface AimService {
             @Body Aim aim);
 
     @POST(path)
-    Call<Aim> markAim(
+    Call<SubAimRes> markAim(
             @Path("username") String username,
             @Path("list_id") int list_id,
             @Path("aim_id") int aim_id,
             @Header("PASSWORD") String password);
 
     @DELETE(path)
-    Call<Aim> deleteAim(
+    Call<SubAimRes> deleteAim(
             @Path("username") String username,
             @Path("list_id") int list_id,
             @Path("aim_id") int aim_id,
