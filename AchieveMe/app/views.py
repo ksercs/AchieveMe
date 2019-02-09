@@ -51,14 +51,24 @@ def api_check_password(request, username):
     password = request.META['HTTP_PASSWORD']
     return JsonResponse({'correct' : validate(username, password)})
     
+@csrf_exempt
 def api_lists(request, username):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
         return HttpResponse(status=404)
     
-    data = serializers.serialize('json', ListModel.objects.filter(user_name=username),
-                                ensure_ascii=False, indent=2)
-    return HttpResponse(data, content_type='application/json')
-
+    if request.method == 'GET':
+        data = serializers.serialize('json', ListModel.objects.filter(user_name=username),
+                                    ensure_ascii=False, indent=2)
+        return HttpResponse(data, content_type='application/json')
+    
+    if request.method == 'POST':
+        fields = json.loads(request.body.decode('utf-8'))
+        new_list = List(name=fields['name'], user_name=username)
+        new_list.save()
+        response = serializers.serialize('json', [new_list], ensure_ascii=False, indent=2)[2:-2]
+        return HttpResponse(response)
+    
+        
 @csrf_exempt
 def api_aims(request, username, listid):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
@@ -68,6 +78,7 @@ def api_aims(request, username, listid):
         data = serializers.serialize('json', Aim.objects.filter(user_name=username, list_id=int(listid), parent_id=-1),
                                     ensure_ascii=False, indent=2)
         return HttpResponse(data, content_type='application/json')
+    
     if request.method == 'POST':
         fields = json.loads(request.body.decode('utf-8'))
             
@@ -79,6 +90,14 @@ def api_aims(request, username, listid):
         descr.save()
         response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
         return HttpResponse(response)
+    
+    if request.method == 'DELETE':
+        try:
+            to_delete = List.objects.get(pk=listid)
+            response = serializers.serialize('json', [to_delete], ensure_ascii=False, indent=2)[2:-2]
+            return HttpResponse(response)
+        except List.DoesNotExist:
+            retrurn HttpResponse(status=404)
         
 
 @csrf_exempt
