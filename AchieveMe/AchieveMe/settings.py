@@ -25,7 +25,7 @@ SECRET_KEY = '-lmtg#pk#2ngm$4_9a5mv0w$j&_5kh@-8qh$hg-5v(@6tv_ils'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['10.23.74.12', '127.0.0.1', '192.168.43.208']
+ALLOWED_HOSTS = ['10.23.74.12', '127.0.0.1', '192.168.43.208', '10.23.74.48']
 
 ACCOUNT_ACTIVATION_DAYS = 7
 AUTH_USER_EMAIL_UNIQUE = True
@@ -38,17 +38,20 @@ EMAIL_HOST_USER = 'ksercs0@gmail.com'
 EMAIL_HOST_PASSWORD = '181ASDcxz818'
 EMAIL_PORT = 587
 
+
+LOGIN_REDIRECT_URL = 'profile'
+LOGOUT_REDIRECT_URL = 'index'
 # Application definition
 
 INSTALLED_APPS = [
+    'app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'registration',
-	'app'
+	'registration'
 ]
 
 MIDDLEWARE = [
@@ -82,6 +85,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'AchieveMe.wsgi.application'
 
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader', 
+    'django.template.loaders.app_directories.Loader', 
+    ) 
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases

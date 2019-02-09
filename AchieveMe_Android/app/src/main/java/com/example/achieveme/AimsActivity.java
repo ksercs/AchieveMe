@@ -9,15 +9,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.achieveme.model.Aims.Aim;
+import com.example.achieveme.model.Aims.AimFields;
 import com.example.achieveme.model.Aims.AimsAdapter;
 import com.example.achieveme.model.Aims.SubAimRes;
+import com.example.achieveme.remote.AimService;
 import com.example.achieveme.remote.AimsListService;
 import com.example.achieveme.remote.ApiUtils;
+import com.example.achieveme.remote.AsyncTaskLoadImage;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,6 +37,13 @@ public class AimsActivity extends BaseActivity {
     public static final String AIMNAME = "com.example.achieveme.AIMNAME";
     private int list_id;
     List<SubAimRes> aims;
+
+    ListView listView;
+    AimsAdapter adapter;
+
+    SharedPreferences creds;
+    String username;
+    String password;
 
     @Override
     int getContentViewId() {
@@ -49,12 +63,12 @@ public class AimsActivity extends BaseActivity {
         setTitle(intent.getStringExtra(ListsActivity.LISTNAME));
         list_id = intent.getIntExtra(ListsActivity.LISTID, 0);
 
-        final ListView listView = findViewById(R.id.aimsListView);
+        listView = findViewById(R.id.aimsListView);
         registerForContextMenu(listView);
 
-        final SharedPreferences creds = getSharedPreferences("creds", MODE_PRIVATE);
-        String username = creds.getString(LoginActivity.USERNAME, null);
-        String password = creds.getString(LoginActivity.PASSWORD, null);
+        creds = getSharedPreferences("creds", MODE_PRIVATE);
+        username = creds.getString(LoginActivity.USERNAME, null);
+        password = creds.getString(LoginActivity.PASSWORD, null);
 
         AimsListService aimsListService = ApiUtils.getAimsService();
         Call<List<SubAimRes>> call = aimsListService.userAims(username, list_id, password);
@@ -64,7 +78,8 @@ public class AimsActivity extends BaseActivity {
             public void onResponse(Call<List<SubAimRes>> call, Response<List<SubAimRes>> response) {
                 if (response.isSuccessful()) {
                     aims = response.body();
-                    listView.setAdapter(new AimsAdapter(AimsActivity.this, aims));
+                    adapter = new AimsAdapter(AimsActivity.this, aims);
+                    listView.setAdapter(adapter);
                 } else {
                     SharedPreferences.Editor edit = creds.edit();
                     edit.clear();
@@ -121,12 +136,48 @@ public class AimsActivity extends BaseActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.newAim) {
+            Intent intent = new Intent(AimsActivity.this, editAimActivity.class);
+            intent.putExtra(ListsActivity.LISTID, list_id);
+            startActivityForResult(intent, 1);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
+        String name = data.getStringExtra("new_name");
+        String date = data.getStringExtra("new_date");
+        int pos = data.getIntExtra("pos", 1);
+        int subaim_id = data.getIntExtra("aim_id", 1);
+        String image = data.getStringExtra("image");
+
+        if (pos < 0) {
+            aims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T00:00:00Z")));
+            adapter.notifyDataSetChanged();
+            View item = listView.getChildAt(listView.getLastVisiblePosition());
+            ImageView avatar = item.findViewById(R.id.aimAvatarView);
+            new AsyncTaskLoadImage(avatar).execute(ApiUtils.BASE_URL + "media/" + image);
+            return;
+        }
+        View t = AimViewActivity.getViewByPosition(pos, listView);
+        TextView nameView = t.findViewById(R.id.aimNameView);
+        TextView dateView = t.findViewById(R.id.dateView);
+        nameView.setText(name);
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        final SimpleDateFormat format_date = new SimpleDateFormat("dd-MM-yy");
+        try {
+            dateView.setText(format_date.format(format.parse(date)));
+        } catch (ParseException e) {
+            Toast.makeText(AimsActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
+        }
+    }
+
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
@@ -135,16 +186,47 @@ public class AimsActivity extends BaseActivity {
         inflater.inflate(R.menu.aim_context, menu);
     }
 
-    /*@Override
+    @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int menuItemIndex = item.getItemId();
-        String[] menuItems = getResources().getStringArray(R.array.menu);
-        String menuItemName = menuItems[menuItemIndex];
-        String listItemName = Countries[info.position];
+        View t = AimViewActivity.getViewByPosition(info.position, listView);
+        int subaimId = (int) t.findViewById(R.id.aimNameView).getTag();
+        switch (menuItemIndex) {
+            case R.id.Edit: {
+                Intent intent = new Intent(AimsActivity.this, editAimActivity.class);
+                intent.putExtra(ListsActivity.LISTID, list_id);
+                intent.putExtra(AimsActivity.AIMID, subaimId);
+                intent.putExtra("pos", info.position);
+                startActivityForResult(intent, 1);
+                break;
+            }
+            case R.id.Delete: {
+                AimService aimService = ApiUtils.getAimService();
+                Call<SubAimRes> call = aimService.deleteAim(username, list_id, subaimId, password);
+                call.enqueue(new Callback<SubAimRes>() {
+                    @Override
+                    public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
+                        if (!response.isSuccessful()) {
+                            SharedPreferences.Editor edit = creds.edit();
+                            edit.clear();
+                            edit.apply();
+                            Intent intent = new Intent(AimsActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                        aims.remove(aims.get(info.position));
+                        adapter.notifyDataSetChanged();
+                    }
 
-        TextView text = (TextView) findViewById(R.id.footer);
-        text.setText(String.format("Selected %s for item %s", menuItemName, listItemName));
+                    @Override
+                    public void onFailure(Call<SubAimRes> call, Throwable t) {
+                        Toast.makeText(AimsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+        }
         return true;
-    }*/
+    }
 }

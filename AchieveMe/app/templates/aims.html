@@ -1,87 +1,70 @@
-{% extends "base.html" %}
+{% extends "lists.html" %}
 {% load staticfiles %}
 
-{% block content %}
-<div style = "float:left;padding-left:30px;">
-    <div class="row"> 
-
-        <h1>Списки:</h1>
-                <form method="POST">
-                    {% csrf_token %}
-                    {% for field in formB %}
-                        {%if field != label%}
-                            {{ field }}
-                        {% endif %}
-                    {% endfor %}
-                </form>
-        
-        <div class="row" style = "line-height:30px;">
-            <div>
-                <div>
-                    {% if lists %}
-                    <ul>
-                     {% for list in lists %} 
-                         <div class="row">
-                            <a href="{{ list_link }}{{ list.id }}">{{ list.name }}</a>
-                            <div style = "float:left;">
-                                <a href="{{ .get_absolute_url }}{{ subaim.id }}/delete"><span style="font-size:15px;" class="glyphicon glyphicon-remove"></span></a>
-                                <a href="{{ list_link }}{{ list.id }}/edit"><span style="font-size:15px;" class="glyphicon glyphicon-pencil"></span></a>
-                            </div>
-                         </div>
-                     {% endfor %}
-                    </ul>
-                    {% else %}
-                      <p>Списков нет :(</p>
-                    {% endif %}      
-                </div>
-            </div>
-        </div>
-    </div>
+{% block aim_add_form %}
+<div  class = "box col-lg-3" style = "padding-bottom:5px;padding-left:10px;border-radius: 10px; border: 1px groove black; background:#FFF8DC; line-height:30px;padding-top:20px;padding-right:20px;float:right;">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% for field in formA%} 
+                {{ field.label }}
+                {{ field }}
+                {% if field.name == 'is_remind' or field.name == 'is_important' %}
+                    <br/>
+                {% endif %}
+            {% endfor%}
+            <br>
+            <button type="submit" name = "aimbtn" class="btn btn-primary">Создать</button>
+        </form>
 </div>
+{% endblock %}
 
-
-
-	<div  style = "line-height:30px;padding-top:20px;padding-right:30px;float:right;">
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {% for field in formA%}
-                    {{ field.label }}
-                    {{ field }}
-                    {% if field.name == 'is_remind' or field.name == 'is_important' %}
-                        <br/>
-                    {% endif %}
-                {% endfor%}
-                <br>
-                <button type="submit" name = "aimbtn" class="btn btn-primary">Создать</button>
-            </form>
-    </div>
-    
-    <div class="col-sm-5" style = "float:left;padding-left:30px;">
+{% block content %}
+    <div class="col-lg-7" style = "height:100vh; float:left;padding-left:50px;">
     <h1>{{listname}}:</h1>
-
+    <h2>Активные цели</h2>
     {% if aims %}
-    <ul>
-
-     {% for aim in aims %} 
+        {% for aim in aims %} 
          <div class="row">
-         <div class="col-lg-3">
+         <div class="col-lg-3" style = "border: 2px solid #354D73;">
             <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "100%" height = "100%">
             </div>
             <div class="col-lg-9">
             <a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a> {{aim.deadline}}
+                {% if aim.is_important == True %}
+                    <span style="font-size:18px; color:orange;" class="glyphicon glyphicon-star"></span>
+                {% endif %}
+                <a href="{{ .get_absolute_url }}{{ aim.id }}/complete"><span style="font-size:15px;" class="glyphicon glyphicon-check"></span></a>
                 <a href="{{ .get_absolute_url }}{{ aim.id }}/edit"><span style="font-size:15px;" class="glyphicon glyphicon-pencil"></span></a>
                 <a href="{{ .get_absolute_url }}{{ aim.id }}/delete"><span style="font-size:15px;" class="glyphicon glyphicon-remove"></span></a>
             <br/>
             </div>
          </div>
          <br/>
-     {% endfor %}
-
-    </ul>
+        {% endfor %}
     {% else %}
-    <div style = "padding-left:10px;">
-      <p>Список пуст :((</p>
+    <div class = "alert alert-warning text-center" style = "color:#C37629;">
+        <p>Список пуст <span class="glyphicon glyphicon-thumbs-down"></span> </p>
     </div>
     {% endif %}       
+            
+    <h2>Выполненные цели</h2>
+    {% if completed %}
+        {% for aim in completed %} 
+             <div class="row">
+             <div class="col-lg-3" style = "border: 2px solid #354D73;">
+                <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "100%" height = "100%">
+                </div>
+                <div class="col-lg-9">
+                <s><a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a> {{aim.deadline}}</s>
+                    <a href="{{ .get_absolute_url }}{{ aim.id }}/cancel_complete"><span style="font-size:15px;" class="glyphicon glyphicon-repeat"></span></a>
+                </div>
+             </div>
+             <br/>
+        {% endfor %}
+    {% else %}
+        <div class = "alert alert-warning text-center" style = "color:#C37629;">
+            <p>Список пуст <span class="glyphicon glyphicon-thumbs-down"></span> </p>
+        </div>
+    {% endif %}    
     </div>
 {% endblock %}

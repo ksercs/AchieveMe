@@ -5,3 +5,5 @@ google-auth-httplib2==0.0.3
 google-auth==1.6.2
 apiclient==1.0.3
 oauth2client
+pymorphy2
+pyQt5

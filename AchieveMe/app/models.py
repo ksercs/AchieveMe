@@ -13,9 +13,9 @@ class Aim(models.Model):
     parent_id    = models.IntegerField    (default = -1)
     name 		  = models.CharField        (max_length = 120, default ='')
     deadline       = models.DateTimeField(default = now)
-    is_important = models.BooleanField  (default = 0)
-    is_remind     = models.BooleanField  (default = 0)
-    is_completed 	   = models.BooleanField  (default = 0)
+    is_important = models.BooleanField  (default = False)
+    is_remind     = models.BooleanField  (default = False)
+    is_completed 	   = models.BooleanField  (default = False)
     image = models.ImageField(upload_to='images/', default='images/cat.jpg')
 
     def save(self, *args, **kwargs):
@@ -26,6 +26,7 @@ class Aim(models.Model):
             im.save(output, "JPEG", quality=20)
             output.seek(0)
             self.image = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %self.image.name.split('.')[0], 'images/', sys.getsizeof(output), None)
+
         super(Aim, self).save(*args, **kwargs)
 
 
@@ -59,4 +60,6 @@ class File(models.Model):
     description_id = models.IntegerField(default = 0)
     comment_id = models.IntegerField  (default = 0)
     name = models.FileField(upload_to='images/', default = "")
-
+    
+class Text(models.Model):
+    text = models.TextField(default = "")

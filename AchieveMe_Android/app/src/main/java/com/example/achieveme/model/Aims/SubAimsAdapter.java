@@ -1,6 +1,9 @@
 package com.example.achieveme.model.Aims;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.ColorSpace;
 import android.graphics.Paint;
 
 import android.view.LayoutInflater;
@@ -13,7 +16,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.achieveme.AimViewActivity;
+import com.example.achieveme.LoginActivity;
 import com.example.achieveme.R;
+import com.example.achieveme.editAimActivity;
+import com.example.achieveme.remote.AimService;
 import com.example.achieveme.remote.ApiUtils;
 import com.example.achieveme.remote.AsyncTaskLoadImage;
 
@@ -22,6 +29,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class SubAimsAdapter extends ArrayAdapter {
 
@@ -48,12 +61,20 @@ public class SubAimsAdapter extends ArrayAdapter {
         final TextView textView = row.findViewById(R.id.aimNameView);
         TextView dateView = row.findViewById(R.id.dateView);
 
-        SubAimRes item = values.get(position);
+        final SubAimRes item = values.get(position);
 
+        completed.setOnCheckedChangeListener(null);
         completed.setChecked(item.getFields().isIs_completed());
+        if (completed.isChecked()) {
+            textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        }
+
         completed.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
                 if (isChecked) {
                     values.get(position).getFields().setIs_completed(true);
                     textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -61,6 +82,28 @@ public class SubAimsAdapter extends ArrayAdapter {
                     values.get(position).getFields().setIs_completed(false);
                     textView.setPaintFlags(textView.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
                 }
+
+                final SharedPreferences creds = context.getSharedPreferences("creds", MODE_PRIVATE);
+                String username = creds.getString(LoginActivity.USERNAME, null);
+                String password = creds.getString(LoginActivity.PASSWORD, null);
+                AimService aimService = ApiUtils.getAimService();
+                Call<SubAimRes> call = aimService.markAim(
+                        username,
+                        item.getFields().getList_id(),
+                        item.getId(),
+                        password);
+
+                call.enqueue(new Callback<SubAimRes>() {
+                    @Override
+                    public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
+                    }
+
+                    @Override
+                    public void onFailure(Call<SubAimRes> call, Throwable t) {
+                        Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
             }
         });
 

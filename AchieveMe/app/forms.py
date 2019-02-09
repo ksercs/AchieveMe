@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Setting, Aim, List
+from .models import Setting, Aim, List, Text
 from django.db import models
 
 class SignupForm(UserCreationForm):
@@ -65,7 +65,18 @@ class SubAimForm(forms.ModelForm):
             {'class':'.mark', 'placeholder': 'Важное ли?', 'maxlength': '1'})
         self.fields['is_remind'].widget.attrs.update(
             {'class': 'custom-control-label', 'placeholder': 'Нужно напоминание?', 'maxlength': '200'})
-            
+        
+class SubaimParsingForm(forms.ModelForm):
+    class Meta:
+        model = Text
+        fields = ('text',)
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        self.fields['text'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Тут будет описание зачем это надо и как пользоваться', 'maxlength': '500'})
+        
 class ListForm(forms.ModelForm):
     class Meta:
         model = List

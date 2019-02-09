@@ -18,17 +18,25 @@
             android:id="@+id/deadlineDateView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/deadlineTimeView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/descrView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:textSize="16sp" />
 </LinearLayout>

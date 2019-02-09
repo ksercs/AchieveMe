@@ -2,8 +2,9 @@
 
 {% block content %}
 <big>
-<div class="page-header"> 
-    <h1>Тут будет личный кабинет ))</h1> 
+<div  class="container-fluid" style="text-align: center; padding: 10%"> 
+	<a href = "{{.get_absolute_url}}download_wallpaper">
+	<img  src="{{ MEDIA_URL }}{{'collage.png'}}" class="img-thumbnail">
 </div>
 </big>
 {% endblock %}

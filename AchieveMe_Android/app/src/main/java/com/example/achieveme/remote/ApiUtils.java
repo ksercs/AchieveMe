@@ -19,4 +19,8 @@ public class ApiUtils {
     public static AimService getAimService () {
         return RetrofitClient.getClient(BASE_URL).create(AimService.class);
     }
+
+    public static AnalysisService getAnalysisService () {
+        return RetrofitClient.getClient(BASE_URL).create(AnalysisService.class);
+    }
 }
