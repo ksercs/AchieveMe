@@ -110,7 +110,7 @@ public class SubAimsAdapter extends ArrayAdapter {
         textView.setText(item.getFields().getName());
         textView.setTag(item.getId());
 
-        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final SimpleDateFormat format_date = new SimpleDateFormat("dd-MM-yy");
         String deadline_s = item.getFields().getDeadline();
         try {

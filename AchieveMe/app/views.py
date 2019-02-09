@@ -163,7 +163,7 @@ def api_analysis(request, username, listid):
     
 
     name, dead_line = goal_analysis(fields['text'])
-    dead_line = dead_line.replace(hour=15, minute=0)
+    dead_line = dead_line.replace(hour=12, minute=0)
     aim = Aim(name = name, deadline = dead_line, user_name = username, list_id = listid, parent_id = parentid)
     aim.save()
     try:
