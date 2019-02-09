@@ -1,19 +1,14 @@
 import subprocess
 import os 
 import sys
-from PyQt5.QtWidgets import QDesktopWidget,QApplication
-app = QApplication(sys.argv)
-q = QDesktopWidget().availableGeometry()
 
 def fcollage(): 
-    tree = os.walk("/home/mtimokhin/AchieveMe/AchieveMe/media/images")
-    app = QApplication(sys.argv)
-    q= QDesktopWidget().availableGeometry()    
+    tree = os.walk("/home/mtimokhin/AchieveMe/AchieveMe/media/images")  
     for i in tree:
         image = i[2]
     pictures = "montage -geometry 300x "  
     q.width()
-    big_pictures = "montage -geometry " + str(q.width()) + "x" + str(q.height())  
+    big_pictures = "montage -geometry 300x " 
     for i in image:
         pictures += " /home/mtimokhin/AchieveMe/AchieveMe/media/images/" + i
         big_pictures += " /home/mtimokhin/AchieveMe/AchieveMe/media/images/" + i
