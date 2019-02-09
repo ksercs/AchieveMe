@@ -163,10 +163,13 @@ def api_analysis(request, username, listid):
     
 
     name, deadline = goal_analysis(fields['text'])
-    deadline = deadline.replace(hour=0, minute=0)
     aim = Aim(name = name, deadline = deadline, user_name = username, list_id = listid, parent_id = parentid)
     aim.save()
-    response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
+    try:
+        new_aim = Aim.objects.get(pk=aim.pk)
+    except Aim.DoesNotExist:
+        return HttpResponse(status=404)
+    response = serializers.serialize('json', [new_aim], ensure_ascii=False, indent=2)[2:-2]
     return HttpResponse(response)
     
 
