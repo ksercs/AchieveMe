@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.achieveme.model.Lists.ListFields;
 import com.example.achieveme.model.Lists.ListRes;
 import com.example.achieveme.model.Lists.ListsAdapter;
 import com.example.achieveme.remote.ApiUtils;
@@ -126,6 +127,10 @@ public class ListsActivity extends BaseActivity {
         if (data == null) {
             return;
         }
+        int list_id = data.getIntExtra("list_id", 1);
+        String list_name = data.getStringExtra("list_name");
+        lists.add(new ListRes(list_id, new ListFields(list_name)));
+        adapter.notifyDataSetChanged();
     }
 
     @Override
