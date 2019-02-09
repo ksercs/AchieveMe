@@ -162,8 +162,8 @@ def api_analysis(request, username, listid):
         parentid = -1
     
 
-    name, deadline = goal_analysis(fields['text'])
-    aim = Aim(name = name, deadline = deadline, user_name = username, list_id = listid, parent_id = parentid)
+    name, dead_line = goal_analysis(fields['text'])
+    aim = Aim(name = name, deadline = dead_line, user_name = username, list_id = listid, parent_id = parentid)
     aim.save()
     try:
         new_aim = Aim.objects.get(pk=aim.pk)
