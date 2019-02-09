@@ -163,7 +163,7 @@ def api_analysis(request, username, listid):
     
 
     name, dead_line = goal_analysis(fields['text'])
-    dead_line = dead_line.replace(hour=12, minute=0)
+    dead_line = dead_line.replace(hour=15, minute=0)
     aim = Aim(name = name, deadline = dead_line, user_name = username, list_id = listid, parent_id = parentid)
     aim.save()
     try:
@@ -490,6 +490,7 @@ def SubAimView(request, username, listid, aimid):
             text = formC.cleaned_data['text'].split('\n')
             for row in text:
                 name, deadline = goal_analysis(row)
+                deadline = deadline.replace(hour=12, minute=0)
                 aim = Aim(name = name, deadline = deadline, user_name = username, list_id = listid, parent_id = aimid)
                 aim.save()
             return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
