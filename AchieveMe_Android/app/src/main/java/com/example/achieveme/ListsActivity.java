@@ -135,10 +135,10 @@ public class ListsActivity extends BaseActivity {
         switch (menuItemIndex) {
             case R.id.delete_list: {
                 ListsService listsService = ApiUtils.getListsService();
-                Call<List> call = listsService.deleteList(username, list_id, password);
-                call.enqueue(new Callback<List>() {
+                Call<ListRes> call = listsService.deleteList(username, list_id, password);
+                call.enqueue(new Callback<ListRes>() {
                     @Override
-                    public void onResponse(Call<List> call, Response<List> response) {
+                    public void onResponse(Call<ListRes> call, Response<ListRes> response) {
                         if (!response.isSuccessful()) {
                             SharedPreferences.Editor edit = creds.edit();
                             edit.clear();
@@ -152,7 +152,7 @@ public class ListsActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<List> call, Throwable t) {
+                    public void onFailure(Call<ListRes> call, Throwable t) {
                         Toast.makeText(ListsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
