@@ -151,7 +151,7 @@ def api_aim(request, username, listid, aimid):
         return HttpResponse(response)
     
 @csrf_exempt
-def api_analysis(request, username):
+def api_analysis(request, username, list_id):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
         return HttpResponse(status=404)
     
