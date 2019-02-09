@@ -9,6 +9,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.example.achieveme.model.Aims.SubAimRes;
 import com.example.achieveme.remote.AimService;
 import com.example.achieveme.remote.AimsListService;
 import com.example.achieveme.remote.ApiUtils;
+import com.example.achieveme.remote.AsyncTaskLoadImage;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -153,9 +155,14 @@ public class AimsActivity extends BaseActivity {
         String date = data.getStringExtra("new_date");
         int pos = data.getIntExtra("pos", 1);
         int subaim_id = data.getIntExtra("aim_id", 1);
+        String image = data.getStringExtra("image");
+
         if (pos < 0) {
             aims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T00:00:00Z")));
             adapter.notifyDataSetChanged();
+            View item = listView.getChildAt(listView.getLastVisiblePosition());
+            ImageView avatar = item.findViewById(R.id.aimAvatarView);
+            new AsyncTaskLoadImage(avatar).execute(ApiUtils.BASE_URL + "media/" + image);
             return;
         }
         View t = AimViewActivity.getViewByPosition(pos, listView);
