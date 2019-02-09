@@ -353,6 +353,7 @@ def editListView(request, username, pk):
 def editAimView(request, username, listid, pk):
     lists = ListModel.objects.filter(user_name = username)
     aims = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1, is_completed = False)
+    completed = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1, is_completed = True)
     list = ListModel.objects.get(id = listid)
     cur_aim = Aim.objects.get(id = pk)
     vars = dict(
@@ -362,7 +363,8 @@ def editAimView(request, username, listid, pk):
         formA = AimForm(),
         formB = ListForm(),
         list_link = "/"+username+"/lists/",
-        ListAddingForm = ListForm()
+        ListAddingForm = ListForm(),
+        completed = completed
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:

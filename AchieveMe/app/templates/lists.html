@@ -3,6 +3,7 @@
 {% block lists_sidebar %}
     <div class = "col-lg-2 sidebar" style = "height:100vh; padding-left:30px;">
     <div class="row"> 
+        <div style = "padding-left:13px;">
         <h1>Списки:</h1>
             <form method="POST">
                 {% csrf_token %}
@@ -12,6 +13,7 @@
                     {% endif %}
                 {% endfor %}
             </form>
+        </div>
         
         <div class="row" style = "padding-top:10px;line-height:30px;">
             <div>
@@ -19,7 +21,7 @@
                     {% if lists %}
                     <ul>
                      {% for list in lists %} 
-                         <div class="row">
+                         <div class="row" style = "border:1px solid black;border-radius: 8px;background: #FFF8DC;">
                                 <a href = "{{list_link}}{{list.id}}" >{{ list.name }}</a>
                             <div style = "float:left;padding-right:5px;">
                                 <a href="{{ .get_absolute_url }}{{list.id}}/delete"><span style="font-size:15px;color:red;" class="glyphicon glyphicon-remove"></span></a>

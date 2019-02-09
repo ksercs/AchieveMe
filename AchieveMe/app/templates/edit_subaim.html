@@ -1,42 +1,18 @@
-{% extends "lists.html" %}
+{% extends "deep_aim.html" %}
 
-{% block content %}  
-    <div class="col-sm-5" style = "float:left;padding-left:30px;">
-        <h1>{{ listname }}</h1>
-        <h2>{{ aim.name }}</h2>
-        <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "30%" height = "30%">
-        <br/>
-        Дедлайн: {{aim.deadline}}
-        <br/>
-        Время на выполнение: {{aim.time_to_do}} минуты
-        <br/>
-        <br/>
-    </div>
-
-     <div  class = "col-sm-4" style = "line-height:30px;padding-top:20px;padding-right:30px;float:right;">
+{% block aim_add_form %}
+<div  class = "box col-lg-3" style = "padding-bottom:5px;padding-left:10px;border-radius: 10px; border: 1px groove black; background:#FFF8DC; line-height:30px;padding-top:20px;padding-right:20px;float:right;">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
-            {% for field in formA%}
+            {% for field in formA%} 
                 {{ field.label }}
                 {{ field }}
                 {% if field.name == 'is_remind' or field.name == 'is_important' %}
                     <br/>
                 {% endif %}
             {% endfor%}
+            <br>
             <button type="submit" name = "aimbtn" class="btn btn-primary">Обновить</button>
         </form>
-    </div>
-    
-    
-    <div class="col-sm-9" style = "padding-left:5px;">
-    {% if subaims %}
-        <ul>
-             {% for subaim in subaims %}
-                 <div class="row">
-                        {{ subaim.name }} {{subaim.deadline}}
-                 </div>
-             {% endfor %}
-        </ul>
-    {% endif %}
-    </div>
+</div>
 {% endblock %}
