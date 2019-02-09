@@ -40,7 +40,7 @@ public interface AimService {
             @Header("PASSWORD") String password);
 
     @DELETE(path)
-    Call<Aim> deleteAim(
+    Call<SubAimRes> deleteAim(
             @Path("username") String username,
             @Path("list_id") int list_id,
             @Path("aim_id") int aim_id,

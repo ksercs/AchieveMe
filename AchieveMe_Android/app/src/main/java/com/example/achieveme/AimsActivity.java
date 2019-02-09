@@ -196,10 +196,10 @@ public class AimsActivity extends BaseActivity {
             }
             case R.id.Delete: {
                 AimService aimService = ApiUtils.getAimService();
-                Call<Aim> call = aimService.deleteAim(username, list_id, subaimId, password);
-                call.enqueue(new Callback<Aim>() {
+                Call<SubAimRes> call = aimService.deleteAim(username, list_id, subaimId, password);
+                call.enqueue(new Callback<SubAimRes>() {
                     @Override
-                    public void onResponse(Call<Aim> call, Response<Aim> response) {
+                    public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
                         if (!response.isSuccessful()) {
                             SharedPreferences.Editor edit = creds.edit();
                             edit.clear();
@@ -213,7 +213,7 @@ public class AimsActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onFailure(Call<Aim> call, Throwable t) {
+                    public void onFailure(Call<SubAimRes> call, Throwable t) {
                         Toast.makeText(AimsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
