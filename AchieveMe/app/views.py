@@ -150,6 +150,9 @@ def api_aim(request, username, listid, aimid):
         aim.delete()
         return HttpResponse(response)
 
+def download_wallpaper(request):
+    return render(request, 'wallpaper.html')
+
 def index(request):
     return render(request, 'index.html')
 	
