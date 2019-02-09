@@ -165,7 +165,6 @@ def api_analysis(request, username):
     response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
     return HttpResponse(response)
     
-    
 
 def download_wallpaper(request):
     return render(request, 'wallpaper.html')
