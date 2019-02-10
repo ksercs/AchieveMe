@@ -104,6 +104,11 @@ def api_lists(request, username):
         response = serializers.serialize('json', [new_list], ensure_ascii=False, indent=2)[2:-2]
         return HttpResponse(response)
     
+def api_user_aims(request, username):
+    if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
+        return HttpResponse(status=404)
+    aims = serializers.serialize('json', Aim.objects.filter(user_name=username, is_completed=False), ensure_ascii=False, indent=2)
+    return HttpResponse(aims, content_type='application/json')
         
 @csrf_exempt
 def api_aims(request, username, listid):

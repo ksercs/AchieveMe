@@ -10,6 +10,7 @@ public class AimFields {
     private boolean is_important = false;
     private boolean is_completed;
     private int list_id;
+    private int parent_id;
     private String image;
     private Description description;
 
@@ -21,7 +22,7 @@ public class AimFields {
         return deadline;
     }
 
-    public boolean isIs_imortant() {
+    public boolean isIs_important() {
         return is_important;
     }
 
@@ -35,6 +36,10 @@ public class AimFields {
 
     public int getList_id() {
         return list_id;
+    }
+
+    public int getParent_id() {
+        return parent_id;
     }
 
     public String getImage() {
