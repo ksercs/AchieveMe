@@ -48,8 +48,8 @@ from io import StringIO
 import sys
 
 def fcollage(username):
-    pictures = "montage -geometry 200x "  
-    big_pictures = "montage -geometry 300x " 
+    pictures = "montage -geometry +0+0 "  
+    big_pictures = "montage -geometry +0+0 " 
     
     images = get_images(username)
   
