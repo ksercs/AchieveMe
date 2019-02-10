@@ -30,6 +30,8 @@ import com.example.achieveme.remote.AsyncTaskLoadImage;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -114,6 +116,12 @@ public class AimViewActivity extends BaseActivity {
 
                     subaimsList.addHeaderView(header);
                     subaims = aim.getSubaims();
+                    Collections.sort(subaims, new Comparator<SubAimRes>() {
+                        @Override
+                        public int compare(SubAimRes o1, SubAimRes o2) {
+                            return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
+                        }
+                    });
                     adapter = new SubAimsAdapter(AimViewActivity.this, subaims);
                     subaimsList.setAdapter(adapter);
                 } else {
@@ -211,6 +219,32 @@ public class AimViewActivity extends BaseActivity {
                 });
                 break;
             }
+            case R.id.Important: {
+                AimService aimService = ApiUtils.getAimService();
+                Call<SubAimRes> call = aimService.impAim(username, subaimId, password);
+                call.enqueue(new Callback<SubAimRes>() {
+                    @Override
+                    public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
+                        if (response.isSuccessful()) {
+                            subaims.get(info.position - 1).getFields().setIs_important(!subaims.get(info.position - 1).getFields().isIs_imortant());
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            SharedPreferences.Editor edit = creds.edit();
+                            edit.clear();
+                            edit.apply();
+                            Intent intent = new Intent(AimViewActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SubAimRes> call, Throwable t) {
+                        Toast.makeText(AimViewActivity.this, t.getMessage(), Toast.LENGTH_SHORT);
+                    }
+                });
+                break;
+            }
         }
         return true;
     }
@@ -224,23 +258,28 @@ public class AimViewActivity extends BaseActivity {
             case 1: {
                 String name = data.getStringExtra("new_name");
                 String date = data.getStringExtra("new_date");
+                String time = data.getStringExtra("new_time");
                 int pos = data.getIntExtra("pos", 1);
                 int subaim_id = data.getIntExtra("aim_id", 1);
-                String image = data.getStringExtra("image");
                 if (pos < 0) {
-                    subaims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T12:00:00")));
+                    subaims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T" + time)));
+                    Collections.sort(subaims, new Comparator<SubAimRes>() {
+                        @Override
+                        public int compare(SubAimRes o1, SubAimRes o2) {
+                            return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
+                        }
+                    });
                     adapter.notifyDataSetChanged();
                     return;
                 }
-                View t = getViewByPosition(pos, subaimsList);
-                TextView nameView = t.findViewById(R.id.aimNameView);
-                TextView dateView = t.findViewById(R.id.dateView);
-                nameView.setText(name);
-                try {
-                    dateView.setText(format_date.format(format.parse(date)));
-                } catch (ParseException e) {
-                    Toast.makeText(AimViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
-                }
+                subaims.set(pos - 1, new SubAimRes(subaim_id, new AimFields(name, date + "T" + time)));
+                Collections.sort(subaims, new Comparator<SubAimRes>() {
+                    @Override
+                    public int compare(SubAimRes o1, SubAimRes o2) {
+                        return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
+                    }
+                });
+                adapter.notifyDataSetChanged();
                 break;
             }
             case 2: {
@@ -258,6 +297,12 @@ public class AimViewActivity extends BaseActivity {
                             if (response.isSuccessful()) {
                                 SubAimRes new_subaim = response.body();
                                 subaims.add(new_subaim);
+                                Collections.sort(subaims, new Comparator<SubAimRes>() {
+                                    @Override
+                                    public int compare(SubAimRes o1, SubAimRes o2) {
+                                        return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
+                                    }
+                                });
                                 adapter.notifyDataSetChanged();
                                 return;
                             } else {

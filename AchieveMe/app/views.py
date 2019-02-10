@@ -44,6 +44,8 @@ from .google_calendar_interaction import calendar_authorization, add_to_calendar
 
 from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
+from io import StringIO
+import sys
 
 def fcollage(username):
     pictures = "montage -geometry 200x "  
@@ -111,6 +113,16 @@ def api_aims(request, username, listid):
         return HttpResponse(data, content_type='application/json')
     
     if request.method == 'POST':
+        if not request.body:
+            try:
+                Aim.objects.get(aim_id=listid, user_name=username)
+            except Aim.DoesNotExist:
+                return HttpResponse(status=404)
+            aim.is_completed = not aim.is_completed
+            aim.save()
+            response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
+            return HttpResponse(response)
+            
         fields = json.loads(request.body.decode('utf-8'))
             
         aim = Aim(user_name=username, list_id=listid, parent_id=fields['parent_id'], name=fields['name'],
@@ -138,7 +150,7 @@ def api_aim(request, username, listid, aimid):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
         return HttpResponse(status=404)
     try:
-        aim = Aim.objects.get(pk=aimid)
+        aim = Aim.objects.get(pk=aimid, user_name=username)
     except Aim.DoesNotExist:
         return HttpResponse(status=404)
         
@@ -177,7 +189,7 @@ def api_aim(request, username, listid, aimid):
     if request.method == 'DELETE':
         aim.delete()
         return HttpResponse(response)
-    
+        
 @csrf_exempt
 def api_analysis(request, username, listid):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
@@ -541,6 +553,9 @@ def SubAimView(request, username, listid, aimid):
     vars['formC'] = formC
     return render(request, 'deep_aim.html', vars)
 
+
+
+
 def settings(request, username):
     if request.method == 'POST':
         form = SettingForm(request.POST)
@@ -550,11 +565,16 @@ def settings(request, username):
             Setting.objects.get(user_name = username).delete()
             setting.save()
             if setting.google_sync:
+                #old_stdout = sys.stdout
+                #sys.stdout = mystdout = StringIO()
                 calendar_authorization(username)
-
+                #sys.stdout = old_stdout
+                
     else:
         form = SettingForm(instance = Setting.objects.get(user_name = username))
     return render(request, 'settings.html', {'form': form})
 
 
 	
+#def ptintstring(request):
+    
