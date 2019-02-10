@@ -16,14 +16,14 @@ class Aim(models.Model):
     is_important = models.BooleanField  (default = False)
     is_remind     = models.BooleanField  (default = False)
     is_completed 	   = models.BooleanField  (default = False)
-    image = models.ImageField(upload_to='images/', default='images/cat.jpg')
+    image = models.ImageField(upload_to='images/', default='images/cat.png')
 
     def save(self, *args, **kwargs):
         if self.image:
             im = Image.open(self.image)
             output = BytesIO()
-            #im = im.resize((128, 128))
-            im.save(output, "JPEG", quality=20)
+            im = im.resize((1024, 1024))
+            im.save(output, "PNG", quality=20)
             output.seek(0)
             self.image = InMemoryUploadedFile(output,'ImageField', "%s.jpg" %self.image.name.split('.')[0], 'images/', sys.getsizeof(output), None)
 
