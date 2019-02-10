@@ -27,38 +27,36 @@
         app:srcCompat="@drawable/ic_launcher_background" />
 
     <Space
-        android:layout_width="8dp"
+        android:layout_width="4dp"
         android:layout_height="wrap_content"
         android:layout_weight="0" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="56dp"
         android:layout_height="match_parent"
-        android:layout_weight="0"
-        android:gravity="left"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/dateView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="left" />
+            android:layout_gravity="left"
+            android:gravity="left"
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/timeView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
-            android:text="TextView" />
+            android:text="TextView"
+            android:textSize="10sp" />
     </LinearLayout>
-
-    <Space
-        android:layout_width="8dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0" />
 
     <ImageView
         android:id="@+id/aimAvatarView"
         android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:layout_height="50dp"
+        android:layout_gravity="center"/>
 </LinearLayout>

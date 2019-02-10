@@ -61,6 +61,7 @@ public class AimViewActivity extends BaseActivity {
 
     List<SubAimRes> subaims;
     SubAimsAdapter adapter;
+    Comparator<SubAimRes> comp;
 
     @Override
     int getContentViewId() {
@@ -93,6 +94,13 @@ public class AimViewActivity extends BaseActivity {
         subaimsList = findViewById(R.id.subaimsListView);
         registerForContextMenu(subaimsList);
 
+        comp = new Comparator<SubAimRes>() {
+            @Override
+            public int compare(SubAimRes o1, SubAimRes o2) {
+                return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
+            }
+        };
+
         AimService aimService = ApiUtils.getAimService();
         Call<AimRes> call = aimService.aimInfo(username, list_id, aim_id, password);
 
@@ -116,12 +124,7 @@ public class AimViewActivity extends BaseActivity {
 
                     subaimsList.addHeaderView(header);
                     subaims = aim.getSubaims();
-                    Collections.sort(subaims, new Comparator<SubAimRes>() {
-                        @Override
-                        public int compare(SubAimRes o1, SubAimRes o2) {
-                            return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
-                        }
-                    });
+                    Collections.sort(subaims, comp);
                     adapter = new SubAimsAdapter(AimViewActivity.this, subaims);
                     subaimsList.setAdapter(adapter);
                 } else {
@@ -226,7 +229,7 @@ public class AimViewActivity extends BaseActivity {
                     @Override
                     public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
                         if (response.isSuccessful()) {
-                            subaims.get(info.position - 1).getFields().setIs_important(!subaims.get(info.position - 1).getFields().isIs_imortant());
+                            subaims.get(info.position - 1).getFields().setIs_important(!subaims.get(info.position - 1).getFields().isIs_important());
                             adapter.notifyDataSetChanged();
                         } else {
                             SharedPreferences.Editor edit = creds.edit();
@@ -263,22 +266,12 @@ public class AimViewActivity extends BaseActivity {
                 int subaim_id = data.getIntExtra("aim_id", 1);
                 if (pos < 0) {
                     subaims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T" + time)));
-                    Collections.sort(subaims, new Comparator<SubAimRes>() {
-                        @Override
-                        public int compare(SubAimRes o1, SubAimRes o2) {
-                            return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
-                        }
-                    });
+                    Collections.sort(subaims, comp);
                     adapter.notifyDataSetChanged();
                     return;
                 }
                 subaims.set(pos - 1, new SubAimRes(subaim_id, new AimFields(name, date + "T" + time)));
-                Collections.sort(subaims, new Comparator<SubAimRes>() {
-                    @Override
-                    public int compare(SubAimRes o1, SubAimRes o2) {
-                        return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
-                    }
-                });
+                Collections.sort(subaims, comp);
                 adapter.notifyDataSetChanged();
                 break;
             }
@@ -297,12 +290,7 @@ public class AimViewActivity extends BaseActivity {
                             if (response.isSuccessful()) {
                                 SubAimRes new_subaim = response.body();
                                 subaims.add(new_subaim);
-                                Collections.sort(subaims, new Comparator<SubAimRes>() {
-                                    @Override
-                                    public int compare(SubAimRes o1, SubAimRes o2) {
-                                        return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
-                                    }
-                                });
+                                Collections.sort(subaims, comp);
                                 adapter.notifyDataSetChanged();
                                 return;
                             } else {

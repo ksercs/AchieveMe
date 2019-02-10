@@ -41,14 +41,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 startActivity(new Intent(BaseActivity.this, ListsActivity.class));
                 break;
             }
-            /*case R.id.navigation_dashboard: {
-                 startActivity(new Intent(BaseActivity.this, ));
+            case R.id.navigation_dashboard: {
+                 startActivity(new Intent(BaseActivity.this, PlanActivity.class));
                  break;
             }
             case R.id.navigation_notifications: {
-                startActivity(new Intent(BaseActivity.this, ));
+                startActivity(new Intent(BaseActivity.this, KabinetActivity.class));
                 break;
-            }*/
+            }
             default: {
                 return false;
             }

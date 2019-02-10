@@ -24,6 +24,7 @@ public class Aim {
         this.parent_id = parent_id;
     }
 
+
     public int getId() {
         return id;
     }

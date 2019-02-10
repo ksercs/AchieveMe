@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.ColorSpace;
 import android.graphics.Paint;
 
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ public class SubAimsAdapter extends ArrayAdapter {
         final CheckBox completed = row.findViewById(R.id.isCompleted);
         final TextView textView = row.findViewById(R.id.aimNameView);
         TextView dateView = row.findViewById(R.id.dateView);
+        TextView timeView = row.findViewById(R.id.timeView);
         ImageView important = row.findViewById(R.id.important);
 
         final SubAimRes item = values.get(position);
@@ -112,19 +114,46 @@ public class SubAimsAdapter extends ArrayAdapter {
         textView.setTag(item.getId());
         final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final SimpleDateFormat format_date = new SimpleDateFormat("dd-MM-yy");
+        final SimpleDateFormat format_date_comp = new SimpleDateFormat("dd-MM-yyyy");
+        final SimpleDateFormat format_time = new SimpleDateFormat("HH:mm");
         String deadline_s = item.getFields().getDeadline();
         try {
+            final long day = 60 * 60 * 24 * 1000L;
             Date deadline_date = format.parse(deadline_s);
-            dateView.setText(format_date.format(deadline_date));
+            String date = format_date.format(deadline_date);
+            Date today = new Date();
+            Date tomorrow = new Date(today.getTime() + day);
+            if (format_date_comp.format(deadline_date).equals(format_date_comp.format(today))) {
+                dateView.setText("Сегодня");
+            } else if (format_date_comp.format(deadline_date).equals(format_date_comp.format(tomorrow))) {
+                dateView.setText("Завтра ");
+            } else {
+                dateView.setText(date);
+            }
+            timeView.setText(format_time.format(deadline_date));
+            if (deadline_date.getTime() - today.getTime() < day * 7) {
+                dateView.setTextColor(dateView.getContext().getResources().getColor(R.color.yellow));
+            }
+            if (deadline_date.getTime() - today.getTime() < day) {
+                dateView.setTextColor(dateView.getContext().getResources().getColor(R.color.orange));
+            }
+            if (deadline_date.getTime() - today.getTime() < 0) {
+                dateView.setTextColor(dateView.getContext().getResources().getColor(R.color.red));
+            }
         } catch (ParseException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
-        if (item.getFields().isIs_imortant()) {
+        if (item.getFields().isIs_important()) {
             important.setImageResource(R.drawable.btn_rating_star_on_focused_holo_light);
         } else {
             important.setImageDrawable(null);
         }
+        if (item.getFields().getParent_id() == -1) {
+            textView.setTextColor(dateView.getContext().getResources().getColor(R.color.violet));
+            textView.setTypeface(null, Typeface.BOLD);
+        }
+
         row.setOnCreateContextMenuListener(null);
         return row;
     }
