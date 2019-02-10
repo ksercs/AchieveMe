@@ -1,16 +1,13 @@
 package com.example.achieveme.model.Aims;
 
-import android.util.EventLogTags;
 
 import com.example.achieveme.model.Description.Description;
-import com.google.gson.annotations.SerializedName;
 
 public class AimFields {
 
     private String name;
     private String deadline;
-    private boolean is_imortant;
-    private boolean is_remind;
+    private boolean is_important = false;
     private boolean is_completed;
     private int list_id;
     private String image;
@@ -25,11 +22,7 @@ public class AimFields {
     }
 
     public boolean isIs_imortant() {
-        return is_imortant;
-    }
-
-    public boolean isIs_remind() {
-        return is_remind;
+        return is_important;
     }
 
     public boolean isIs_completed() {
@@ -50,6 +43,18 @@ public class AimFields {
 
     public Description getDescription() {
         return description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setIs_important(boolean is_important) {
+        this.is_important = is_important;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
     }
 
     public AimFields(String name, String deadline) {

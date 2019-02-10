@@ -5,6 +5,7 @@ from oauth2client import file, client, tools
 import datetime
 import os
 import json
+import pytz
 
 SCOPES = 'https://www.googleapis.com/auth/calendar'
 from .models import Aim
@@ -14,7 +15,7 @@ try:
 	flags = tools.argparser.parse_args([])
 except ImportError:
 	flags = None
-flags.noauth_local_webserver = True
+#flags.noauth_local_webserver = True
 
 def calendar_authorization(username):
 	store = open('app/static/secret_data/' + username +'.json', 'w')
@@ -34,12 +35,14 @@ def add_to_calendar(aim, Gmt):
 		creds = tools.run_flow(flow, store, flags)
 	GCAL = discovery.build('calendar', 'v3', http=creds.authorize(Http()))
 	start_time = aim.deadline - datetime.timedelta(minutes=1)
+	start_time = start_time.replace(tzinfo=pytz.timezone('Europe/Moscow'))
+	aim.deadline = aim.deadline.replace(tzinfo=pytz.timezone('Europe/Moscow'))
 	EVENT = {
 		'summary': "oсталась неделя до конца цели: " + aim.name,
 		'start': {'dateTime': str(start_time - datetime.timedelta(days=7)).replace(' ', 'T')},
 		'end': {'dateTime': str(aim.deadline - datetime.timedelta(days=7)).replace(' ', 'T')},
 	}
-
+    
 	e = GCAL.events().insert(calendarId='primary', sendNotifications=True, body=EVENT).execute()
 	EVENT = {
 		'summary': "Остался день до конца цели: " + aim.name,

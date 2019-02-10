@@ -30,6 +30,8 @@ import com.example.achieveme.remote.AsyncTaskLoadImage;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -83,6 +85,12 @@ public class AimsActivity extends BaseActivity {
             public void onResponse(Call<List<SubAimRes>> call, Response<List<SubAimRes>> response) {
                 if (response.isSuccessful()) {
                     aims = response.body();
+                    Collections.sort(aims, new Comparator<SubAimRes>() {
+                        @Override
+                        public int compare(SubAimRes o1, SubAimRes o2) {
+                            return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
+                        }
+                    });
                     adapter = new AimsAdapter(AimsActivity.this, aims);
                     listView.setAdapter(adapter);
                 } else {
@@ -160,29 +168,33 @@ public class AimsActivity extends BaseActivity {
             case 1: {
                 String name = data.getStringExtra("new_name");
                 String date = data.getStringExtra("new_date");
+                String time = data.getStringExtra("new_time");
                 int pos = data.getIntExtra("pos", 1);
                 int subaim_id = data.getIntExtra("aim_id", 1);
                 String image = data.getStringExtra("image");
 
                 if (pos < 0) {
-                    aims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T12:00:00")));
+                    aims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T" + time)));
+                    Collections.sort(aims, new Comparator<SubAimRes>() {
+                        @Override
+                        public int compare(SubAimRes o1, SubAimRes o2) {
+                            return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
+                        }
+                    });
                     adapter.notifyDataSetChanged();
                     View item = listView.getChildAt(listView.getLastVisiblePosition());
                     ImageView avatar = item.findViewById(R.id.aimAvatarView);
                     new AsyncTaskLoadImage(avatar).execute(ApiUtils.BASE_URL + "media/" + image);
                     return;
                 }
-                View t = AimViewActivity.getViewByPosition(pos, listView);
-                TextView nameView = t.findViewById(R.id.aimNameView);
-                TextView dateView = t.findViewById(R.id.dateView);
-                nameView.setText(name);
-                final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                final SimpleDateFormat format_date = new SimpleDateFormat("dd-MM-yy");
-                try {
-                    dateView.setText(format_date.format(format.parse(date)));
-                } catch (ParseException e) {
-                    Toast.makeText(AimsActivity.this, e.getMessage(), Toast.LENGTH_SHORT);
-                }
+                aims.set(pos, new SubAimRes(subaim_id, new AimFields(name, date + "T" + time)));
+                Collections.sort(aims, new Comparator<SubAimRes>() {
+                    @Override
+                    public int compare(SubAimRes o1, SubAimRes o2) {
+                        return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
+                    }
+                });
+                adapter.notifyDataSetChanged();
                 break;
             }
             case 2: {
@@ -200,6 +212,12 @@ public class AimsActivity extends BaseActivity {
                             if (response.isSuccessful()) {
                                 SubAimRes new_aim = response.body();
                                 aims.add(new_aim);
+                                Collections.sort(aims, new Comparator<SubAimRes>() {
+                                    @Override
+                                    public int compare(SubAimRes o1, SubAimRes o2) {
+                                        return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
+                                    }
+                                });
                                 adapter.notifyDataSetChanged();
                                 return;
                             } else {

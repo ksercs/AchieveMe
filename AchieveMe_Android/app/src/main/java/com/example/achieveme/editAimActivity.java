@@ -128,6 +128,7 @@ public class editAimActivity extends AppCompatActivity {
                 intent.putExtra("image", new_aim.getFields().getImage());
                 intent.putExtra("new_name", name.getText().toString());
                 intent.putExtra("new_date", date.getText().toString());
+                intent.putExtra("new_time", time.getText().toString());
                 intent.putExtra("pos", pos);
                 intent.putExtra("aim_id", aim_id);
                 setResult(RESULT_OK, intent);
