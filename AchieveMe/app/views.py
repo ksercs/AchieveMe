@@ -64,7 +64,7 @@ def fcollage(username):
     subprocess.call(big_pictures, shell=True)
 
 def get_images(username):
-    aims = Aim.objects.filter(user_name = username, is_completed = False)
+    aims = Aim.objects.filter(user_name = username, is_completed = False, parent_id = -1)
     images = list()
     for i in aims:
         images.append(i.image)
