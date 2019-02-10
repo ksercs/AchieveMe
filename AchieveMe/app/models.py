@@ -17,7 +17,7 @@ class Aim(models.Model):
     is_completed = models.BooleanField(default = False)
     image = models.ImageField(upload_to='images/', default='images/cat.png')
     cur_points = models.IntegerField(default = 0)
-    all_points = models.IntegerField(default = 0)
+    all_points = models.IntegerField(default = 1)
     percent = models.IntegerField(default = 0)
 
     def save(self, *args, **kwargs):
