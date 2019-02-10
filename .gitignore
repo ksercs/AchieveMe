@@ -10,3 +10,5 @@ __pycache__
 AchieveMe/media/images/*
 !AchieveMe/media/images/cat.jpg
 AchieveMe/app/static/secret_data/*.json
+AchieveMe/media/collage.jpg
+AchieveMe/media/big_collage.jpg
