@@ -50,16 +50,24 @@ def fcollage(username):
     big_pictures = "montage -geometry 300x " 
     
     images = get_images(username)
-    
-    for i in images:
-        pictures += MEDIA_ROOT + 'images/' + i + " "
-        big_pictures += MEDIA_ROOT + 'images/' + i + " "
+  
+    for image in images:
+        pictures += MEDIA_ROOT + str(image) + " "
+        big_pictures += MEDIA_ROOT + str(image) + " "
     pictures += MEDIA_ROOT + 'collage.png'
     big_pictures += MEDIA_ROOT + "big_collage.png"
-    print(pictures)
-    print(big_pictures)
+#    print(pictures)
+#    print(big_pictures)
     subprocess.call(pictures, shell=True)
     subprocess.call(big_pictures, shell=True)
+
+def get_images(username):
+    aims = Aim.objects.filter(user_name = username, is_completed = False)
+    images = list()
+    for i in aims:
+        images.append(i.image)
+    
+    return images
 
 def validate(username, password):
     try:
@@ -252,15 +260,8 @@ def activate(request, uidb64, token):
         return render(request, 'activation_complete.html')
     else:
         return HttpResponse('Activation link is invalid!')
-		
-def get_images(username):
-    aims = Aim.objects.filter(user_name = username, is_completed = False)
-    images = ""
-    for i in aims:
-        images += str(i.image)
-    
-    return images
-       
+
+
 def profile(request, username):
     fcollage(username)
     return render(request, 'profile.html')
