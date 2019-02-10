@@ -52,6 +52,8 @@ public class AimsActivity extends BaseActivity {
     String username;
     String password;
 
+    Comparator<SubAimRes> comp;
+
     @Override
     int getContentViewId() {
         return R.layout.activity_aims;
@@ -77,6 +79,16 @@ public class AimsActivity extends BaseActivity {
         username = creds.getString(LoginActivity.USERNAME, null);
         password = creds.getString(LoginActivity.PASSWORD, null);
 
+        comp = new Comparator<SubAimRes>() {
+            @Override
+            public int compare(SubAimRes o1, SubAimRes o2) {
+                if (o2.getFields().isIs_completed()) {
+                    return -1;
+                }
+                return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
+            }
+        };
+
         AimsListService aimsListService = ApiUtils.getAimsService();
         Call<List<SubAimRes>> call = aimsListService.userAims(username, list_id, password);
 
@@ -85,12 +97,7 @@ public class AimsActivity extends BaseActivity {
             public void onResponse(Call<List<SubAimRes>> call, Response<List<SubAimRes>> response) {
                 if (response.isSuccessful()) {
                     aims = response.body();
-                    Collections.sort(aims, new Comparator<SubAimRes>() {
-                        @Override
-                        public int compare(SubAimRes o1, SubAimRes o2) {
-                            return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
-                        }
-                    });
+                    Collections.sort(aims, comp);
                     adapter = new AimsAdapter(AimsActivity.this, aims);
                     listView.setAdapter(adapter);
                 } else {
@@ -175,12 +182,7 @@ public class AimsActivity extends BaseActivity {
 
                 if (pos < 0) {
                     aims.add(new SubAimRes(subaim_id, new AimFields(name, date + "T" + time)));
-                    Collections.sort(aims, new Comparator<SubAimRes>() {
-                        @Override
-                        public int compare(SubAimRes o1, SubAimRes o2) {
-                            return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
-                        }
-                    });
+                    Collections.sort(aims, comp);
                     adapter.notifyDataSetChanged();
                     View item = listView.getChildAt(listView.getLastVisiblePosition());
                     ImageView avatar = item.findViewById(R.id.aimAvatarView);
@@ -188,12 +190,7 @@ public class AimsActivity extends BaseActivity {
                     return;
                 }
                 aims.set(pos, new SubAimRes(subaim_id, new AimFields(name, date + "T" + time)));
-                Collections.sort(aims, new Comparator<SubAimRes>() {
-                    @Override
-                    public int compare(SubAimRes o1, SubAimRes o2) {
-                        return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
-                    }
-                });
+                Collections.sort(aims, comp);
                 adapter.notifyDataSetChanged();
                 break;
             }
@@ -212,12 +209,7 @@ public class AimsActivity extends BaseActivity {
                             if (response.isSuccessful()) {
                                 SubAimRes new_aim = response.body();
                                 aims.add(new_aim);
-                                Collections.sort(aims, new Comparator<SubAimRes>() {
-                                    @Override
-                                    public int compare(SubAimRes o1, SubAimRes o2) {
-                                        return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
-                                    }
-                                });
+                                Collections.sort(aims, comp);
                                 adapter.notifyDataSetChanged();
                                 return;
                             } else {

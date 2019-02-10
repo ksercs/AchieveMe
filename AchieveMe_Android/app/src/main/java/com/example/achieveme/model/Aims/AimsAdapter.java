@@ -20,6 +20,8 @@ import com.example.achieveme.remote.AimService;
 import com.example.achieveme.remote.ApiUtils;
 import com.example.achieveme.remote.AsyncTaskLoadImage;
 
+import org.w3c.dom.Text;
+
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,6 +58,7 @@ public class AimsAdapter extends ArrayAdapter {
         final CheckBox completed = row.findViewById(R.id.isCompleted);
         final TextView textView = row.findViewById(R.id.aimNameView);
         TextView dateView = row.findViewById(R.id.dateView);
+        TextView timeView = row.findViewById(R.id.timeView);
         ImageView avatarView = row.findViewById(R.id.aimAvatarView);
         ImageView important = row.findViewById(R.id.important2);
 
@@ -110,10 +113,23 @@ public class AimsAdapter extends ArrayAdapter {
 
         final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final SimpleDateFormat format_date = new SimpleDateFormat("dd-MM-yy");
+        final SimpleDateFormat format_date_comp = new SimpleDateFormat("dd-MM-yyyy");
+        final SimpleDateFormat format_time = new SimpleDateFormat("HH:mm");
         String deadline_s = item.getFields().getDeadline();
         try {
             Date deadline_date = format.parse(deadline_s);
-            dateView.setText(format_date.format(deadline_date));
+            String date = format_date.format(deadline_date);
+            Date today = new Date();
+            Date tomorrow = new Date(today.getTime() + 60 * 60 * 24 * 1000L);
+            String t = format_date_comp.format(tomorrow);
+            if (format_date_comp.format(deadline_date).equals(format_date_comp.format(today))) {
+                dateView.setText("Сегодня");
+            } else if (format_date_comp.format(deadline_date).equals(format_date_comp.format(tomorrow))) {
+                dateView.setText("Завтра");
+            } else {
+                dateView.setText(date);
+            }
+            timeView.setText(format_time.format(deadline_date));
         } catch (ParseException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
