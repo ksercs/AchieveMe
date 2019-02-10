@@ -17,8 +17,21 @@
         android:textColor="@android:color/black"
         android:textSize="14sp" />
 
+    <ImageView
+        android:id="@+id/important"
+        android:layout_width="@dimen/activity_vertical_margin"
+        android:layout_height="@dimen/activity_vertical_margin"
+        android:layout_gravity="center"
+        android:layout_weight="0" />
+
+    <Space
+        android:layout_width="8dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0" />
+
     <TextView
         android:id="@+id/dateView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
 </LinearLayout>

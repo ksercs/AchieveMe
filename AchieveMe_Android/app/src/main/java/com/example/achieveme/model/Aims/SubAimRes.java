@@ -2,6 +2,8 @@ package com.example.achieveme.model.Aims;
 
 import com.google.gson.annotations.SerializedName;
 
+
+
 public class SubAimRes {
     @SerializedName("pk")
     private int aim_id;
@@ -16,6 +18,7 @@ public class SubAimRes {
         return aim_id;
     }
 
+
     public SubAimRes(int aim_id, AimFields fields) {
         this.aim_id = aim_id;
         this.fields = fields;
@@ -23,4 +26,5 @@ public class SubAimRes {
 
     public SubAimRes() {
     }
+
 }

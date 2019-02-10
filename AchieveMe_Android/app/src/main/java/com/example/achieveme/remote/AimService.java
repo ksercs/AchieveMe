@@ -54,4 +54,11 @@ public interface AimService {
             @Header("PASSWORD") String password
     );
 
+    @POST("/api/{username}/{aim_id}/")
+    Call<SubAimRes> impAim(
+            @Path("username") String username,
+            @Path("aim_id") int aim_id,
+            @Header("PASSWORD") String password
+    );
+
 }

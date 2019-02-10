@@ -28,7 +28,30 @@
             {% if aim.is_completed == True %}
                 <div style = "color:green;"> Выполнено </div>
             {% else %}
-                <a href="{{ .get_absolute_url }}complete"><span style="font-size:25px;" class="glyphicon glyphicon-check"></span></a>
+                <a id="summonPokemon"  href="#"> <!--"{{ .get_absolute_url }}complete">-->
+                    <span style="font-size:25px;" class="glyphicon glyphicon-check">
+                        <img src="http://static.tumblr.com/46cb5b1d63cf84148220815beac16919/sqjwi15/uQCn06vx6/tumblr_static_tumblr_mmff7iuxxv1qhd8sao1_500.gif" style="display:none; z-index:1000;" id="pokemon">
+
+                        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+                        <script>
+                            $.fn.center = function () {
+                                this.css("position","absolute");
+                                this.css("top", "70px");
+                                this.css("left", "85px");
+                                return this;
+                            }
+
+                            $("#summonPokemon").on("click", function(){
+                                $("#pokemon").fadeIn().center();
+                                setTimeout(function(){
+                                    $("#pokemon").fadeOut()
+                                }, 1000);
+                                setTimeout(function(){window.location = "{{ .get_absolute_url }}complete";}, 2000)
+                            });
+
+                        </script>
+                    </span>
+                </a>
             {% endif %} 
         </h1>
         <div class = "col-lg-12" style = "padding-bottom:10px;">

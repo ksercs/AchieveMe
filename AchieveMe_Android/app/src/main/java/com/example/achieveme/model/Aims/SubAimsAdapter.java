@@ -60,6 +60,7 @@ public class SubAimsAdapter extends ArrayAdapter {
         final CheckBox completed = row.findViewById(R.id.isCompleted);
         final TextView textView = row.findViewById(R.id.aimNameView);
         TextView dateView = row.findViewById(R.id.dateView);
+        ImageView important = row.findViewById(R.id.important);
 
         final SubAimRes item = values.get(position);
 
@@ -109,7 +110,6 @@ public class SubAimsAdapter extends ArrayAdapter {
 
         textView.setText(item.getFields().getName());
         textView.setTag(item.getId());
-
         final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         final SimpleDateFormat format_date = new SimpleDateFormat("dd-MM-yy");
         String deadline_s = item.getFields().getDeadline();
@@ -118,6 +118,12 @@ public class SubAimsAdapter extends ArrayAdapter {
             dateView.setText(format_date.format(deadline_date));
         } catch (ParseException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        if (item.getFields().isIs_imortant()) {
+            important.setImageResource(R.drawable.btn_rating_star_on_focused_holo_light);
+        } else {
+            important.setImageDrawable(null);
         }
         row.setOnCreateContextMenuListener(null);
         return row;
