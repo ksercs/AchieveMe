@@ -14,7 +14,6 @@ try:
 	flags = tools.argparser.parse_args([])
 except ImportError:
 	flags = None
-flags.noauth_local_webserver = True
 
 def calendar_authorization(username):
 	store = open('app/static/secret_data/' + username +'.json', 'w')
@@ -35,14 +34,14 @@ def add_to_calendar(aim, Gmt):
 	GCAL = discovery.build('calendar', 'v3', http=creds.authorize(Http()))
 	start_time = aim.deadline - datetime.timedelta(minutes=1)
 	EVENT = {
-		'summary': "oсталась неделя до конца цели: " + aim.name,
+		'summary':  aim.name + " oсталась неделя до конца цели",
 		'start': {'dateTime': str(start_time - datetime.timedelta(days=7)).replace(' ', 'T')},
 		'end': {'dateTime': str(aim.deadline - datetime.timedelta(days=7)).replace(' ', 'T')},
 	}
 
 	e = GCAL.events().insert(calendarId='primary', sendNotifications=True, body=EVENT).execute()
 	EVENT = {
-		'summary': "Остался день до конца цели: " + aim.name,
+		'summary': aim.name + " остался день до конца цели",
 		'start': {'dateTime': str(start_time - datetime.timedelta(days=1)).replace(' ', 'T')},
 		'end': {'dateTime': str(aim.deadline - datetime.timedelta(days=1)).replace(' ', 'T')},
 	}
