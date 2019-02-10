@@ -8,7 +8,7 @@
             {% for field in formA%} 
                 {{ field.label }}
                 {{ field }}
-                {% if field.name == 'is_remind' or field.name == 'is_important' %}
+                {% if field.name == 'is_important' %}
                     <br/>
                 {% endif %}
             {% endfor%}

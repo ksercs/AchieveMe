@@ -201,10 +201,6 @@ def api_analysis(request, username, listid):
     response = serializers.serialize('json', [new_aim], ensure_ascii=False, indent=2)[2:-2]
     return HttpResponse(response)
     
-
-def download_wallpaper(request):
-    return render(request, 'wallpaper.html')
-
 def index(request):
     return render(request, 'index.html')
 	
@@ -216,7 +212,6 @@ def signup(request):
             user.is_active = False
             user.save()
             setting = Setting.objects.create(user_name=user.username)
-#            setting.save()
             current_site = get_current_site(request)
             mail_subject = 'Активация аккаунта - AchieveMe'
             message = render_to_string('acc_active_email.html', {

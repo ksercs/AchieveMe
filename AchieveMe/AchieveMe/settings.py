@@ -39,7 +39,7 @@ EMAIL_HOST_PASSWORD = '181ASDcxz818'
 EMAIL_PORT = 587
 
 
-LOGIN_REDIRECT_URL = 'profile'
+LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
 # Application definition
 
