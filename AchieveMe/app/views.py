@@ -56,8 +56,8 @@ def fcollage(username):
         big_pictures += MEDIA_ROOT + 'images/' + i + " "
     pictures += MEDIA_ROOT + 'collage.png'
     big_pictures += MEDIA_ROOT + "big_collage.png"
-#    print(pictures)
-#    print(big_pictures)
+    print(pictures)
+    print(big_pictures)
     subprocess.call(pictures, shell=True)
     subprocess.call(big_pictures, shell=True)
 
