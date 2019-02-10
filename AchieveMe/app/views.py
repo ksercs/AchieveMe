@@ -115,7 +115,7 @@ def api_aims(request, username, listid):
     if request.method == 'POST':
         if not request.body:
             try:
-                Aim.objects.get(pk=listid, user_name=username)
+                aim = Aim.objects.get(pk=listid, user_name=username)
             except Aim.DoesNotExist:
                 return HttpResponse(status=404)
             aim.is_completed = not aim.is_completed
@@ -569,7 +569,4 @@ def settings(request, username):
         form = SettingForm(instance = Setting.objects.get(user_name = username))
     return render(request, 'settings.html', {'form': form})
 
-
-	
-#def ptintstring(request):
     
