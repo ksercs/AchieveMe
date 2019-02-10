@@ -253,19 +253,19 @@ public class AimsActivity extends BaseActivity {
         final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int menuItemIndex = item.getItemId();
         View t = AimViewActivity.getViewByPosition(info.position, listView);
-        int subaimId = (int) t.findViewById(R.id.aimNameView).getTag();
+        int aimId = (int) t.findViewById(R.id.aimNameView).getTag();
         switch (menuItemIndex) {
             case R.id.Edit: {
                 Intent intent = new Intent(AimsActivity.this, editAimActivity.class);
                 intent.putExtra(ListsActivity.LISTID, list_id);
-                intent.putExtra(AimsActivity.AIMID, subaimId);
+                intent.putExtra(AimsActivity.AIMID, aimId);
                 intent.putExtra("pos", info.position);
                 startActivityForResult(intent, 1);
                 break;
             }
             case R.id.Delete: {
                 AimService aimService = ApiUtils.getAimService();
-                Call<SubAimRes> call = aimService.deleteAim(username, list_id, subaimId, password);
+                Call<SubAimRes> call = aimService.deleteAim(username, list_id, aimId, password);
                 call.enqueue(new Callback<SubAimRes>() {
                     @Override
                     public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
@@ -284,6 +284,32 @@ public class AimsActivity extends BaseActivity {
                     @Override
                     public void onFailure(Call<SubAimRes> call, Throwable t) {
                         Toast.makeText(AimsActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            }
+            case R.id.Important: {
+                AimService aimService = ApiUtils.getAimService();
+                Call<SubAimRes> call = aimService.impAim(username, aimId, password);
+                call.enqueue(new Callback<SubAimRes>() {
+                    @Override
+                    public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
+                        if (response.isSuccessful()) {
+                            aims.get(info.position).getFields().setIs_important(!aims.get(info.position).getFields().isIs_imortant());
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            SharedPreferences.Editor edit = creds.edit();
+                            edit.clear();
+                            edit.apply();
+                            Intent intent = new Intent(AimsActivity.this, LoginActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SubAimRes> call, Throwable t) {
+                        Toast.makeText(AimsActivity.this, t.getMessage(), Toast.LENGTH_SHORT);
                     }
                 });
                 break;
