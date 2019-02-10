@@ -56,6 +56,9 @@ def fcollage(username):
     for image in images:
         pictures += MEDIA_ROOT + str(image) + " "
         big_pictures += MEDIA_ROOT + str(image) + " "
+    if (len(images) % 2 == 1):
+        pictures += MEDIA_ROOT + "banner.png "
+        big_pictures += MEDIA_ROOT + "banner.png "
     pictures += MEDIA_ROOT + 'collage.png'
     big_pictures += MEDIA_ROOT + "big_collage.png"
 #    print(pictures)
