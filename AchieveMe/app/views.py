@@ -32,7 +32,7 @@ from django.template import RequestContext
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.urls import reverse
-from media.collage import fcollage
+from AchieveMe.collage import fcollage
 import subprocess
 import os
 
