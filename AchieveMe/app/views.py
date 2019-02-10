@@ -315,6 +315,7 @@ def AimView(request, username, listid):
             aim.user_name = username
             list = ListModel.objects.get(id = listid)
             aim.list_id= list.id
+            aim.percent = aim.cur_points / aim.all_points * 100
             aim.save()
             setting = Setting.objects.get(user_name = username)
             if setting.google_sync:
@@ -439,6 +440,7 @@ def editAimView(request, username, listid, pk):
             cur_aim.image = form.cleaned_data['image']
             cur_aim.cur_points = form.cleaned_data['cur_points']
             cur_aim.all_points = form.cleaned_data['all_points']
+            cur_aim.percent = cur_aim.cur_points / cur_aim.all_points * 100
             list = ListModel.objects.get(id = listid)
             cur_aim.list_id= list.id
             cur_aim.save()

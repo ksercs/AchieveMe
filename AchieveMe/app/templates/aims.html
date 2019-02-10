@@ -58,6 +58,9 @@
                 </a>
                 <a href="{{ .get_absolute_url }}{{ aim.id }}/edit"><span style="font-size:15px;" class="glyphicon glyphicon-pencil"></span></a>
                 <a href="{{ .get_absolute_url }}{{ aim.id }}/delete"><span style="font-size:15px;" class="glyphicon glyphicon-remove"></span></a>
+                <div class="progress">
+                  <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{aim.percent}}%;background-color:green;" aria-valuenow="{{aim.percent}}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
             <br/>
             </div>
          </div>
