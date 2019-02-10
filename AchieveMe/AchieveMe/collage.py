@@ -1,7 +1,7 @@
 import subprocess
 import os 
 import sys
-from AchieveMe.settings import MEDIA_ROOT
+from .settings import MEDIA_ROOT
 
 def fcollage(): 
     tree = os.walk(MEDIA_ROOT)  
