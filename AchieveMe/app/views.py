@@ -32,9 +32,13 @@ from django.template import RequestContext
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.urls import reverse
-from media.collage import fcollage
 import subprocess
 import os
+
+import subprocess
+import os 
+import sys
+from AchieveMe.settings import MEDIA_ROOT
 
 from .google_calendar_interaction import calendar_authorization, add_to_calendar
 
@@ -42,6 +46,30 @@ from datetime import datetime
 from django.views.decorators.csrf import csrf_exempt
 from io import StringIO
 import sys
+
+def fcollage(username):
+    pictures = "montage -geometry 200x "  
+    big_pictures = "montage -geometry 300x " 
+    
+    images = get_images(username)
+  
+    for image in images:
+        pictures += MEDIA_ROOT + str(image) + " "
+        big_pictures += MEDIA_ROOT + str(image) + " "
+    pictures += MEDIA_ROOT + 'collage.png'
+    big_pictures += MEDIA_ROOT + "big_collage.png"
+#    print(pictures)
+#    print(big_pictures)
+    subprocess.call(pictures, shell=True)
+    subprocess.call(big_pictures, shell=True)
+
+def get_images(username):
+    aims = Aim.objects.filter(user_name = username, is_completed = False)
+    images = list()
+    for i in aims:
+        images.append(i.image)
+    
+    return images
 
 def validate(username, password):
     try:
@@ -244,9 +272,10 @@ def activate(request, uidb64, token):
         return render(request, 'activation_complete.html')
     else:
         return HttpResponse('Activation link is invalid!')
-		
-def profile(request):
-    fcollage()
+
+
+def profile(request, username):
+    fcollage(username)
     return render(request, 'profile.html')
 
 def AimListView(request, username):
