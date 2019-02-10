@@ -5,19 +5,19 @@ from PIL import Image
 from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 import sys
-
+from datetime import datetime 
 
 class Aim(models.Model):
     user_name = models.CharField(max_length = 120)
     list_id = models.IntegerField(default = -1)
     parent_id = models.IntegerField(default = -1)
     name = models.CharField(max_length = 120, default ='')
-    deadline = models.DateTimeField(default = now)
+    deadline = models.DateTimeField(default=datetime.now().strftime("%d.%m.%Y %H:%M"))
     is_important = models.BooleanField(default = False)
     is_completed = models.BooleanField(default = False)
     image = models.ImageField(upload_to='images/', default='images/cat.png')
     cur_points = models.IntegerField(default = 0)
-    all_points = models.IntegerField()
+    all_points = models.IntegerField(default = 0)
 
     def save(self, *args, **kwargs):
         if self.image:
