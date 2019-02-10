@@ -118,7 +118,7 @@ def api_aims(request, username, listid):
                 aim = Aim.objects.get(pk=listid, user_name=username)
             except Aim.DoesNotExist:
                 return HttpResponse(status=404)
-            aim.is_completed = not aim.is_completed
+            aim.is_important = not aim.is_important
             aim.save()
             response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
             return HttpResponse(response)

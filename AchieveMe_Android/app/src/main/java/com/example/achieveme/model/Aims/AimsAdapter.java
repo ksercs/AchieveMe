@@ -57,6 +57,7 @@ public class AimsAdapter extends ArrayAdapter {
         final TextView textView = row.findViewById(R.id.aimNameView);
         TextView dateView = row.findViewById(R.id.dateView);
         ImageView avatarView = row.findViewById(R.id.aimAvatarView);
+        ImageView important = row.findViewById(R.id.important2);
 
         final SubAimRes item = values.get(position);
 
@@ -118,6 +119,12 @@ public class AimsAdapter extends ArrayAdapter {
         }
 
         new AsyncTaskLoadImage(avatarView).execute(ApiUtils.BASE_URL + "media/" + item.getFields().getImage());
+
+        if (item.getFields().isIs_imortant()) {
+            important.setImageResource(R.drawable.btn_rating_star_on_focused_holo_light);
+        } else {
+            important.setImageDrawable(null);
+        }
 
         row.setOnCreateContextMenuListener(null);
         return row;
