@@ -569,7 +569,4 @@ def settings(request, username):
         form = SettingForm(instance = Setting.objects.get(user_name = username))
     return render(request, 'settings.html', {'form': form})
 
-
-	
-#def ptintstring(request):
     
