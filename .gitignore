@@ -8,7 +8,7 @@ __pycache__
 *.pyc
 *.jpg
 AchieveMe/media/images/*
-!AchieveMe/media/images/cat.jpg
+!AchieveMe/media/images/cat.png
 AchieveMe/app/static/secret_data/*.json
 AchieveMe/media/collage.jpg
 AchieveMe/media/big_collage.jpg

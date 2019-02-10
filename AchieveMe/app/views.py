@@ -550,9 +550,6 @@ def SubAimView(request, username, listid, aimid):
     vars['formC'] = formC
     return render(request, 'deep_aim.html', vars)
 
-
-
-
 def settings(request, username):
     if request.method == 'POST':
         form = SettingForm(request.POST)
