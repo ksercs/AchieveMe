@@ -87,7 +87,7 @@ def api_aims(request, username, listid):
     if request.method == 'POST':
         if not request.body:
             try:
-                Aim.objects.get(aim_id=listid, user_name=username)
+                Aim.objects.get(pk=listid, user_name=username)
             except Aim.DoesNotExist:
                 return HttpResponse(status=404)
             aim.is_completed = not aim.is_completed
