@@ -360,7 +360,6 @@ def editSubAimView(request, username, listid, aimid, pk):
             cur_subaim.name = form.cleaned_data['name']
             cur_subaim.deadline = form.cleaned_data['deadline']
             cur_subaim.is_important = form.cleaned_data['is_important']
-            cur_subaim.is_remind = form.cleaned_data['is_remind']
             list = ListModel.objects.get(id = listid)
             cur_subaim.list_id = listid
             cur_subaim.parent_id = aimid
@@ -437,8 +436,9 @@ def editAimView(request, username, listid, pk):
             cur_aim.name = form.cleaned_data['name']
             cur_aim.deadline = form.cleaned_data['deadline']
             cur_aim.is_important = form.cleaned_data['is_important']
-            cur_aim.is_remind = form.cleaned_data['is_remind']
             cur_aim.image = form.cleaned_data['image']
+            cur_aim.cur_points = form.cleaned_data['cur_points']
+            cur_aim.all_points = form.cleaned_data['all_points']
             list = ListModel.objects.get(id = listid)
             cur_aim.list_id= list.id
             cur_aim.save()
