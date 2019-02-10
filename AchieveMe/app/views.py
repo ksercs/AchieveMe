@@ -490,6 +490,7 @@ def SubAimView(request, username, listid, aimid):
             text = formC.cleaned_data['text'].split('\n')
             for row in text:
                 name, deadline = goal_analysis(row)
+                deadline = deadline.replace(hour=12, minute=0)
                 aim = Aim(name = name, deadline = deadline, user_name = username, list_id = listid, parent_id = aimid)
                 aim.save()
             return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
