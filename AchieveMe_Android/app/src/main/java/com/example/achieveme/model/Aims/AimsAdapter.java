@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.achieveme.AimsActivity;
+import com.example.achieveme.DrawProgressBar;
 import com.example.achieveme.LoginActivity;
 import com.example.achieveme.R;
 import com.example.achieveme.remote.AimService;
@@ -62,6 +63,7 @@ public class AimsAdapter extends ArrayAdapter {
         TextView timeView = row.findViewById(R.id.timeView);
         ImageView avatarView = row.findViewById(R.id.aimAvatarView);
         ImageView important = row.findViewById(R.id.important2);
+        ImageView progress = row.findViewById(R.id.progress);
 
         final SubAimRes item = values.get(position);
 
@@ -143,6 +145,8 @@ public class AimsAdapter extends ArrayAdapter {
         } catch (ParseException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+
+        DrawProgressBar.circularImageBar(progress, item.getFields().getCur_points(), item.getFields().getAll_points());
 
         new AsyncTaskLoadImage(avatarView).execute(ApiUtils.BASE_URL + "media/" + item.getFields().getImage());
 
