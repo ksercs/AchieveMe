@@ -73,8 +73,7 @@ class SubaimParsingForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         
         self.fields['text'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': """Планируй достижение цели с удобством!
-                                                                    Пишите названия подцелей вместе с дедлайнами по одному на строку и подцели создадутся автоматически!""", 'maxlength': '1000'})
+            {'class': 'form-control', 'placeholder': "Планируй достижение цели с удобством!\n\nПишите названия подцелей вместе с дедлайнами по одному на строку и подцели создадутся автоматически!", 'maxlength': '1000'})
         
 class ListForm(forms.ModelForm):
     class Meta:
