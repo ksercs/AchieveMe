@@ -36,7 +36,8 @@
                 {% if aim.is_important == True %}
                     <span style="font-size:18px; color:orange;" class="glyphicon glyphicon-star"></span>
                 {% endif %}
-                <a style = "float:left; padding-right:5px;" id="summonPokemon"  href="#"><!--"{{ .get_absolute_url }}{{ aim.id }}/complete"-->
+              
+                <a class="completeLink" href="#"  style = "float:left; padding-right:5px;">
                     <span style="font-size:15px;color:green;" class="glyphicon glyphicon-ok"></span>
                     <img src="https://media1.tenor.com/images/c43edbd71c0d25df686498663517ff3a/tenor.gif?itemid=10982639" style="display:none; z-index:1000;" id="pokemon">
                         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -48,7 +49,7 @@
                                 return this;
                             }
 
-                            $("#summonPokemon").on("click", function(){
+                            $(".completeLink").on("click", function(){
                                 $("#pokemon").fadeIn().center();
                                 setTimeout(function(){
                                     $("#pokemon").fadeOut()
