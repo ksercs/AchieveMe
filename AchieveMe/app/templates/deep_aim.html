@@ -23,7 +23,7 @@
         <h1>
             {{ listname }}: {{ aim.name }} 
             {% if aim.is_important == True %}
-                <div style = "color:green;"> <span style="font-size:18px; color:orange;" class="glyphicon glyphicon-star"></span> </div>
+                <div style = "color:green;display:inline;"> <span style="font-size:18px; color:orange;" class="glyphicon glyphicon-star"></span> </div>
             {% endif %}
             {% if aim.is_completed == True %}
                 <div style = "color:green;"> Выполнено </div>
@@ -71,7 +71,12 @@
         {% if subaims %}
              {% for subaim in subaims %}
                  <div class="row">
-                        {{ subaim.name }} {{subaim.deadline|date:"d.m.Y"}} {{subaim.deadline|time:"H.i"}}
+                        <div class = "col-lg-7">
+                            {{ subaim.name }} 
+                        </div>
+                        <div class = "col-lg-3" style = "float:right; text-align:center;">    
+                            {{subaim.deadline|date:"d.m.Y"}} {{subaim.deadline|time:"H.i"}}
+                        </div>
                         {% if subaim.is_important == True %}
                             <span style="font-size:18px; color:orange;" class="glyphicon glyphicon-star"></span>
                         {% endif %}
@@ -91,11 +96,13 @@
         <h2>Выполненные подцели</h2>
         {% if completed %}
             {% for aim in completed %} 
-             <div class="row">
-                <s>{{ aim.name }}{{aim.deadline|date:"d.m.Y"}} {{aim.deadline|time:"H.i"}}</s>
+             <div class="row" style = "padding-left:25px;">
+                <s>{{ aim.name }}
+                <div class = "col-lg-3" style = "float:right; text-align:center;">    
+                    {{aim.deadline|date:"d.m.Y"}} {{aim.deadline|time:"H.i"}}</s>
+                </div>
                 <a href="{{ .get_absolute_url }}{{ aim.id }}/cancel_complete"><span style="font-size:15px;" class="glyphicon glyphicon-repeat"></span></a>
              </div>
-             <br/>
             {% endfor %}
         {% else %}
             <div class = "alert alert-warning text-center" style = "color:#C37629;">
