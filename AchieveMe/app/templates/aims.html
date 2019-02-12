@@ -33,7 +33,7 @@
                 {% if aim.is_important == True %}
                     <span style="font-size:18px; color:orange;" class="glyphicon glyphicon-star"></span>
                 {% endif %}
-                <a id="summonPokemon"  href="#"><!--"{{ .get_absolute_url }}{{ aim.id }}/complete"-->
+                <a class="completeLink" href="#">
                     <span style="font-size:15px;" class="glyphicon glyphicon-check"></span>
                     <img src="https://media1.tenor.com/images/c43edbd71c0d25df686498663517ff3a/tenor.gif?itemid=10982639" style="display:none; z-index:1000;" id="pokemon">
                         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -45,17 +45,18 @@
                                 return this;
                             }
 
-                            $("#summonPokemon").on("click", function(){
+                            $(".completeLink").on("click", function(){
                                 $("#pokemon").fadeIn().center();
                                 setTimeout(function(){
                                     $("#pokemon").fadeOut()
                                 }, 1000);
                                 setTimeout(function(){window.location = "{{ .get_absolute_url }}{{ aim.id }}/complete";
-                            }, 1300)
+                            }, 1500)
                             });
 
                         </script>
                 </a>
+                <!--<a href="{{ .get_absolute_url }}{{ aim.id }}/complete"><span style="font-size:15px;" class="glyphicon glyphicon-check"></span></a>-->
                 <a href="{{ .get_absolute_url }}{{ aim.id }}/edit"><span style="font-size:15px;" class="glyphicon glyphicon-pencil"></span></a>
                 <a href="{{ .get_absolute_url }}{{ aim.id }}/delete"><span style="font-size:15px;" class="glyphicon glyphicon-remove"></span></a>
                 <div class="progress">

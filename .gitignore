@@ -12,3 +12,4 @@ AchieveMe/media/images/*
 AchieveMe/app/static/secret_data/*.json
 AchieveMe/media/collage.jpg
 AchieveMe/media/big_collage.jpg
+!AchieveMe/app/static/img/header.svg
