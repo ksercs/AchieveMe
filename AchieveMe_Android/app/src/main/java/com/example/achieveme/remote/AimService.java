@@ -3,6 +3,7 @@ package com.example.achieveme.remote;
 
 import com.example.achieveme.model.Aims.Aim;
 import com.example.achieveme.model.Aims.AimRes;
+import com.example.achieveme.model.Aims.Progress;
 import com.example.achieveme.model.Aims.SubAimRes;
 
 import java.util.List;
@@ -66,6 +67,14 @@ public interface AimService {
     @GET("/api/{username}/aims/")
     Call<List<SubAimRes>> userAims(
             @Path("username") String username,
+            @Header("PASSWORD") String password
+    );
+
+    @POST("/api/{username}/{aim_id}/progress/")
+    Call<SubAimRes> progress(
+            @Path("username") String username,
+            @Path("aim_id") int aim_id,
+            @Body Progress progress,
             @Header("PASSWORD") String password
     );
 }
