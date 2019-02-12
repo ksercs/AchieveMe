@@ -87,7 +87,8 @@
                 <s><a href="{{ .get_absolute_url }}{{ aim.id }}">{{ aim.name }}</a>
                 <div class = "col-lg-3" style = "float:right; text-align:center;">    
                     {{aim.deadline|date:"d.m.Y"}} {{aim.deadline|time:"H.i"}}
-                </div>
+                 </div></s>
+                <div style = "float:left;padding-right:5px;">
                     <a href="{{ .get_absolute_url }}{{ aim.id }}/cancel_complete"><span style="font-size:15px;" class="glyphicon glyphicon-repeat"></span></a>
                 </div>
              </div>
