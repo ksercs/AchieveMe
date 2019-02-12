@@ -88,11 +88,11 @@ def api_check_password(request, username):
     return JsonResponse({'correct' : validate(username, password)})
     
 @csrf_exempt
-def api_progress(request, username, aim_id):
+def api_progress(request, username, aimid):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
         return HttpResponse(status=404)
     try:
-        aim = Aim.objects.get(pk=aim_id)
+        aim = Aim.objects.get(pk=aimid)
     except Aim.DoesNotExist:
         return HttpResponse(status=404)
     fields = json.loads(request.body.decode('utf-8'))
