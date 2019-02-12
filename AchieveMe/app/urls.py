@@ -44,7 +44,8 @@ urlpatterns = [
 	url(r'^api/(?P<username>\w+)/(?P<listid>\d+)/$', views.api_aims),
 	url(r'^api/(?P<username>\w+)/(?P<listid>\d+)/(?P<aimid>\d+)/$', views.api_aim),
 	url(r'^api/(?P<username>\w+)/(?P<listid>\d+)/analysis/$', views.api_analysis),
-	url(r'^api/(?P<username>\w+)/aims/', views.api_user_aims)
+	url(r'^api/(?P<username>\w+)/aims/', views.api_user_aims),
+	url(r'^api/(?P<username>\w+)/(?P<aimid>\d+)/progress/$', views.api_progress)
 ]
 
 if settings.DEBUG:

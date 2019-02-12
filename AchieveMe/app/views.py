@@ -88,6 +88,21 @@ def api_check_password(request, username):
     return JsonResponse({'correct' : validate(username, password)})
     
 @csrf_exempt
+def api_progress(request, username, aim_id):
+    if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
+        return HttpResponse(status=404)
+    try:
+        aim = Aim.objects.get(pk=aim_id)
+    except Aim.DoesNotExist:
+        return HttpResponse(status=404)
+    fields = json.loads(request.body.decode('utf-8'))
+    aim.cur_points = fields['cur_points']
+    aim.all_points = fields['all_points']
+    aim.save()
+    response = serializers.serialize('json', [aim], ensure_ascii=False, indent=2)[2:-2]
+    return HttpResponse(response)
+
+@csrf_exempt
 def api_lists(request, username):
     if 'HTTP_PASSWORD' not in request.META or not validate(username, request.META['HTTP_PASSWORD']):
         return HttpResponse(status=404)
