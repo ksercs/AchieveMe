@@ -2,30 +2,14 @@
 {% block title %}<title>Настройки</title>{% endblock %}
 {% load static %}
 {% block content %}
-<div class="col-sm-4"></div>
-<div class="col-sm-4" style="padding: 2.5rem; border-width: .2rem; text-align: center;">
-<form action="" method="post">
-    {% csrf_token %}
-	<div class="form-group">
-		<div class="form-group">
-      		{{ form.Gmt }}
-  		</div>
-	</div>
-	<div class="text-left" style="text-align: left;">
-		<label>Уведомление</label>
-		<div class="form-group col-md-1">
-      		{{ form.is_notification_to_email }}
-      	</div>
-	</div>
-	<div class="text-left" style="text-align: left;">
-		<label>Синхронизация с Google Calendar</label>
-		<div class="form-group col-md-1">
-      		{{ form.google_sync }}
-      	</div>
-	</div>
-	<div class="text-centre">
-		<button type="submit" class="btn btn-primary">Сохранить</button>
-	</div>
+<div class="col-lg-5">
+    <h1>Настройки</h1>
+    <form method="post">
+        <div class="form-group">
+            {% csrf_token %}
+            {{ form.google_sync.label }}  {{ form.google_sync }}
+        </div>
     </form>
+    <button type="submit" class="btn btn-primary">Сохранить</button>
 </div>
 {% endblock %}

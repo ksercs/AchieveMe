@@ -35,8 +35,8 @@ class AimForm(forms.ModelForm):
         self.fields['image'].label = 'Аватар:'
         self.fields['cur_points'].label = 'Готово:'
         self.fields['all_points'].label = 'Всего:'
-        self.fields['cur_points'].widget = forms.NumberInput(attrs={'style': 'width:200px;float:right;line-height:23px;', 'class':'col-lg-2'})
-        self.fields['all_points'].widget = forms.NumberInput(attrs={'style': 'width:200px;float:right;line-height:23px;', 'class':'col-lg-2'})
+        self.fields['cur_points'].widget = forms.NumberInput(attrs={'style': 'width:70%;float:right;line-height:23px;', 'class':'col-lg-2'})
+        self.fields['all_points'].widget = forms.NumberInput(attrs={'style': 'width:70%;float:right;line-height:23px;', 'class':'col-lg-2'})
 
         self.fields['name'].widget.attrs.update(
             {'class': 'form-control', 'placeholder': 'Название цели', 'maxlength': '120'})
@@ -73,7 +73,8 @@ class SubaimParsingForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         
         self.fields['text'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Тут будет описание зачем это надо и как пользоваться', 'maxlength': '500'})
+            {'class': 'form-control', 'placeholder': """Планируй достижение цели с удобством!
+                                                                    Пишите названия подцелей вместе с дедлайнами по одному на строку и подцели создадутся автоматически!""", 'maxlength': '1000'})
         
 class ListForm(forms.ModelForm):
     class Meta:
@@ -90,5 +91,8 @@ class SettingForm(forms.ModelForm):
         fields = ('google_sync',)
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
+        self.fields['google_sync'].label = 'Синхронизация с google-календарем:'
+        
         self.fields['google_sync'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Синхронизация', 'style' : 'width:20px;height:20px;'})
+            {'class': 'form-horizontal', 'placeholder': 'Синхронизация', 'style' : 'width:20px;height:20px;'})
