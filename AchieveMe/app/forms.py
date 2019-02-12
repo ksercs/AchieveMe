@@ -22,6 +22,7 @@ class SignupForm(UserCreationForm):
 			
 			
 class AimForm(forms.ModelForm):
+    image = models.ImageField(upload_to='images/', default='images/cat.png')
     class Meta:
         model = Aim
         fields = ('name', 'deadline', 'is_important', 'image', 'cur_points', 'all_points')

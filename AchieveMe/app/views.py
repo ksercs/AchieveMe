@@ -455,7 +455,7 @@ def editAimView(request, username, listid, pk):
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:
-        form = AimForm(request.POST, request.FILES)
+        form = AimForm(request.POST, request.FILES, instance = cur_aim)
         if form.is_valid():
             cur_aim.user_name = username
             cur_aim.name = form.cleaned_data['name']
