@@ -327,7 +327,7 @@ def AimView(request, username, listid):
             aim.save()
             setting = Setting.objects.get(user_name = username)
             if setting.google_sync:
-                add_to_calendar(aim, setting.Gmt)
+                add_to_calendar(aim)
             return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
     else:
         form = AimForm()
@@ -560,13 +560,16 @@ def SubAimView(request, username, listid, aimid):
     return render(request, 'deep_aim.html', vars)
 
 def settings(request, username):
+    print("TYTA1")
     if request.method == 'POST':
         form = SettingForm(request.POST)
+        print("TYTA2")
         if form.is_valid():
             setting = form.save(commit = False)
             setting.user_name = username
             Setting.objects.get(user_name = username).delete()
             setting.save()
+            print(setting.google_sync)
             if setting.google_sync:
                 #old_stdout = sys.stdout
                 #sys.stdout = mystdout = StringIO()
