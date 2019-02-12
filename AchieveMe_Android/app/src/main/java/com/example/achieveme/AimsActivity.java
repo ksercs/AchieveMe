@@ -125,7 +125,8 @@ public class AimsActivity extends BaseActivity {
                 intent.putExtra(ListsActivity.LISTID, list_id);
                 intent.putExtra(AIMID, (Integer) itemClicked.getTag());
                 intent.putExtra(AIMNAME, ((TextView) itemClicked).getText());
-                startActivity(intent);
+                intent.putExtra("pos", position);
+                startActivityForResult(intent, 3);
             }
         });
     }
@@ -145,7 +146,15 @@ public class AimsActivity extends BaseActivity {
         intent.putExtra(ListsActivity.LISTID, list_id);
         intent.putExtra(AIMID, (Integer) view.getTag());
         intent.putExtra(AIMNAME, ((TextView) view).getText());
-        startActivity(intent);
+        int position = 0;
+        for (int i = 0; i < aims.size(); ++i) {
+            if (listView.getChildAt(i).findViewById(view.getId()).getTag() == view.getTag()) {
+                position = i;
+                break;
+            }
+        }
+        intent.putExtra("pos", position);
+        startActivityForResult(intent, 3);
     }
 
     @Override
@@ -228,6 +237,14 @@ public class AimsActivity extends BaseActivity {
                         }
                     });
                 }
+            }
+            case 3: {
+                int pos = data.getIntExtra("pos", 1);
+                int cur = data.getIntExtra("cur", 0);
+                int all = data.getIntExtra("all", 1);
+                aims.get(pos).getFields().setCur_points(cur);
+                aims.get(pos).getFields().setAll_points(all);
+                adapter.notifyDataSetChanged();
             }
         }
     }
