@@ -26,7 +26,7 @@ def calendar_authorization(username):
 		creds = tools.run_flow(flow, store, flags)
 
 
-def add_to_calendar(aim, Gmt):
+def add_to_calendar(aim):
 	store = file.Storage('app/static/secret_data/' + aim.user_name +'.json')
 	creds = store.get()
 	if not creds or creds.invalid:
