@@ -165,7 +165,7 @@ public class editAimActivity extends AppCompatActivity {
 
                         hours = hours < 0 ? 0 : hours > 23 ? 23 : hours;
                         cal.set(Calendar.HOUR, hours);
-                        mins = mins < 0 ? 0 : mins > 60 ? 60 : mins;
+                        mins = mins < 0 ? 0 : mins > 59 ? 59 : mins;
                         cal.set(Calendar.MINUTE, mins);
                         // ^ first set year for the line below to work correctly
                         //with leap years - otherwise, date e.g. 29/02/2012
@@ -271,7 +271,7 @@ public class editAimActivity extends AppCompatActivity {
                 intent.putExtra("image", new_aim.getFields().getImage());
                 intent.putExtra("new_name", name.getText().toString());
                 intent.putExtra("new_date", date.getText().toString());
-                intent.putExtra("new_time", time.getText().toString());
+                intent.putExtra("new_time", time.getText().toString() + ":00");
                 intent.putExtra("pos", pos);
                 intent.putExtra("aim_id", aim_id);
                 setResult(RESULT_OK, intent);
