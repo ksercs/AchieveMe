@@ -9,7 +9,7 @@
         <h2><span class="glyphicon glyphicon-hand-right"></span> Вы уже авторизованы! <span class="glyphicon glyphicon-hand-left"></span></h2>
 	</div>
 {% else %}
-<div class="container-fluid" style="text-align: center;">
+<div class="container-fluid" style="text-align: center; width: 50%">
 	<div style="padding: 1.5rem; border-width: .2rem;">
 		<form method="post" action="{% url 'login' %}">
 		{% csrf_token %}
