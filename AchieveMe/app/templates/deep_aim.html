@@ -29,7 +29,7 @@
                 <div style = "color:green;"> Выполнено </div>
             {% else %}
                 <a id="summonPokemon"  href="#"> <!--"{{ .get_absolute_url }}complete">-->
-                    <span style="font-size:25px;" class="glyphicon glyphicon-check">
+                    <span style="font-size:30px; color:green;" class="glyphicon glyphicon-ok">
                         <img src="http://static.tumblr.com/46cb5b1d63cf84148220815beac16919/sqjwi15/uQCn06vx6/tumblr_static_tumblr_mmff7iuxxv1qhd8sao1_500.gif" style="display:none; z-index:1000;" id="pokemon">
 
                         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -75,9 +75,11 @@
                         {% if subaim.is_important == True %}
                             <span style="font-size:18px; color:orange;" class="glyphicon glyphicon-star"></span>
                         {% endif %}
-                        <a href="{{ .get_absolute_url }}{{ subaim.id }}/complete"><span style="font-size:15px;" class="glyphicon glyphicon-check"></span></a>
-                        <a href="{{ .get_absolute_url }}{{ subaim.id }}/edit"><span style="font-size:15px;" class="glyphicon glyphicon-pencil"></span></a>
-                        <a href="{{ .get_absolute_url }}{{ subaim.id }}/delete"><span style="font-size:15px;" class="glyphicon glyphicon-remove"></span></a>
+                        <div style = "float:left; padding-right:5px;">
+                            <a href="{{ .get_absolute_url }}{{ subaim.id }}/complete"><span style="font-size:15px;color:green;" class="glyphicon glyphicon-ok"></span></a>
+                        </div>
+                        <a href="{{ .get_absolute_url }}{{ subaim.id }}/edit"><span style="font-size:15px;color:orange;" class="glyphicon glyphicon-pencil"></span></a>
+                        <a href="{{ .get_absolute_url }}{{ subaim.id }}/delete"><span style="font-size:15px;color:red;" class="glyphicon glyphicon-remove"></span></a>
                  </div>
              {% endfor %}
         {% else %}

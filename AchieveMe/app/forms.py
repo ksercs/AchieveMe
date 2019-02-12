@@ -90,5 +90,8 @@ class SettingForm(forms.ModelForm):
         fields = ('google_sync',)
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        
+        self.fields['google_sync'].label = 'Синхронизация с google-календарем:'
+        
         self.fields['google_sync'].widget.attrs.update(
-            {'class': 'form-control', 'placeholder': 'Синхронизация', 'style' : 'width:20px;height:20px;'})
+            {'class': 'form-horizontal', 'placeholder': 'Синхронизация', 'style' : 'width:20px;height:20px;'})
