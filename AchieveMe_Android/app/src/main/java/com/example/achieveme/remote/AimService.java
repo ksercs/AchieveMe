@@ -5,6 +5,8 @@ import com.example.achieveme.model.Aims.Aim;
 import com.example.achieveme.model.Aims.AimRes;
 import com.example.achieveme.model.Aims.SubAimRes;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -61,4 +63,9 @@ public interface AimService {
             @Header("PASSWORD") String password
     );
 
+    @GET("/api/{username}/aims/")
+    Call<List<SubAimRes>> userAims(
+            @Path("username") String username,
+            @Header("PASSWORD") String password
+    );
 }

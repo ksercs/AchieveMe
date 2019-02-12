@@ -287,7 +287,7 @@ public class AimsActivity extends BaseActivity {
                     @Override
                     public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
                         if (response.isSuccessful()) {
-                            aims.get(info.position).getFields().setIs_important(!aims.get(info.position).getFields().isIs_imortant());
+                            aims.get(info.position).getFields().setIs_important(!aims.get(info.position).getFields().isIs_important());
                             adapter.notifyDataSetChanged();
                         } else {
                             SharedPreferences.Editor edit = creds.edit();

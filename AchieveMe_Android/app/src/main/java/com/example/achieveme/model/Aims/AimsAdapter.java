@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.achieveme.AimsActivity;
 import com.example.achieveme.LoginActivity;
 import com.example.achieveme.R;
 import com.example.achieveme.remote.AimService;
@@ -117,26 +118,35 @@ public class AimsAdapter extends ArrayAdapter {
         final SimpleDateFormat format_time = new SimpleDateFormat("HH:mm");
         String deadline_s = item.getFields().getDeadline();
         try {
+            final long day = 60 * 60 * 24 * 1000L;
             Date deadline_date = format.parse(deadline_s);
             String date = format_date.format(deadline_date);
             Date today = new Date();
-            Date tomorrow = new Date(today.getTime() + 60 * 60 * 24 * 1000L);
-            String t = format_date_comp.format(tomorrow);
+            Date tomorrow = new Date(today.getTime() + day);
             if (format_date_comp.format(deadline_date).equals(format_date_comp.format(today))) {
                 dateView.setText("Сегодня");
             } else if (format_date_comp.format(deadline_date).equals(format_date_comp.format(tomorrow))) {
-                dateView.setText("Завтра");
+                dateView.setText("Завтра ");
             } else {
                 dateView.setText(date);
             }
             timeView.setText(format_time.format(deadline_date));
+            if (deadline_date.getTime() - today.getTime() < day * 7) {
+                dateView.setTextColor(dateView.getContext().getResources().getColor(R.color.yellow));
+            }
+            if (deadline_date.getTime() - today.getTime() < day) {
+                dateView.setTextColor(dateView.getContext().getResources().getColor(R.color.orange));
+            }
+            if (deadline_date.getTime() - today.getTime() < 0) {
+                dateView.setTextColor(dateView.getContext().getResources().getColor(R.color.red));
+            }
         } catch (ParseException e) {
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         new AsyncTaskLoadImage(avatarView).execute(ApiUtils.BASE_URL + "media/" + item.getFields().getImage());
 
-        if (item.getFields().isIs_imortant()) {
+        if (item.getFields().isIs_important()) {
             important.setImageResource(R.drawable.btn_rating_star_on_focused_holo_light);
         } else {
             important.setImageDrawable(null);
