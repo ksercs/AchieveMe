@@ -58,6 +58,7 @@ public class AimViewActivity extends BaseActivity {
 
     public int list_id;
     int aim_id;
+    int pos;
 
     SharedPreferences creds;
     String username;
@@ -66,6 +67,8 @@ public class AimViewActivity extends BaseActivity {
     List<SubAimRes> subaims;
     SubAimsAdapter adapter;
     Comparator<SubAimRes> comp;
+
+    Intent intent;
 
     @Override
     int getContentViewId() {
@@ -85,6 +88,7 @@ public class AimViewActivity extends BaseActivity {
         setTitle(intent.getStringExtra(AimsActivity.AIMNAME));
         list_id = intent.getIntExtra(ListsActivity.LISTID, 1);
         aim_id = intent.getIntExtra(AimsActivity.AIMID, 1);
+        pos = intent.getIntExtra("pos", 1);
 
         creds = getSharedPreferences("creds", MODE_PRIVATE);
         username = creds.getString(LoginActivity.USERNAME, null);
@@ -373,11 +377,16 @@ public class AimViewActivity extends BaseActivity {
                 Toast.makeText(AimViewActivity.this, t.getMessage(), Toast.LENGTH_SHORT);
             }
         });
+        intent = new Intent();
+        intent.putExtra("pos", pos);
+        intent.putExtra("cur", cur_points);
+        intent.putExtra("all", all_points);
     }
 
     @Override
-    protected void onDestroy() {
+    public void finish() {
         updateProgress();
-        super.onDestroy();
+        setResult(RESULT_OK, intent);
+        super.finish();
     }
 }

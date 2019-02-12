@@ -76,4 +76,12 @@ public class AimFields {
     public int getAll_points() {
         return all_points;
     }
+
+    public void setCur_points(int cur_points) {
+        this.cur_points = cur_points;
+    }
+
+    public void setAll_points(int all_points) {
+        this.all_points = all_points;
+    }
 }
