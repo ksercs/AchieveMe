@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block aim_add_form %}
-<div  class = "box col-lg-3" style = "padding-bottom:5px;padding-left:10px;border-radius: 10px; border: 1px groove black; background:#FFF8DC; line-height:30px;padding-top:20px;padding-right:20px;float:right;">
+<div  class = "box col-lg-3 alert alert-warning text-center" style = "padding-bottom:5px;padding-left:10px;line-height:30px;padding-top:20px;padding-right:20px;float:right;">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in formA%} 
@@ -25,7 +25,8 @@
     {% if aims %}
         {% for aim in aims %} 
          <div class="row">
-         <div class="col-lg-3" style = "border: 2px solid #354D73;">
+         <div class="col-lg-3" style = "border: 2px solid #354D73; padding-right: 0px;
+    padding-left: 0px;">
             <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "100%" height = "100%">
             </div>
             <div class="col-lg-9">
@@ -51,7 +52,8 @@
     {% if completed %}
         {% for aim in completed %} 
              <div class="row">
-             <div class="col-lg-3" style = "border: 2px solid #354D73;">
+             <div class="col-lg-3" style = "border: 2px solid #354D73; padding-right: 0px;
+    padding-left: 0px;">
                 <img src="{{ MEDIA_URL }}{{ aim.image }}" width = "100%" height = "100%">
                 </div>
                 <div class="col-lg-9">
