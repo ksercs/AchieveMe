@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block lists_sidebar %}
-    <div class = "col-lg-2 sidebar" style = "height:100vh; padding-left:30px;">
+    <div class = "col-lg-2 sidebar" style = "height:100vh; padding-left:15px;">
     <div class="row"> 
         <div style = "padding-left:13px;">
         <h1>Списки:</h1>
@@ -15,17 +15,19 @@
             </form>
         </div>
         
-        <div class="row" style = "padding-top:10px;line-height:30px;">
+        <div class="row" style = "padding-top:10px;">
             <div>
                 <div>
                     {% if lists %}
                     <ul>
                      {% for list in lists %} 
-                         <div class="row" style = "border:1px solid black;border-radius: 8px;background: #FFF8DC;">
+                         <div class="row"> <!--style = "border:1px solid black;border-radius: 8px;background: #FFF8DC;"!-->
+                            <div class = "alert alert-warning text-center" style = "line-height:20px; width:90%;">
                                 <a href = "{{list_link}}{{list.id}}" >{{ list.name }}</a>
-                            <div style = "float:left;padding-right:5px;">
-                                <a href="{{ .get_absolute_url }}{{list.id}}/delete"><span style="font-size:15px;color:red;" class="glyphicon glyphicon-remove"></span></a>
-                                <a href="{{ .get_absolute_url }}{{list.id}}/edit"><span style="font-size:15px;color:orange;" class="glyphicon glyphicon-pencil"></span></a>
+                                <div style = "float:left;padding-right:5px;">
+                                    <a href="{{ list_link }}{{list.id}}/delete"><span style="font-size:15px;color:red;" class="glyphicon glyphicon-remove"></span></a>
+                                    <a href="{{ list_link }}{{list.id}}/edit"><span style="font-size:15px;color:orange;" class="glyphicon glyphicon-pencil"></span></a>
+                                </div>
                             </div>
                          </div>
                      {% endfor %}

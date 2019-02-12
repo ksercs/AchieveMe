@@ -426,6 +426,7 @@ def editAimView(request, username, listid, pk):
     aims = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1, is_completed = False)
     completed = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1, is_completed = True)
     list = ListModel.objects.get(id = listid)
+    print(id, pk)
     cur_aim = Aim.objects.get(id = pk)
     vars = dict(
         lists = lists,
