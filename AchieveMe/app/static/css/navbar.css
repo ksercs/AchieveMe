@@ -120,6 +120,10 @@ body, html{
   }
 
  @media (min-width: 765px) {
+     
+    .navbar {
+        border-radius: 0px;
+    }
 
     #id_img{
         border:1px solid #000;
