@@ -134,7 +134,7 @@ def api_aims(request, username, listid):
         fields = json.loads(request.body.decode('utf-8'))
             
         aim = Aim(user_name=username, list_id=listid, parent_id=fields['parent_id'], name=fields['name'],
-            deadline=datetime.strptime(fields['date'] + ' ' + fields['time'], '%Y-%m-%d %H:%M:%S'))
+            deadline=datetime.strptime(fields['date'] + ' ' + fields['time'], '%Y-%m-%d %H:%M'))
         aim.save()
         aim = Aim.objects.filter(user_name=username).last()
         descr = Description(aim_id=aim.id, text=fields['description'])
@@ -183,7 +183,7 @@ def api_aim(request, username, listid, aimid):
             
         fields = json.loads(request.body.decode('utf-8'))
         aim.name = fields['name']
-        aim.deadline = datetime.strptime(fields['date'] + ' ' + fields['time'], '%Y-%m-%d %H:%M:%S')
+        aim.deadline = datetime.strptime(fields['date'] + ' ' + fields['time'], '%Y-%m-%d %H:%M')
         try:
             descr = Description.objects.get(aim_id=aimid)
             descr.text = fields['description']
