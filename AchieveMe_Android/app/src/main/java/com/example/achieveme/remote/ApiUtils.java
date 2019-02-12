@@ -2,7 +2,7 @@ package com.example.achieveme.remote;
 
 public class ApiUtils {
 
-    public static final String BASE_URL = "http://192.168.43.208:3636/";
+    public static final String BASE_URL = "http://10.23.74.12:3636/";
 
     public static LoginService getLoginService () {
         return RetrofitClient.getClient(BASE_URL).create(LoginService.class);
