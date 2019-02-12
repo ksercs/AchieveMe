@@ -119,6 +119,11 @@ body, html{
     color : #e94c6f;
   }
 
+  .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover {
+    color: #fff;
+    background-color: #e94c6f;
+  }
+
  @media (min-width: 765px) {
      
     .navbar {
