@@ -35,9 +35,9 @@ body, html{
     font-size: 300%;
   }
 
-  .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {
+  .navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:focus, .navbar-inverse .navbar-nav>.active>a:hover {/*button HOME*/
     color: white;
-    background-color: #e94c6f;
+    background-color: #02b0b6;/*008080*/
     font-family: Tahoma;
     border-radius: 3px;
   }
@@ -93,9 +93,9 @@ body, html{
   }
 
 
-  .navbar-inverse {
-    background-color: #42218E;
-    border-color: #42218E;
+  .navbar-inverse {/*header color*/
+    background-color: #008080;
+    border-color: #008080;
   }
 
   .clear {
