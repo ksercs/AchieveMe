@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.achieveme.model.Aims.AimFields;
 import com.example.achieveme.model.Aims.AimRes;
+import com.example.achieveme.model.Aims.Progress;
 import com.example.achieveme.model.Aims.SubAimRes;
 import com.example.achieveme.model.Aims.SubAimsAdapter;
 import com.example.achieveme.model.Analysis.AimAnalysis;
@@ -47,6 +49,8 @@ public class AimViewActivity extends BaseActivity {
     TextView deadlineDateView;
     TextView deadlineTimeView;
     ListView subaimsList;
+    EditText curPoints;
+    EditText allPoints;
 
     public final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     public final static SimpleDateFormat format_date = new SimpleDateFormat("yyyy-MM-dd");
@@ -54,6 +58,7 @@ public class AimViewActivity extends BaseActivity {
 
     public int list_id;
     int aim_id;
+    int pos;
 
     SharedPreferences creds;
     String username;
@@ -62,6 +67,8 @@ public class AimViewActivity extends BaseActivity {
     List<SubAimRes> subaims;
     SubAimsAdapter adapter;
     Comparator<SubAimRes> comp;
+
+    Intent intent;
 
     @Override
     int getContentViewId() {
@@ -81,6 +88,7 @@ public class AimViewActivity extends BaseActivity {
         setTitle(intent.getStringExtra(AimsActivity.AIMNAME));
         list_id = intent.getIntExtra(ListsActivity.LISTID, 1);
         aim_id = intent.getIntExtra(AimsActivity.AIMID, 1);
+        pos = intent.getIntExtra("pos", 1);
 
         creds = getSharedPreferences("creds", MODE_PRIVATE);
         username = creds.getString(LoginActivity.USERNAME, null);
@@ -92,6 +100,8 @@ public class AimViewActivity extends BaseActivity {
         deadlineDateView = header.findViewById(R.id.deadlineDateView);
         deadlineTimeView = header.findViewById(R.id.deadlineTimeView);
         subaimsList = findViewById(R.id.subaimsListView);
+        curPoints = header.findViewById(R.id.cur_points);
+        allPoints = header.findViewById(R.id.all_points);
         registerForContextMenu(subaimsList);
 
         comp = new Comparator<SubAimRes>() {
@@ -117,6 +127,10 @@ public class AimViewActivity extends BaseActivity {
                     } catch (ParseException e) {
                         Toast.makeText(AimViewActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
+
+                    curPoints.setText(String.valueOf(aim.getFields().getCur_points()));
+                    allPoints.setText(String.valueOf(aim.getFields().getAll_points()));
+
                     String description = aim.getFields().getDescription().getFields().getText();
                     descrView.setText(description);
 
@@ -329,5 +343,50 @@ public class AimViewActivity extends BaseActivity {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         startActivityForResult(intent, 2);
+    }
+
+    public void upProgress(View v) {
+        curPoints.setText(String.valueOf(Integer.parseInt(curPoints.getText().toString()) + 1));
+    }
+
+    public void downProgress(View v) {
+        curPoints.setText(String.valueOf(Integer.parseInt(curPoints.getText().toString()) - 1));
+    }
+
+    private void updateProgress() {
+        AimService aimService = ApiUtils.getAimService();
+        int cur_points = Integer.parseInt(curPoints.getText().toString());
+        int all_points = Integer.parseInt(allPoints.getText().toString());
+        Progress progress = new Progress(cur_points, all_points);
+        Call<SubAimRes> call = aimService.progress(username, aim_id, progress, password);
+        call.enqueue(new Callback<SubAimRes>() {
+            @Override
+            public void onResponse(Call<SubAimRes> call, Response<SubAimRes> response) {
+                if (!response.isSuccessful()) {
+                    SharedPreferences.Editor edit = creds.edit();
+                    edit.clear();
+                    edit.apply();
+                    Intent intent = new Intent(AimViewActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SubAimRes> call, Throwable t) {
+                Toast.makeText(AimViewActivity.this, t.getMessage(), Toast.LENGTH_SHORT);
+            }
+        });
+        intent = new Intent();
+        intent.putExtra("pos", pos);
+        intent.putExtra("cur", cur_points);
+        intent.putExtra("all", all_points);
+    }
+
+    @Override
+    public void finish() {
+        updateProgress();
+        setResult(RESULT_OK, intent);
+        super.finish();
     }
 }

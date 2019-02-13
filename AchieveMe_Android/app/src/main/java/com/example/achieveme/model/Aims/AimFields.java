@@ -13,6 +13,8 @@ public class AimFields {
     private int parent_id;
     private String image;
     private Description description;
+    private int cur_points;
+    private int all_points;
 
     public String getName() {
         return name;
@@ -65,5 +67,21 @@ public class AimFields {
     public AimFields(String name, String deadline) {
         this.name = name;
         this.deadline = deadline;
+    }
+
+    public int getCur_points() {
+        return cur_points;
+    }
+
+    public int getAll_points() {
+        return all_points;
+    }
+
+    public void setCur_points(int cur_points) {
+        this.cur_points = cur_points;
+    }
+
+    public void setAll_points(int all_points) {
+        this.all_points = all_points;
     }
 }
