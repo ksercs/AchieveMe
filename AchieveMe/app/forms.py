@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Setting, Aim, List, Text
+from .models import Setting, Aim, List, Text, Description
 from django.db import models
 
 class SignupForm(UserCreationForm):
@@ -45,6 +45,20 @@ class AimForm(forms.ModelForm):
             {'class': 'form-control', 'placeholder': 'Дата и время', 'maxlength': '120'})
         self.fields['is_important'].widget.attrs.update(
             {'class':'.mark', 'placeholder': 'Важное ли?', 'maxlength': '1'})
+            
+class DescriptionForm(forms.ModelForm):
+    class Meta:
+        model = Description
+        fields = ('text',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['text'].widget = forms.Textarea(attrs={'style': 'width:100%;height:120px;'})
+        
+        self.fields['text'].label = ''
+        self.fields['text'].widget.attrs.update(
+            {'class': 'form-control', 'placeholder': 'Описание', 'maxlength': '300'})
             
 class SubAimForm(forms.ModelForm):
     class Meta:

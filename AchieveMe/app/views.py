@@ -17,7 +17,7 @@ from django.core.mail import EmailMessage
 from django.http import HttpResponsePermanentRedirect, HttpResponseRedirect
 from django.shortcuts import render_to_response
 
-from .forms import AimForm, ListForm, SubAimForm, SubaimParsingForm
+from .forms import AimForm, ListForm, SubAimForm, SubaimParsingForm, DescriptionForm
 from django.core import serializers	
 
 from .models import Setting, Aim, Description, List as ListModel
@@ -320,6 +320,10 @@ def AimView(request, username, listid):
     aims = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1, is_completed = False)
     completed = Aim.objects.filter(user_name = username, list_id = listid, parent_id = -1, is_completed = True)
     list = ListModel.objects.get(id = listid)
+    d = dict()
+    for desc in Description.objects.all():
+        if (desc.aim_id != None and len(Aim.objects.filter(id = desc.aim_id)) != 0):
+            d[Aim.objects.get(id = desc.aim_id)] = desc
     vars = dict(
         lists = lists,
         aims = aims,
@@ -328,7 +332,8 @@ def AimView(request, username, listid):
         formB = ListForm(),
         list_link = "/"+username+"/lists/",
         completed = completed,
-        ListAddingForm = ListForm()
+        ListAddingForm = ListForm(),
+        d = d
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:
@@ -340,6 +345,7 @@ def AimView(request, username, listid):
             aim.list_id= list.id
             aim.percent = aim.cur_points / aim.all_points * 100
             aim.save()
+            Description.objects.create(aim_id = aim.id)
             setting = Setting.objects.get(user_name = username)
             if setting.google_sync:
                 add_to_calendar(aim)
@@ -378,7 +384,7 @@ def editSubAimView(request, username, listid, aimid, pk):
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:
-        form = SubAimForm(request.POST, request.FILES)
+        form = SubAimForm(request.POST, request.FILES, instance = cur_subaim)
         if form.is_valid():
             cur_subaim.user_name = username
             cur_subaim.name = form.cleaned_data['name']
@@ -424,7 +430,7 @@ def editListView(request, username, pk):
         ListAddingForm = ListForm()
         )
     if request.method == 'POST':
-        form = ListForm(request.POST)
+        form = ListForm(request.POST, instance = cur_list)
         if form.is_valid():
             cur_list.user_name = request.user.username
             cur_list.name = form.cleaned_data['name']
@@ -520,6 +526,8 @@ def SubAimView(request, username, listid, aimid):
     list = ListModel.objects.get(id = listid)
     subaims = Aim.objects.filter(parent_id = aimid, is_completed = False).order_by('deadline')
     completed = Aim.objects.filter(parent_id = aimid, is_completed = True).order_by('deadline')
+    desc = Description.objects.get(aim_id = aimid)
+    
     vars = dict(
         subaims = subaims,
         lists = lists,
@@ -530,7 +538,8 @@ def SubAimView(request, username, listid, aimid):
         formC = SubaimParsingForm(),
         list_link = "/"+username+"/lists/",
         completed = completed,
-        ListAddingForm = ListForm()
+        ListAddingForm = ListForm(),
+        DescForm = DescriptionForm
         )
 
     if request.method == 'POST' and 'aimbtn' in request.POST:
@@ -545,7 +554,15 @@ def SubAimView(request, username, listid, aimid):
             return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
     else:
         formA = SubAimForm()
-        
+  
+    if request.method == 'POST' and 'desc_btn' in request.POST:
+        DescForm= DescriptionForm(request.POST, request.FILES, instance = desc)
+        if DescForm.is_valid():
+            desc.save()
+            return HttpResponseRedirect("/"+username+"/lists/"+listid+'/'+aimid+"/red_to_aim")
+    else:
+        DescForm = DescriptionForm(instance = desc)
+  
     if request.method == 'POST' and 'parsebtn' in request.POST:
         formC = SubaimParsingForm(request.POST, request.FILES)
         if formC.is_valid():
@@ -572,6 +589,7 @@ def SubAimView(request, username, listid, aimid):
     vars['formA'] = formA
     vars['formB'] = formB
     vars['formC'] = formC
+    vars['DescForm'] = DescForm
     return render(request, 'deep_aim.html', vars)
 
 def settings(request, username):

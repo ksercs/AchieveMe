@@ -53,7 +53,7 @@
                         </script>
                     </span>
                 </a>
-            {% endif %} 
+            {% endif %}
         </h1>
         <div class = "col-lg-12" style = "padding-bottom:10px;">
             <div class="col-lg-3" style = "border: 2px solid #354D73; padding-right: 0px;
@@ -67,6 +67,13 @@
                 <div class="progress">
                     <div class="progress-bar progress-bar-striped" role="progressbar" style="width: {{aim.percent}}%;background-color:green;" aria-valuenow="{{aim.percent}}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ DescForm }}        
+                    <div style = "padding-top:10px;float:right;">
+                        <button type="submit" name = "desc_btn" class="btn btn-primary">Обновить</button>
+                    </div>
+                </form>
             </div>
         </div>
         <h2>Активные подцели</h2>

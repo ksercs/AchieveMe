@@ -48,7 +48,7 @@ class Setting(models.Model):
 
 class Description(models.Model):
     aim_id = models.IntegerField()
-    text = models.CharField   (max_length = 500, default = "")
+    text = models.TextField   (max_length = 500, default = "")
     
 class File(models.Model):
     description_id = models.IntegerField(default = 0)
