@@ -249,6 +249,7 @@ public class AimsActivity extends BaseActivity {
                 aims.get(pos).getFields().setCur_points(cur);
                 aims.get(pos).getFields().setAll_points(all);
                 adapter.notifyDataSetChanged();
+                break;
             }
         }
     }
