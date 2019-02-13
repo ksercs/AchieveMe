@@ -240,6 +240,7 @@ public class AimsActivity extends BaseActivity {
                         }
                     });
                 }
+                break;
             }
             case 3: {
                 int pos = data.getIntExtra("pos", 1);
