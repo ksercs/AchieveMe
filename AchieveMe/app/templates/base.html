@@ -21,7 +21,6 @@
   <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
   <link rel="shortcut icon" href="{% static 'img/favicon.png' %}" type="image/png" />
   {% block placeinhead %}{% endblock %}
-  <link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/repo/pi0/clippyjs/master/assets/clippy.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -113,16 +112,5 @@
   </footer>
 
 {% endblock %}
-<script src="https://unpkg.com/jquery@3.2.1"></script>
-
-<script src="https://unpkg.com/clippyjs@latest"></script>
-
-<script type="text/javascript">
-clippy.load('Clippy', function(agent){
-    // Do anything with the loaded agent
-    agent.show();
-});
-</script>
-
 </body>
 </html>
