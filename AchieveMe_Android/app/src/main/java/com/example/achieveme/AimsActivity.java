@@ -240,6 +240,7 @@ public class AimsActivity extends BaseActivity {
                         }
                     });
                 }
+                break;
             }
             case 3: {
                 int pos = data.getIntExtra("pos", 1);
@@ -248,6 +249,7 @@ public class AimsActivity extends BaseActivity {
                 aims.get(pos).getFields().setCur_points(cur);
                 aims.get(pos).getFields().setAll_points(all);
                 adapter.notifyDataSetChanged();
+                break;
             }
         }
     }
