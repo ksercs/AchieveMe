@@ -116,7 +116,7 @@ def goal_analysis(s):
             x1 = w0.split('.')[0]
             x2 = w0.split('.')[1]
             if x1.isdigit() and x2.isdigit():
-                if i - 1 > 0 and words[i - 1] == 'к' or words[i - 1] == 'ко':
+                if i - 1 >= 0 and words[i - 1] == 'к' or words[i - 1] == 'ко':
                     stack += [i - 1]
                 stack += [i]
                 if len(w0.split('.')) > 2:
@@ -266,7 +266,7 @@ def goal_analysis(s):
                 mypush(stack, i, 2)
                 day += 182
         if i + 1 < N and words[i].isdigit() and w1 in mas_month:
-            if i - 1 > 0 and words[i - 1] == 'к' or words[i - 1] == 'ко':
+            if i - 1 >= 0 and words[i - 1] == 'к' or words[i - 1] == 'ко':
                 stack += [i - 1]
             mypush(stack, i, 2)
             day = int(words[i])
