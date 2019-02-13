@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.widget.ImageView;
 
 public class DrawProgressBar {
@@ -16,11 +17,11 @@ public class DrawProgressBar {
         Paint paint = new Paint();
 
         paint.setColor(Color.parseColor("#c4c4c4"));
-        paint.setStrokeWidth(10);
+        paint.setStrokeWidth(20);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawCircle(150, 150, 140, paint);
-        paint.setColor(Color.parseColor("#FFDB4C"));
-        paint.setStrokeWidth(10);
+        paint.setColor(Color.parseColor("#8b00ff"));
+        paint.setStrokeWidth(20);
         paint.setStyle(Paint.Style.FILL);
         final RectF oval = new RectF();
         paint.setStyle(Paint.Style.STROKE);
@@ -30,8 +31,11 @@ public class DrawProgressBar {
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setColor(Color.parseColor("#8E8E93"));
         paint.setTextSize(140);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         paint.setStyle(Paint.Style.FILL);
-        canvas.drawText("" + cur + "/" + all, 150, 150+(paint.getTextSize()/3), paint);
+        String progress = "" + cur + "/" + all;
+        paint.setTextSize(paint.getTextSize() * 3 / progress.length());
+        canvas.drawText(progress, 150, 150+(paint.getTextSize()/3), paint);
         iv2.setImageBitmap(b);
     }
 }
