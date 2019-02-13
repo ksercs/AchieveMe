@@ -82,8 +82,11 @@ public class AimsActivity extends BaseActivity {
         comp = new Comparator<SubAimRes>() {
             @Override
             public int compare(SubAimRes o1, SubAimRes o2) {
-                if (o2.getFields().isIs_completed()) {
+                if (o2.getFields().isIs_completed() && !o1.getFields().isIs_completed()) {
                     return -1;
+                }
+                if (o1.getFields().isIs_completed() && !o2.getFields().isIs_completed()) {
+                    return 1;
                 }
                 return o1.getFields().getDeadline().compareTo(o2.getFields().getDeadline());
             }
