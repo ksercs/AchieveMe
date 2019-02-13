@@ -39,9 +39,9 @@
                     <span style="font-size:18px; color:orange;" class="glyphicon glyphicon-star"></span>
                 {% endif %}
               
-                <a class="completeLink" href="#"  style = "float:left; padding-right:5px;">
+                <a id = id{{aim.id}} href="#"  style = "float:left; padding-right:5px;">
                     <span style="font-size:15px;color:green;" class="glyphicon glyphicon-ok"></span>
-                    <img src="https://media1.tenor.com/images/c43edbd71c0d25df686498663517ff3a/tenor.gif?itemid=10982639" style="display:none; z-index:1000;" id="pokemon">
+                    <img src="https://tenor.com/0UU8.gif" style="display:none; z-index:1000;" id="pokemon">
                         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
                         <script>
                             $.fn.center = function () {
@@ -51,7 +51,7 @@
                                 return this;
                             }
 
-                            $(".completeLink").on("click", function(){
+                            $("#id{{aim.id}}").on("click", function(){
                                 $("#pokemon").fadeIn().center();
                                 setTimeout(function(){
                                     $("#pokemon").fadeOut()

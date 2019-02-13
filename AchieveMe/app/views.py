@@ -47,6 +47,9 @@ from django.views.decorators.csrf import csrf_exempt
 from io import StringIO
 import sys
 
+animation = ['https://i.gifer.com/Be.gif', 'https://media1.tenor.com/images/c43edbd71c0d25df686498663517ff3a/tenor.gif?itemid=10982639', 
+                'https://tenor.com/0UU8.gif']
+
 def fcollage(username):
     pictures = "montage -geometry +0+0 "  
     big_pictures = "montage -geometry +0+0 " 
@@ -484,8 +487,7 @@ def editAimView(request, username, listid, pk):
 def completeAimView(request, username, listid, aimid):
     cur_aim = Aim.objects.get(id = aimid)
     cur_aim.is_completed = True
-    cur_aim.save()
-    
+    cur_aim.save()    
     return HttpResponseRedirect("/"+username+"/lists/"+listid+"/red_to_aimlist")
     
 def completeSubAimView(request, username, listid, aimid, subaim_id):

@@ -276,7 +276,8 @@ def goal_analysis(s):
                 year = int(w2)
                 mypush(stack, i, 4)
                     
-            
+    if len(words) == len(stack):
+        return "error", now        
     goal = []
     for i in range(len(words)):
         if i not in stack:
