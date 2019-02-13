@@ -47,7 +47,7 @@ from django.views.decorators.csrf import csrf_exempt
 from io import StringIO
 import sys
 
-animation = ['https://i.gifer.com/Be.gif', 'https://media1.tenor.com/images/c43edbd71c0d25df686498663517ff3a/tenor.gif?itemid=10982639', 
+animation = ['https://tenor.com/view/my-sweet-nikolay-baskov-pretty-flirting-well-done-gif-12572792', 'https://media1.tenor.com/images/c43edbd71c0d25df686498663517ff3a/tenor.gif?itemid=10982639', 
                 'https://tenor.com/0UU8.gif']
 
 def fcollage(username):
