@@ -1,8 +1,8 @@
 *.DS_Store
 *.sqlite3
 AchieveMe/static/
-AchieveMe/.gitignore
-AchieveMe/.directory
+.gitignore
+.directory
 AchieveMe/app/migrations/*
 AchieveMe/app/__pycache__/*
 AchieveMe/AchieveMe/__pycache__/*
