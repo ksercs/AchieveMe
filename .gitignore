@@ -9,6 +9,7 @@ AchieveMe/AchieveMe/__pycache__/*
 __pycache__
 *.pyc
 *.jpg
+*.png
 AchieveMe/media/images/*
 !AchieveMe/media/images/cat.png
 AchieveMe/app/static/secret_data/*.json
