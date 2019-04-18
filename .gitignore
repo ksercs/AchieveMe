@@ -10,7 +10,7 @@ __pycache__
 *.jpg
 *.png
 AchieveMe/media/images/*
-AchieveMe/sent_emails/*git 
+AchieveMe/sent_emails/*
 !AchieveMe/media/images/cat.png
 AchieveMe/app/static/secret_data/*.json
 AchieveMe/media/collage.jpg
